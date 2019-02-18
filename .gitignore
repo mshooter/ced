@@ -5,4 +5,4 @@ Makefile
 *.qmake*
 /.qmake.stash
 Demo/Demo
-ced_gpu/lib 
+ced_cpu/lib 

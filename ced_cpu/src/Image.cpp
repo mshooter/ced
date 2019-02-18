@@ -2,10 +2,10 @@
 
 namespace ced
 {
-    using namespace OIIO;
     Image::Image(const char* _path)
     {
-        std::unique_ptr<ImageInput> in = ImageInput::open(_path);
+        using namespace OIIO;
+        auto in = ImageInput::open(_path);
         if(!in) std::cerr<<"Could not find image "<<std::endl;
         else
         {
@@ -18,6 +18,54 @@ namespace ced
             in->read_image(TypeDesc::FLOAT, &m_pixelData[0]);
             in->close();
         }
+    }
+    //----------------------------------------------------------------------------
+    void Image::setPixelData(std::vector<float> _pixels)
+    {
+        m_pixelData = std::move(_pixels);
+    }
+    //----------------------------------------------------------------------------
+    void Image::setWidth(int _width)
+    {
+        m_width = std::move(_width);
+    }
+    //----------------------------------------------------------------------------
+    void Image::setHeight(int _height)
+    {
+        m_height = std::move(_height);
+    }
+    //----------------------------------------------------------------------------
+    void Image::setChannels(int _channels)
+    {
+        m_channels = std::move(_channels);
+    }
+    //----------------------------------------------------------------------------
+    void Image::applyFilter(std::vector<float> _filter, int _dimension)
+    {
+        int nwidth = m_width - _dimension + 1;
+        int nheight = m_height - _dimension + 1;
+        std::vector<float> nvimage (nheight*nwidth*m_channels, 0.0f);
+        for(int i=0; i < nheight; ++i)
+        {
+            for(int j=0; j < nwidth; ++j)
+              {
+                 for(int h=i; h < i + _dimension; ++h)
+                 {
+                     for(int w=j; w < j + _dimension; ++w)
+                     {
+                          int base = (j+i*nwidth)* m_channels;
+                          int ibase = (w+h*m_width) * m_channels;
+                          int fbase = ((h-i) + (w-j) * _dimension);
+                          nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
+                          nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
+                          nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
+                     }
+                 }
+              }
+          }
+        m_pixelData = nvimage;
+        m_width = std::move(nwidth);
+        m_height = std::move(nheight);
     }
     //----------------------------------------------------------------------------
     std::vector<float> Image::getPixelData()
@@ -39,17 +87,17 @@ namespace ced
         return m_channels;
     }
     //----------------------------------------------------------------------------
-    void Image::saveImage(const char* _path, int _width, int _height, int _channels, std::vector<float> _pixData)
+    void Image::saveImage(const char* _path)
     {
         using namespace OIIO;
-        std::unique_ptr<ImageOutput> out = ImageOutput::create(_path);
+        auto out = ImageOutput::create(_path);
         if(!out) std::cerr<< "path does not exist" << std::endl;
         else
         {
-            ImageSpec spec(_width, _height, _channels, TypeDesc::FLOAT);
+            ImageSpec spec(m_width, m_height, m_channels, TypeDesc::FLOAT);
             std::cout<<"successfully saved image"<<std::endl;
             out->open(_path, spec);
-            out->write_image(TypeDesc::FLOAT, &_pixData[0]);
+            out->write_image(TypeDesc::FLOAT, &m_pixelData[0]);
             out->close();
         } 
     }

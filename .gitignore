@@ -3,4 +3,5 @@
 Makefile
 */Makefile
 *.qmake*
+/.qmake.stash
 Demo/Demo 

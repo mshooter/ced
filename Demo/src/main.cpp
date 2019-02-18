@@ -1,26 +1,22 @@
 #include <iostream>
 #include <OpenImageIO/imageio.h>
 #include <cmath>
+#include "Image.hpp"
 
 int main()
 {
     // read image 
     using namespace OIIO; 
-    ImageInput *in = ImageInput::open("/Users/moirashooter/Desktop/cat.jpg");
-    ImageOutput *out = ImageOutput::create("/Users/moirashooter/Desktop/newCat.jpg");
-    if(!in)
-    {
-        std::cerr<<"Could not find image "<< std::endl;
-    }
-    else
-    {
-        std::cout<<"Find image"<<std::endl;
-        const ImageSpec &spec = in->spec();
-//        spec.set_format(TypeDesc::FLOAT);
-        int width = spec.width;
-        int height = spec.height;
-        int channels = spec.nchannels; 
-        std::vector<float> pixels(width * height * channels);
+    // std::unique_ptr<ImageInput>
+    // std::unique_ptr<ImageOutput>
+    #ifdef __APPLE__
+        const char *filename = "/Users/moirashooter/Desktop/cat.jpg";
+        const char *outfile = "/Users/moirashooter/Desktop/ncat.jpg";
+    #else
+        const char *filename = "/home/s4928793/Desktop/cat.jpg";
+        const char *outfile = "/home/s4928793/Desktop/bobcat.jpg";
+    #endif
+    ced::Image img(filename);
         // create filter gaussian blur
         std::vector<float> filter(5*5);
         int middle = 5/2;
@@ -47,63 +43,53 @@ int main()
             }
         }
         // read image
-        in->read_image(TypeDesc::FLOAT, &pixels[0]);
-        int nwidth = width - 5 + 1;
-        int nheight = height - 5 + 1;
-        std::vector<float> nimage (nheight*nwidth*channels, 0.0f);
-        // manipulate
-        // GAUSSIAN BLUR
-        for(int i=0; i < nheight; ++i)
-        {
-            for(int j=0; j < nwidth; ++j)
-            {
-                
-                for(int h=i; h < i + 5; ++h)
-                {
-                    for(int w=j; w < j + 5; ++w)
-                    {
-                         int base = (j+i*nwidth)* channels;
-                         int ibase = (w+h*(width)) * channels;
-                         int fbase = ((h-i) + (w-j) * 5);
-                         nimage[base+0] +=  pixels[ibase+0] * filter[fbase];
-                         nimage[base+1] +=  pixels[ibase+1] * filter[fbase];
-                         nimage[base+2] +=  pixels[ibase+2] * filter[fbase];
-                    }
-                }
-            }
-        }
-        // sobel edge detector 
-        std::vector<int> kernelX = {-1, 0, 1,
-                                    -2, 0, 2,
-                                    -1, 0, 1};
-        std::vector<int> kernelY = {-1, -2, -1,
-                                     0,  0,  0,
-                                    -1, -2, -1};
-
-        for(auto& pix : nimage)
-        {
-            // normalize
-            std::cout<<pix*255<<std::endl;
-        }
+       int nwidth = img.getWidth() - 5 + 1;
+       int nheight = img.getHeight() - 5 + 1;
+       int channels = img.getChannels();
+       std::vector<float> nimage (nheight*nwidth*channels, 0.0f);
+       // manipulate
+       // GAUSSIAN BLUR
+       for(int i=0; i < img.getHeight(); ++i)
+       {
+           for(int j=0; j < img.getWidth(); ++j)
+           {
+              int base = (j+i*nwidth) * channels; 
+              int tbase = (j+i*img.getWidth()) * channels;
+              nimage[base + 0] = img.getPixelData()[tbase+0];
+              nimage[base + 1] = img.getPixelData()[tbase+1];
+              nimage[base + 2] = img.getPixelData()[tbase+2];
+              //for(int h=i; h < i + 5; ++h)
+              //{
+              //    for(int w=j; w < j + 5; ++w)
+              //    {
+              //         int base = (j+i*nwidth)* channels;
+              //         int ibase = (w+h*(img.getWidth())) * channels;
+              //         int fbase = ((h-i) + (w-j) * 5);
+              //         std::vector<float> pixels = std::move(img.getPixelData());
+              //         nimage[base+0] +=  pixels[ibase+0] * filter[fbase];
+              //         nimage[base+1] +=  pixels[ibase+1] * filter[fbase];
+              //         nimage[base+2] +=  pixels[ibase+2] * filter[fbase];
+              //    }
+              //}
+            std::cout<<i<<" "<<j<<std::endl;
+           }
+       }
+//      // sobel edge detector 
+//      std::vector<int> kernelX = {-1, 0, 1,
+//                                  -2, 0, 2,
+//                                  -1, 0, 1};
+//      std::vector<int> kernelY = {-1, -2, -1,
+//                                   0,  0,  0,
+//                                  -1, -2, -1};
+//
 
         // write image
-        if(!out)
-        {
-            std::cerr<<"path does not exist"<<std::endl;
-        }
-        else
-        {
-            ImageSpec specs(nwidth, nheight, channels, TypeDesc::FLOAT);
-            std::cout<<"save"<<std::endl;
-            out->open("/Users/moirashooter/Desktop/newCat.jpg", specs);
-            out->write_image(TypeDesc::FLOAT, &nimage[0]);
-            out->close();
-            ImageOutput::destroy(out);
-        }
-        in->close();
-        ImageInput::destroy(in);
+        img.saveImage(outfile, nwidth, nheight, channels, nimage);
+        
+            //ImageOutput::destroy(out);
+        //ImageInput::destroy(in);
 
 
-    }
+    
     return 0;
 }

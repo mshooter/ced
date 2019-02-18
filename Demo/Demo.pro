@@ -1,0 +1,25 @@
+TEMPLATE = app
+TARGET = Demo 
+T -= gui core
+OBJECTS_DIR = obj 
+CONFIG += console c++14
+CONFIG -= app_bundle 
+
+INCLUDEPATH += \
+   /usr/local/include \
+   /public/devel/2018/include \
+   /public/devel/2018/include/OpenImageIO
+
+macx:{
+    QMAKE_CXXFLAGS += -arch x86_64
+    INCLUDEPATH += /usr/local/Cellar/openimageio/
+}
+LIBS +=  -L/usr/local/lib -L/public/devel/2018/lib64 -lOpenImageIO
+
+SOURCES += $$files(src/*.cpp,true)
+
+LIBS += -L/usr/local/lib -L/public/devel/2018/lib64 -lOpenImageIO
+
+QMAKE_CXXFLAGS += -O3 -g -fPIC -std=c++14
+
+

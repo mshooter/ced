@@ -1,0 +1,6 @@
+*.swp 
+*/obj
+Makefile
+*/Makefile
+*.qmake*
+Demo/Demo 

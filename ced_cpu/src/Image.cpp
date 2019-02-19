@@ -63,9 +63,65 @@ namespace ced
                  }
               }
           }
-        m_pixelData = nvimage;
+        m_pixelData = std::move(nvimage);
         m_width = std::move(nwidth);
         m_height = std::move(nheight);
+    }
+    //----------------------------------------------------------------------------
+    void Image::convertToGrayscale()
+    {
+        for(int i=0; i < m_height; ++i)
+        {
+            for(int j=0; j < m_width; ++j)
+            {
+                float pixelData =
+                (m_pixelData[(j+i*m_width) * m_channels + 0]  +  
+                m_pixelData[(j+i*m_width) * m_channels + 1]  +  
+                m_pixelData[(j+i*m_width) * m_channels + 2] ) / 3.0f; 
+                m_pixelData[(j+i*m_width) * m_channels +0 ] = pixelData;
+                m_pixelData[(j+i*m_width) * m_channels +1 ] = pixelData;
+                m_pixelData[(j+i*m_width) * m_channels +2] = pixelData;
+            }
+        }
+    }
+    //----------------------------------------------------------------------------
+    void Image::applySobelFilter(float _maxValue, float _minValue)
+    {
+        // sobel edge detector 
+        std::vector<float> kernelX = {-1, 0, 1,
+                                    -2, 0, 2,
+                                    -1, 0, 1};
+        std::vector<float> kernelY = {-1, -2, -1,
+                                     0,  0,  0,
+                                    -1, -2, -1};
+        // sum
+        float Gx = 0.0f;
+        float Gy = 0.0f; 
+        
+        float magnitude = 0.0f;
+        for(int i=1; i<m_height-1; ++i)
+        {
+            for(int j=1; j<m_width-1; ++j)
+            {
+                for(int hk=0; hk < 3; ++hk)
+                {
+                    for(int wk=0; wk < 3; ++wk)
+                    {
+                        float pixelValue =m_pixelData[((i+hk-1)*m_width + (j+wk-1)) * m_channels + 0] +m_pixelData[((i+hk-1)*m_width + (j+wk-1)) * m_channels + 1]+m_pixelData[((i+hk-1)*m_width + (j+wk-1)) * m_channels + 2];   
+                        Gx = kernelX[(wk + hk * 3)] * pixelValue;
+                        Gy = kernelY[(wk + hk * 3)] * pixelValue;
+                    }
+                }
+                magnitude = std::sqrt(Gx*Gx + Gy*Gy) ;
+                std::cout<<magnitude<<std::endl;
+                if(magnitude < _minValue)   magnitude = 1.0f;    
+                if(magnitude > _maxValue)   magnitude = 0.0f;
+                m_pixelData[(j+i*m_width) * m_channels +0] = magnitude;
+                m_pixelData[(j+i*m_width) * m_channels +1] = magnitude;
+                m_pixelData[(j+i*m_width) * m_channels +2] = magnitude;
+            }
+        }
+
     }
     //----------------------------------------------------------------------------
     std::vector<float> Image::getPixelData()

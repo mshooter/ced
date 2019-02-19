@@ -20,16 +20,13 @@ int main()
     // create filter gaussian blur
     int dimension = 5; 
     std::vector<float> gfilter = ced::gaussianFilter(dimension, 2); 
+    // convert to gray scale
+    img.convertToGrayscale();
     // apply gaussian filter
     img.applyFilter(gfilter, dimension);
-    // sobel edge detector 
-    std::vector<int> kernelX = {-1, 0, 1,
-                                -2, 0, 2,
-                                -1, 0, 1};
-    std::vector<int> kernelY = {-1, -2, -1,
-                                 0,  0,  0,
-                                -1, -2, -1};
+    img.applySobelFilter();
 
+    
     // write image
     img.saveImage(outfile);
         

@@ -42,7 +42,7 @@ namespace ced
     //----------------------------------------------------------------------------
     void Image::applyFilter(std::vector<float> _filter, int _dimension)
     {
-        int nwidth = m_width - _dimension + 1;
+        int nwidth = m_width - _dimension  + 1;
         int nheight = m_height - _dimension + 1;
         std::vector<float> nvimage (nheight*nwidth*m_channels, 0.0f);
         for(int i=0; i < nheight; ++i)

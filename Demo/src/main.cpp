@@ -16,6 +16,9 @@ int main()
     #else
         const char *filename = "/home/s4928793/Desktop/cat.jpg";
         const char *outfile = "/home/s4928793/Desktop/ncat.jpg";
+        const char *outgray = "/home/s4928793/Desktop/graycat.jpg";
+        const char *outgaussian = "/home/s4928793/Desktop/gaussiancat.jpg";
+        const char *outgradient = "/home/s4928793/Desktop/gradientcat.jpg";
     #endif
     ced::Image img(filename);
     // create filter gaussian blur
@@ -23,22 +26,27 @@ int main()
     std::vector<float> gfilter = ced::gaussianFilter(gDimension, 2); 
     // convert to gray scale
     img.convertToGrayscale();
+    img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
+    img.saveImage(outgaussian);
     // sobel operator to get magnitude and orientation
-    std::vector<float> magnitudes; 
-    std::vector<float> orientation;
     int height = img.getHeight();
     int width = img.getWidth();
-    
-    // initialise image
-    // setPixelData
-    // setHeight
-    // set Width
-
-    // write image
-    img.saveImage(outfile);
-        
+    std::vector<float> orientation;
+    std::vector<float> magnitude = img.getPixelData();
+    // mag = pixelData, orientations 
+    ced::calculateGradients(height,
+                            width, 
+                            magnitude,
+                            orientation
+                            );
+    magnitude.resize(height*width*3);
+    img.setHeight(height);
+    img.setWidth(width);
+    img.setPixelData(magnitude);
+    img.saveImage(outgradient);
+    // nonmaximum supression    
 
 
     

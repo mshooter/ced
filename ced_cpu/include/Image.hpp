@@ -26,7 +26,6 @@ namespace ced
             //------------------------------------------------------------
             void applyFilter(std::vector<float> _filter, int _dimension);
             void convertToGrayscale();
-            void applySobelFilter(float _maxValue = 1.0f, float _minValue = 0.0f);
             std::vector<float> getPixelData();
             int getWidth();
             int getHeight();

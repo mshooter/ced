@@ -4,6 +4,8 @@
 #include "GaussianFilter.hpp"
 #include "Gradients.hpp"
 #include "Image.hpp"
+#include "NonMaximumSupression.hpp"
+
 int main()
 {
     // read image 
@@ -13,6 +15,9 @@ int main()
     #ifdef __APPLE__
         const char *filename = "/Users/moirashooter/Desktop/cat.jpg";
         const char *outfile = "/Users/moirashooter/Desktop/ncat.jpg";
+        const char *outgray = "/Users/moirashooter/Desktop/graycat.jpg";
+        const char *outgaussian = "/Users/moirashooter/Desktop/gaussiancat.jpg";
+        const char *outgradient = "/Users/moirashooter/Desktop/gradientcat.jpg";
     #else
         const char *filename = "/home/s4928793/Desktop/cat.jpg";
         const char *outfile = "/home/s4928793/Desktop/ncat.jpg";
@@ -47,6 +52,7 @@ int main()
     img.setPixelData(magnitude);
     img.saveImage(outgradient);
     // nonmaximum supression    
+    ced::nonMaximumSupression(height, width, orientation, magnitude);
 
 
     

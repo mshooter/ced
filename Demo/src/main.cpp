@@ -1,11 +1,9 @@
-#include <iostream>
-#include <OpenImageIO/imageio.h>
-#include <cmath>
 #include "GaussianFilter.hpp"
 #include "Gradients.hpp"
 #include "Image.hpp"
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
+
 int main()
 {
     // read image 
@@ -13,7 +11,7 @@ int main()
     // std::unique_ptr<ImageInput>
     // std::unique_ptr<ImageOutput>
     #ifdef __APPLE__
-        const char *filename    = "/Users/moirashooter/Desktop/Cat/catt.jpg";
+        const char *filename    = "/Users/moirashooter/Desktop/Cat/baby.jpg";
         const char *outgray     = "/Users/moirashooter/Desktop/Cat/graycat.jpg";
         const char *outgaussian = "/Users/moirashooter/Desktop/Cat/gaussiancat.jpg";
         const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
@@ -53,7 +51,7 @@ int main()
     img.setPixelData(magnitude);
     img.saveImage(outgradient);
     // final image
-    ced::hysterysis(magnitude, height, width, 0.7f, 0.8f);
+    ced::hysterysis(magnitude, height, width, 0.5f, 0.51f);
     img.setPixelData(magnitude);
     img.saveImage(finalout);
 

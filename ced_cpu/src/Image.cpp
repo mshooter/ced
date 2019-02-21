@@ -75,12 +75,14 @@ namespace ced
             for(int j=0; j < m_width; ++j)
             {
                 float pixelData =
-                (m_pixelData[(j+i*m_width) * m_channels + 0]  +  
-                m_pixelData[(j+i*m_width) * m_channels + 1]  +  
-                m_pixelData[(j+i*m_width) * m_channels + 2] ) / 3.0f; 
-                m_pixelData[(j+i*m_width) * m_channels +0 ] = pixelData;
-                m_pixelData[(j+i*m_width) * m_channels +1 ] = pixelData;
-                m_pixelData[(j+i*m_width) * m_channels +2] = pixelData;
+                (
+                    m_pixelData[(j+i*m_width) * m_channels + 0]  +  
+                    m_pixelData[(j+i*m_width) * m_channels + 1]  +  
+                    m_pixelData[(j+i*m_width) * m_channels + 2]
+                ) / 3.0f; 
+                m_pixelData[(j+i*m_width) * m_channels + 0 ] = pixelData;
+                m_pixelData[(j+i*m_width) * m_channels + 1 ] = pixelData;
+                m_pixelData[(j+i*m_width) * m_channels + 2 ] = pixelData;
             }
         }
     }

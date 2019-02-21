@@ -35,13 +35,9 @@ namespace ced
                 int base = (j+i*nwidth)* 3;
                 float magnitude = std::abs(Gx) + std::abs(Gy); 
                 //should be turned off
-                _pixelData[base+0] = magnitude > _maxValue ? 1.0f : magnitude;
-                _pixelData[base+1] = magnitude > _maxValue ? 1.0f : magnitude;
-                _pixelData[base+2] = magnitude > _maxValue ? 1.0f : magnitude;
-
-                _pixelData[base+0] = magnitude < _minValue ? 0.0f : magnitude;
-                _pixelData[base+1] = magnitude < _minValue ? 0.0f : magnitude;
-                _pixelData[base+2] = magnitude < _minValue ? 0.0f : magnitude;
+                _pixelData[base+0] = magnitude;
+                _pixelData[base+1] = magnitude;
+                _pixelData[base+2] = magnitude;
 
                 float pi = 3.14f;
                 float pi8 = pi/8.0f;
@@ -61,7 +57,8 @@ namespace ced
                 _orientations.push_back(theta);
 
             }
-        }
+        } 
+        _pixelData.resize(nwidth * _height *3);
         _width = std::move(nwidth);
     }
 }

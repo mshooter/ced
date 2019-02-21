@@ -5,7 +5,7 @@
 #include "Gradients.hpp"
 #include "Image.hpp"
 #include "NonMaximumSupression.hpp"
-
+#include "Hysterysis.hpp"
 int main()
 {
     // read image 
@@ -13,22 +13,22 @@ int main()
     // std::unique_ptr<ImageInput>
     // std::unique_ptr<ImageOutput>
     #ifdef __APPLE__
-        const char *filename = "/Users/moirashooter/Desktop/cat.jpg";
-        const char *outfile = "/Users/moirashooter/Desktop/ncat.jpg";
-        const char *outgray = "/Users/moirashooter/Desktop/graycat.jpg";
-        const char *outgaussian = "/Users/moirashooter/Desktop/gaussiancat.jpg";
-        const char *outgradient = "/Users/moirashooter/Desktop/gradientcat.jpg";
+        const char *filename    = "/Users/moirashooter/Desktop/Cat/cattt.jpg";
+        const char *outgray     = "/Users/moirashooter/Desktop/Cat/graycat.jpg";
+        const char *outgaussian = "/Users/moirashooter/Desktop/Cat/gaussiancat.jpg";
+        const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
+        const char *finalout    = "/Users/moirashooter/Desktop/Cat/finalcat.jpg";
     #else
-        const char *filename = "/home/s4928793/Desktop/cat.jpg";
-        const char *outfile = "/home/s4928793/Desktop/ncat.jpg";
-        const char *outgray = "/home/s4928793/Desktop/graycat.jpg";
+        const char *filename    = "/home/s4928793/Desktop/cat.jpg";
+        const char *outfile     = "/home/s4928793/Desktop/ncat.jpg";
+        const char *outgray     = "/home/s4928793/Desktop/graycat.jpg";
         const char *outgaussian = "/home/s4928793/Desktop/gaussiancat.jpg";
         const char *outgradient = "/home/s4928793/Desktop/gradientcat.jpg";
     #endif
     ced::Image img(filename);
     // create filter gaussian blur
     int gDimension = 5;
-    std::vector<float> gfilter = ced::gaussianFilter(gDimension, 2); 
+    std::vector<float> gfilter = ced::gaussianFilter(gDimension, 1.4f); 
     // convert to gray scale
     img.convertToGrayscale();
     img.saveImage(outgray);
@@ -40,19 +40,24 @@ int main()
     int width = img.getWidth();
     std::vector<float> orientation;
     std::vector<float> magnitude = img.getPixelData();
-    // mag = pixelData, orientations 
+    // need to work on this  
     ced::calculateGradients(height,
-                            width, 
-                            magnitude,
-                            orientation
-                            );
-    magnitude.resize(height*width*3);
+                          width, 
+                          magnitude,
+                          orientation
+                          );
+    // nonmaximum supression    
+    ced::nonMaximumSupression(height, width, orientation, magnitude);
     img.setHeight(height);
     img.setWidth(width);
     img.setPixelData(magnitude);
     img.saveImage(outgradient);
-    // nonmaximum supression    
-    ced::nonMaximumSupression(height, width, orientation, magnitude);
+    // final image
+    ced::hysterysis(magnitude, height, width, 0.7f, 0.8f);
+    img.setPixelData(magnitude);
+    img.saveImage(finalout);
+
+
 
 
     

@@ -1,8 +1,9 @@
 *.swp 
-*/obj
 Makefile
 */Makefile
 *.qmake*
-/.qmake.stash
 Demo/Demo
-ced_cpu/lib 
+*lib
+*obj
+*.obj 
+*Makefile

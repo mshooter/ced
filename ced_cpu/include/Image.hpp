@@ -1,6 +1,6 @@
 // Image.hpp 
-#ifndef __IMAGE_H_INCLUDED__
-#define __IMAGE_H_INCLUDED__
+#ifndef IMAGE_H_INCLUDED
+#define IMAGE_H_INCLUDED
 
 #include <OpenImageIO/imageio.h>
 #include <vector>
@@ -39,5 +39,4 @@ namespace ced
             std::vector<float> m_pixelData;
     };
 }
-#endif //__IMAGE_H_INCLUDED__
-
+#endif //IMAGE_H_INCLUDED

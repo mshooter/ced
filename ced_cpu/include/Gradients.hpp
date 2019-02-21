@@ -1,13 +1,12 @@
 // Gradients.hpp 
-#ifndef __GADIENTS_H_INCLUDED__
-#define __GADIENTS_H_INCLUDED__
+#ifndef GADIENTS_H_INCLUDED
+#define GADIENTS_H_INCLUDED
 
 #include <vector>
 
 namespace ced 
 {
-    void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelDatam, std::vector<float>& _orientations,
-                            float _minValue = 0.0f, float _maxValue = 1.0f);
+    void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelDatam, std::vector<float>& _orientations);
 }
-#endif //__GAUSSIANFILTER_H_INCLUDED__
+#endif //GAUSSIANFILTER_H_INCLUDED
 

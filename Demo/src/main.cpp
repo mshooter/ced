@@ -13,7 +13,7 @@ int main()
     // std::unique_ptr<ImageInput>
     // std::unique_ptr<ImageOutput>
     #ifdef __APPLE__
-        const char *filename    = "/Users/moirashooter/Desktop/Cat/cattt.jpg";
+        const char *filename    = "/Users/moirashooter/Desktop/Cat/catt.jpg";
         const char *outgray     = "/Users/moirashooter/Desktop/Cat/graycat.jpg";
         const char *outgaussian = "/Users/moirashooter/Desktop/Cat/gaussiancat.jpg";
         const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";

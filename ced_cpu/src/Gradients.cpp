@@ -4,7 +4,7 @@
 #include <iostream>
 namespace ced
 {
-    void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelData, std::vector<float>& _orientations, float _minValue, float _maxValue)
+    void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelData, std::vector<float>& _orientations)
     {
         // sobel edge detector filters 
         std::vector<float> kernelX = {-1, 0, 1,

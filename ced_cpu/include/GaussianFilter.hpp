@@ -1,6 +1,6 @@
 // GaussianFilter.hpp 
-#ifndef __GAUSSIANFILTER_H_INCLUDED__
-#define __GAUSSIANFILTER_H_INCLUDED__
+#ifndef GAUSSIANFILTER_H_INCLUDED
+#define GAUSSIANFILTER_H_INCLUDED
 
 #include <vector>
 
@@ -14,6 +14,6 @@ namespace ced
     //------------------------------------------------------------
     std::vector<float> gaussianFilter(int _dimension = 5, float _sigma = 1.4f);
 }
-#endif //__GAUSSIANFILTER_H_INCLUDED__
+#endif //GAUSSIANFILTER_H_INCLUDED
 
 

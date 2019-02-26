@@ -17,47 +17,43 @@ int main()
         const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
         const char *finalout    = "/Users/moirashooter/Desktop/Cat/finalcat.jpg";
     #else
-        const char *filename    = "/home/s4928793/Desktop/cat.jpg";
-        const char *outfile     = "/home/s4928793/Desktop/ncat.jpg";
-        const char *outgray     = "/home/s4928793/Desktop/graycat.jpg";
-        const char *outgaussian = "/home/s4928793/Desktop/gaussiancat.jpg";
-        const char *outgradient = "/home/s4928793/Desktop/gradientcat.jpg";
+        const char *filename    = "/home/s4928793/Desktop/Cat/cat.jpg";
+        const char *outgray     = "/home/s4928793/Desktop/Cat/graycat.jpg";
+        const char *outgaussian = "/home/s4928793/Desktop/Cat/gaussiancat.jpg";
+        const char *outgradient = "/home/s4928793/Desktop/Cat/nonMaximumSupressioncat.jpg";
+        const char *finalout    = "/home/s4928793/Desktop/Cat/finalcat.jpg";
     #endif
-    ced::Image img(filename);
+    ced::cpu::Image img(filename);
     // create filter gaussian blur
-    int gDimension = 5;
-    std::vector<float> gfilter = ced::gaussianFilter(gDimension, 1.4f); 
+    const int gDimension = 5;
+    std::vector<float> gfilter = ced::cpu::gaussianFilter(gDimension, 1.4f); 
     // convert to gray scale
     img.convertToGrayscale();
-    img.saveImage(outgray);
+    //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    img.saveImage(outgaussian);
+    //img.saveImage(outgaussian);
     // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
     std::vector<float> magnitude = img.getPixelData();
     // need to work on this  
-    ced::calculateGradients(height,
+    ced::cpu::calculateGradients(height,
                           width, 
                           magnitude,
                           orientation
                           );
     // nonmaximum supression    
-    ced::nonMaximumSupression(height, width, orientation, magnitude);
+    ced::cpu::nonMaximumSupression(height, width, orientation, magnitude);
     img.setHeight(height);
     img.setWidth(width);
-    img.setPixelData(magnitude);
-    img.saveImage(outgradient);
+    //img.setPixelData(magnitude);
+    //img.saveImage(outgradient);
     // final image
-    ced::hysterysis(magnitude, height, width, 0.5f, 0.51f);
+    ced::cpu::hysterysis(magnitude, height, width, 0.2f, 0.3f);
     img.setPixelData(magnitude);
     img.saveImage(finalout);
-
-
-
-
     
     return 0;
 }

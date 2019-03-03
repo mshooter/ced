@@ -5,22 +5,41 @@ namespace ced
 {
     namespace cpu
     {
-        int partition(std::vector<Point>& _points, int lo, int hi)
+        int partition(std::vector<ced::cpu::Point>& pt, int p, int q)
         {
-            // need to refine the pivotpoint
-            Point nP = _points[hi];
-            int pivotX = nP.getX(); 
-            int i = lo-1;
-            for(int j=lo; j <= hi-1; ++j)
+            // element to move pivot point
+            ced::cpu::Point x = pt[p];
+            int i = p; 
+            for(int j=p+1; j <= q; j++)
             {
-                if(_points[j].getX() < pivotX)
+                if(pt[j].getX() < x.getX())
                 {
-                    i++;
-                    std::swap(_points[i], _points[j]);
-                }            
+                    i=i+1; 
+                    std::swap(pt[i], pt[j]);
+                }
+
+                if(pt[j].getX() == x.getX())
+                {
+                    if(pt[j].getY() <= x.getY())
+                    {
+                        i++;
+                        std::swap(pt[i], pt[j]);
+                    }
+                }
             }
-            std::swap(_points[i+1], nP); 
+            std::swap(pt[i], pt[p]);
             return i;
+        }
+
+        void quickSort(std::vector<ced::cpu::Point>& pt, int lo, int hi)
+        {
+            int r;
+            if(lo < hi)
+            {
+                r = ced::cpu::partition(pt, lo, hi);
+                quickSort(pt, lo, r-1);
+                quickSort(pt, r+1, hi);
+            }
         }
     }
 }

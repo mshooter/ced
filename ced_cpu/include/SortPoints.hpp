@@ -10,6 +10,8 @@ namespace ced
     namespace cpu
     {
         int partition(std::vector<Point>& _points, int lo, int hi);
+
+        void quickSort(std::vector<Point>& _pts, int lo, int hi);
     }
 }
 

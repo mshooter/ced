@@ -9,7 +9,7 @@ CONFIG += console c++14
 CONFIG -= app_bundle
 
 SOURCES += $$files(src/*.cpp,true)
-HEADERS += $$files(include/*.hpp, true) 
+HEADERS += $$files(include/*(.hpp|.inl), true) 
 
 DEPENDPATH += . ../../ced_cpu 
 INCLUDEPATH += ../../ced_cpu/include 

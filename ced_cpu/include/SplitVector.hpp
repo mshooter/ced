@@ -27,7 +27,6 @@ namespace ced
                 splitVector(fVec, nVecR);
             }
         }
-
     }
 }
 

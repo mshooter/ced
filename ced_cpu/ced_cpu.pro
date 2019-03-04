@@ -24,6 +24,6 @@ macx:{
 LIBS += -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO
 
 # Input
-HEADERS += $$files(include/*.hpp, true) 
+HEADERS += $$files(include/*(.hpp | .inl), true) 
 SOURCES += $$files(src/*.cpp,true) 
 

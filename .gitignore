@@ -3,6 +3,7 @@ Makefile
 */Makefile
 *.qmake*
 Demo/Demo
+tests/cpu_tests/cpu_tests
 *lib
 *obj
 *.obj 

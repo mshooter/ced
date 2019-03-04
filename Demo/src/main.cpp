@@ -38,33 +38,31 @@ int main()
     // split the vector 
     std::vector<std::vector<ced::cpu::Point>> fvec;
     ced::cpu::splitVector(fvec, coord);
-    // draw the points
-    // draw the lines now
-    for(auto t : fvec)
-    {   
-        for(auto x : t)
+    for(auto x : fvec)
+    {
+        int s = x.size();
+        if(s == 2)
         {
-            int xx = x.getX();
-            int xy = x.getY();
-            for(int i = 0; i < img.getHeight(); ++i)
-            {
-                for(int j=0; j < img.getWidth(); ++j)
-                {
-                    if(xy == i && xx == j)
-                    {
-                        imgData[(j+i*img.getWidth()) * 3 + 0] = 1;
-                        imgData[(j+i*img.getWidth()) * 3 + 1] = 1;
-                        imgData[(j+i*img.getWidth()) * 3 + 2] = 1;
-                    }
-                }
-            }
+                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 0] = 1;
+                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 1] = 1;
+                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 2] = 1;
+
+                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 0] = 1;
+                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 1] = 1;
+                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 2] = 1;
+                //ced::cpu::drawLine(x[0], x[1], imgData, img.getWidth());
+
         }
 
     }
+    // draw the points
+
+    // draw the lines now
+
 
     // draw the lines
     img.setPixelData(imgData);
-    img.saveImage(outgradient);
+    img.saveImage(finalout);
     //// create filter gaussian blur
     //const int gDimension = 5;
     //std::vector<float> gfilter = ced::cpu::gaussianFilter(gDimension, 1.4f); 

@@ -4,7 +4,6 @@
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
 #include "Point.hpp"
-#include "DrawLine.hpp"
 #include "GenerateRandomPoints.hpp"
 #include "SortPoints.hpp"
 #include "SplitVector.hpp"
@@ -30,7 +29,7 @@ int main()
     #endif
     ced::cpu::Image img(filename);
     // get random points
-    std::vector<ced::cpu::Point> coord = ced::cpu::generateRandomPoints(100, img.getHeight(), img.getWidth());
+    std::vector<ced::cpu::Point> coord = ced::cpu::generateRandomPoints(3, img.getHeight(), img.getWidth());
     // sort the points
     ced::cpu::quickSort(coord, 0, coord.size()-1);
     // img data 
@@ -38,27 +37,20 @@ int main()
     // split the vector 
     std::vector<std::vector<ced::cpu::Point>> fvec;
     ced::cpu::splitVector(fvec, coord);
+    // iterate over elements in fvec
     for(auto x : fvec)
     {
-        int s = x.size();
-        if(s == 2)
+        if(x.size() ==3)
         {
-                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 0] = 1;
-                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 1] = 1;
-                imgData[(x[0].getX() + x[0].getY() * img.getWidth()) * 3 + 2] = 1;
-
-                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 0] = 1;
-                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 1] = 1;
-                imgData[(x[1].getX() + x[1].getY() * img.getWidth()) * 3 + 2] = 1;
-                //ced::cpu::drawLine(x[0], x[1], imgData, img.getWidth());
-
+            for(auto point : x)
+            {
+                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 0] = 1.0f;
+                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 1] = 1.0f;
+                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 2] = 1.0f;
+                std::cout<< point.getX() << " " << point.getY() << std::endl;
+            }
         }
-
     }
-    // draw the points
-
-    // draw the lines now
-
 
     // draw the lines
     img.setPixelData(imgData);

@@ -7,7 +7,7 @@
 #include "GenerateRandomPoints.hpp"
 #include "SortPoints.hpp"
 #include "SplitVector.hpp"
-
+#include "Seed.hpp" 
 int main()
 {
     // read image 
@@ -37,20 +37,10 @@ int main()
     // split the vector 
     std::vector<std::vector<ced::cpu::Point>> fvec;
     ced::cpu::splitVector(fvec, coord);
-    // iterate over elements in fvec
-    for(auto x : fvec)
-    {
-        if(x.size() ==3)
-        {
-            for(auto point : x)
-            {
-                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 0] = 1.0f;
-                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 1] = 1.0f;
-                imgData[(point.getX() + point.getY() * img.getWidth() ) * 3 + 2] = 1.0f;
-                std::cout<< point.getX() << " " << point.getY() << std::endl;
-            }
-        }
-    }
+    // choose random seed
+    // use curent time as seed for random generator
+    std::srand(std::time(nullptr));
+    std::cout<<ced::cpu::selectSeed(0, 5)<<std::endl;
 
     // draw the lines
     img.setPixelData(imgData);

@@ -57,8 +57,10 @@ TEST(sortPoints, quickSortFunction)
     ced::cpu::quickSort(unsortedList, 0, 3);
     EXPECT_EQ(unsortedList[0].getX(), 3);
     EXPECT_EQ(unsortedList[0].getY(), 0);
+
     EXPECT_EQ(unsortedList[1].getX(), 3);
     EXPECT_EQ(unsortedList[1].getY(), 1);
+
     EXPECT_EQ(unsortedList[2].getX(), 20);
     EXPECT_EQ(unsortedList[3].getX(), 21);
 }

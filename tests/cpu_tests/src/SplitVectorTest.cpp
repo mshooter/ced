@@ -74,13 +74,13 @@ TEST(SplitVector, splitVectorFunctionPts)
     int fsize = fvec.size();
     EXPECT_EQ(fsize, 2);
 
-    EXPECT_EQ(fvec[0][0].getX(), 0);
-    EXPECT_EQ(fvec[0][0].getY(), 0);
-    EXPECT_EQ(fvec[0][1].getX(), 0);
-    EXPECT_EQ(fvec[0][1].getY(), 1);
-    EXPECT_EQ(fvec[0][2].getX(), 2);
+    EXPECT_EQ(fvec[0][0].x, 0);
+    EXPECT_EQ(fvec[0][0].y, 0);
+    EXPECT_EQ(fvec[0][1].x, 0);
+    EXPECT_EQ(fvec[0][1].y, 1);
+    EXPECT_EQ(fvec[0][2].x, 2);
     
-    EXPECT_EQ(fvec[1][0].getX(), 4);
-    EXPECT_EQ(fvec[1][1].getX(), 1);
-    EXPECT_EQ(fvec[1][2].getX(), 10);
+    EXPECT_EQ(fvec[1][0].x, 4);
+    EXPECT_EQ(fvec[1][1].x, 1);
+    EXPECT_EQ(fvec[1][2].x, 10);
 }

@@ -9,17 +9,12 @@ namespace ced
         class Point
         {
             public:
-                Point(const int x, const int y);
+                Point(const int _x, const int _y);
                 Point() = default;
                 ~Point() = default;
-                int getX();
-                int getY();
-                void setX(int x);
-                void setY(int y);
                 Point& operator=(const Point&) = default;
-            private:
-                int m_x; 
-                int m_y;
+                int x;
+                int y;
         };
     }
 }

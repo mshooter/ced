@@ -29,7 +29,7 @@ int main()
     #endif
     ced::cpu::Image img(filename);
     // get random points
-    std::vector<ced::cpu::Point> coord = ced::cpu::generateRandomPoints(3, img.getHeight(), img.getWidth());
+    std::vector<ced::cpu::Point> coord = ced::cpu::generateRandomPoints(10, img.getHeight(), img.getWidth());
     // sort the points
     ced::cpu::quickSort(coord, 0, coord.size()-1);
     // img data 
@@ -37,10 +37,21 @@ int main()
     // split the vector 
     std::vector<std::vector<ced::cpu::Point>> fvec;
     ced::cpu::splitVector(fvec, coord);
+<<<<<<< HEAD
     // choose random seed
     // use curent time as seed for random generator
     std::srand(std::time(nullptr));
     std::cout<<ced::cpu::selectSeed(0, 5)<<std::endl;
+=======
+    // iterate over elements in fvec
+    for(int i =0 ; i < fvec.size(); ++i)
+    {
+        if(i%2==0)
+            std::cout<<"l\n";
+        else
+            std::cout<<"ODD\n";
+    }
+>>>>>>> HEAD@{1}
 
     // draw the lines
     img.setPixelData(imgData);

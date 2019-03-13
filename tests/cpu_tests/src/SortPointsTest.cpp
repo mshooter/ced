@@ -13,14 +13,14 @@ TEST(sortPoints, partition)
     int i = 0;
     for(int j=0+1; j <= 3; ++j)
     {
-        if(unsortedList[j].getX() < pivotElement.getX())
+        if(unsortedList[j].x < pivotElement.x)
         {
             i++;
             std::swap(unsortedList[i], unsortedList[j]);
         }
-        if(unsortedList[j].getX() == pivotElement.getX())
+        if(unsortedList[j].x == pivotElement.x)
         {
-            if(unsortedList[j].getY() < pivotElement.getY())
+            if(unsortedList[j].y < pivotElement.y)
             {
                 i++;
                 std::swap(unsortedList[i], unsortedList[j]);
@@ -29,10 +29,10 @@ TEST(sortPoints, partition)
     }
     std::swap(unsortedList[i], unsortedList[0]);
     EXPECT_EQ(i, 3);
-    EXPECT_EQ(unsortedList[0].getX(), 0);
-    EXPECT_EQ(unsortedList[1].getX(), 2);
-    EXPECT_EQ(unsortedList[2].getX(), 1);
-    EXPECT_EQ(unsortedList[3].getX(), 3);
+    EXPECT_EQ(unsortedList[0].x, 0);
+    EXPECT_EQ(unsortedList[1].x, 2);
+    EXPECT_EQ(unsortedList[2].x, 1);
+    EXPECT_EQ(unsortedList[3].x, 3);
 }
 
 TEST(sortPoints, partitionFunction)
@@ -55,10 +55,12 @@ TEST(sortPoints, quickSortFunction)
     ced::cpu::Point p4(21,0);
     std::vector<ced::cpu::Point> unsortedList = {p4, p3, p2, p1};
     ced::cpu::quickSort(unsortedList, 0, 3);
-    EXPECT_EQ(unsortedList[0].getX(), 3);
-    EXPECT_EQ(unsortedList[0].getY(), 0);
-    EXPECT_EQ(unsortedList[1].getX(), 3);
-    EXPECT_EQ(unsortedList[1].getY(), 1);
-    EXPECT_EQ(unsortedList[2].getX(), 20);
-    EXPECT_EQ(unsortedList[3].getX(), 21);
+    EXPECT_EQ(unsortedList[0].x, 3);
+    EXPECT_EQ(unsortedList[0].y, 0);
+
+    EXPECT_EQ(unsortedList[1].x, 3);
+    EXPECT_EQ(unsortedList[1].y, 1);
+
+    EXPECT_EQ(unsortedList[2].x, 20);
+    EXPECT_EQ(unsortedList[3].x, 21);
 }

@@ -2,6 +2,8 @@
 #ifndef EDGE_H_INCLUDED
 #define EDGE_H_INCLUDED
 
+#include "Point.hpp"
+// TODO: smart pointers
 namespace ced
 {
     namespace cpu
@@ -9,8 +11,10 @@ namespace ced
         class Edge
         {
             public:
-            private:
-        }; 
+                Edge(Point* _p1, Point* _p2);
+                Point* startPoint; 
+                Point* endPoint;
+        };
     }
 }
 

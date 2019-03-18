@@ -102,31 +102,62 @@ TEST(Delaunay, addPoint)
     bool l = isLeft(p1,p2,p3);    
     ASSERT_EQ(l, false);
     triangleList.push_back(new Triangle(p2, p1, p3)); 
-    eHull.push_back(new Edge(p2, p1));
-    eHull.push_back(new Edge(p1, p3));
-    eHull.push_back(new Edge(p3, p2));
+    eHull.push_back(new Edge(p2, p1)); // index 0 edge
+    eHull.push_back(new Edge(p1, p3)); // index 1 edge
+    eHull.push_back(new Edge(p3, p2)); // index 2 edge
     // go over every point in the list
-    for(unsigned int i = 3; i < pointList.size(); ++i)
+    Point* newPoint = pointList[3];
+    ASSERT_EQ(newPoint->x, -1);
+    ASSERT_EQ(newPoint->y, 5);
+    // go over every edge in the hull
+    // the ones that are on the right 
+    Point* s_edge = p2;
+    Point* e_edge = p1;
+    ASSERT_EQ(isLeft(s_edge, e_edge, newPoint), false); 
+    // if it is on the right create a triangle 
+    // record also the base edge 
+    int baseIndex = 0;
+    ASSERT_EQ(eHull[baseIndex]->startPoint->x, 1);
+    ASSERT_EQ(eHull[baseIndex]->startPoint->y, 1);
+    ASSERT_EQ(eHull[baseIndex]->endPoint->x, 0);
+    ASSERT_EQ(eHull[baseIndex]->endPoint->y, 0);
+    triangleList.push_back(new Triangle(e_edge, s_edge, newPoint));
+    // check if the reverse is in the hull for upper and lower
+    // new edges 
+    Edge* sp = new Edge(s_edge, newPoint);
+    Edge* ep = new Edge(newPoint, e_edge);
+    Edge* r_sp = new Edge(newPoint, s_edge);
+    Edge* r_ep = new Edge(e_edge, newPoint);
+    bool upper = false; 
+    bool lower = false;
+    for(auto edge : eHull)
     {
-        Point* newPoint = pointList[i];
-        // go over every point in the edge
-        for(unsigned int j=0; j < eHull.size(); ++j)
+        if(r_sp == edge)
         {
-            Point* s_edgePoint = eHull[j]->startPoint;
-            Point* e_edgePoint = eHull[j]->endPoint;
-            if(!isLeft(s_edgePoint, e_edgePoint, newPoint))
-            {
-                // should be two edges = correct
-                // std::cout<< "start"<<s_edgePoint->x  << " " << s_edgePoint->y<< std::endl; 
-                // std::cout<< "end"<<e_edgePoint->x  << " " << e_edgePoint->y<< std::endl; 
-                // base edge 
-                int baseIndex = j;
-                // need to remove base edge soon but first create the two edges
-                Edge* e_13 = new Edge(s_edgePoint, newPoint);
-                Edge* e_32 = new Edge(newPoint, e_edgePoint);
-                // check if the reverse is in the hull
-            }
-        } 
+            upper = true;
+        }
     }
+    ASSERT_EQ(upper, false);
+    eHull.insert(eHull.begin() + (baseIndex+1), sp);
+    ASSERT_EQ(eHull[1]->startPoint->x, 1);
+    ASSERT_EQ(eHull[1]->endPoint->x, -1);
+    for(auto edge : eHull)
+    {
+        if(r_ep == edge)
+        {
+            lower = true;
+        }
+    }
+    ASSERT_EQ(lower, false);
+    // 
+    eHull.insert(eHull.begin() + baseIndex, ep);
+    baseIndex++;
+    ASSERT_EQ(eHull[0]->startPoint->x, -1);
+    ASSERT_EQ(eHull[0]->endPoint->x, 0);
+    eHull.erase(eHull.begin() + baseIndex);
+    //for(auto edge : eHull)
+    //{
+    //    std::cout<<edge->startPoint->x<< " " << edge->startPoint->y << " "<<  edge->endPoint->x<< " " << edge->endPoint->y << std::endl;
+    //}
 }
 

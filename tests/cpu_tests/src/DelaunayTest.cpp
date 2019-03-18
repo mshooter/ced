@@ -3,7 +3,7 @@
 #include "Point.hpp"
 #include "Edge.hpp"
 #include "Triangle.hpp"
-#include "isLeft.hpp"
+#include "Delaunay.hpp"
 
 #include <iostream>
 
@@ -128,33 +128,36 @@ TEST(Delaunay, addPoint)
     Edge* ep = new Edge(newPoint, e_edge);
     Edge* r_sp = new Edge(newPoint, s_edge);
     Edge* r_ep = new Edge(e_edge, newPoint);
-    bool upper = false; 
-    bool lower = false;
-    for(auto edge : eHull)
-    {
-        if(r_sp == edge)
-        {
-            upper = true;
-        }
-    }
-    ASSERT_EQ(upper, false);
-    eHull.insert(eHull.begin() + (baseIndex+1), sp);
-    ASSERT_EQ(eHull[1]->startPoint->x, 1);
-    ASSERT_EQ(eHull[1]->endPoint->x, -1);
-    for(auto edge : eHull)
-    {
-        if(r_ep == edge)
-        {
-            lower = true;
-        }
-    }
-    ASSERT_EQ(lower, false);
-    // 
-    eHull.insert(eHull.begin() + baseIndex, ep);
-    baseIndex++;
-    ASSERT_EQ(eHull[0]->startPoint->x, -1);
-    ASSERT_EQ(eHull[0]->endPoint->x, 0);
-    eHull.erase(eHull.begin() + baseIndex);
+    //eHull.push_back(r_sp);
+    ASSERT_EQ(isReverseInHull(r_sp, eHull), false);  
+   
+//   bool upper = false; 
+//   bool lower = false;
+//   for(auto edge : eHull)
+//   {
+//       if(r_sp == edge)
+//       {
+//           upper = true;
+//       }
+//   }
+//    ASSERT_EQ(upper, false);
+//  eHull.insert(eHull.begin() + (baseIndex+1), sp);
+//  ASSERT_EQ(eHull[1]->startPoint->x, 1);
+//  ASSERT_EQ(eHull[1]->endPoint->x, -1);
+//  for(auto edge : eHull)
+//  {
+//      if(r_ep == edge)
+//      {
+//          lower = true;
+//      }
+//  }
+//  ASSERT_EQ(lower, false);
+//  // 
+//  eHull.insert(eHull.begin() + baseIndex, ep);
+//  baseIndex++;
+//  ASSERT_EQ(eHull[0]->startPoint->x, -1);
+//  ASSERT_EQ(eHull[0]->endPoint->x, 0);
+//  eHull.erase(eHull.begin() + baseIndex);
     //for(auto edge : eHull)
     //{
     //    std::cout<<edge->startPoint->x<< " " << edge->startPoint->y << " "<<  edge->endPoint->x<< " " << edge->endPoint->y << std::endl;

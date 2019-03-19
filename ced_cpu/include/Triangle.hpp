@@ -21,56 +21,56 @@ namespace ced
                 /// @ param[_in]: vertex2
                 /// @ param[_in]: vertex3
                 //-------------------------------------
-                Triangle(Point* p1, Point* p2, Point* p3);
+                Triangle(Point p1, Point p2, Point p3);
                 //-------------------------------------
                 /// @ build: constructor
                 /// @ param[_in]: list of points
                 //-------------------------------------
-                Triangle(std::vector<Point*> _points);
+                Triangle(std::vector<Point> _points);
                 //-------------------------------------
                 /// @ build: constructor
                 /// @ param[_in]: list of triangles
                 //-------------------------------------
-                Triangle(std::vector<Triangle*> _triangles);
+                Triangle(std::vector<Triangle> _triangles);
                 //-------------------------------------
                 /// @ build: constructor
                 /// @ param[_in]: list of points
                 /// @ param[_in]: list of triangles
                 //-------------------------------------
-                Triangle(std::vector<Point*> _points, std::vector<Triangle*> _triangles);
+                Triangle(std::vector<Point> _points, std::vector<Triangle> _triangles);
                 //-------------------------------------
                 /// @ build: destructor
                 //-------------------------------------
-                ~Triangle(); 
+                ~Triangle() = default; 
                 //-------------------------------------
                 /// @ build: add vertex to vertex list
                 /// @ param[_in]: point
                 //-------------------------------------
-                void addVertex(Point* _vertex);
+                void addVertex(Point _vertex);
                 //-------------------------------------
                 /// @ build: add triangle to triangle list
                 /// @ param[_in]: triangle
                 //-------------------------------------
-                void addTriangle(Triangle* _triangle);
+                void addTriangle(Triangle _triangle);
                 //-------------------------------------
                 /// @ build: get vertex list
                 /// @ return: vector of points
                 //-------------------------------------
-                std::vector<Point*> getVertices();
+                std::vector<Point> getVertices();
                 //-------------------------------------
                 /// @ build: get triangle list
                 /// @ return: vector of triangles
                 //-------------------------------------
-                std::vector<Triangle*> getNeighbourTriangles();
+                std::vector<Triangle> getNeighbourTriangles();
             private: 
                 //-------------------------------------
                 /// @build vertices 
                 //-------------------------------------
-                std::vector<Point*> m_vertices;                  
+                std::vector<Point> m_vertices;                  
                 //-------------------------------------
                 /// @build edge-sharing neighbor triangles 
                 //-------------------------------------
-                std::vector<Triangle*> m_neighbourTriangles;                  
+                std::vector<Triangle> m_neighbourTriangles;                  
             
         };
     }

@@ -11,10 +11,16 @@ namespace ced
         class Edge
         {
             public:
-                Edge(Point* _p1, Point* _p2);
-                Point* startPoint; 
-                Point* endPoint;
+                Edge(Point _p1, Point _p2);
+                Edge(const Edge&) = default;
+                Edge& operator=(const Edge&) = default; 
+                Edge(Edge&&) = default; 
+                Edge& operator=(Edge&&) = default; 
+                bool operator==(const Edge& rhs) const;
+                Point startPoint; 
+                Point endPoint;
         };
+
     }
 }
 

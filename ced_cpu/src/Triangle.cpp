@@ -60,5 +60,10 @@ namespace ced
         {
             return m_neighbourTriangles;
         }
+        //-------------------------------------
+        bool Triangle::operator==(const Triangle& rhs) const
+        {
+            return ( m_vertices == rhs.m_vertices);
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace ced
                 Point() = default;
                 ~Point() = default;
                 Point& operator=(const Point&) = default;
+                bool operator==(const Point& rhs) const;
                 int x;
                 int y;
         };

@@ -1,4 +1,12 @@
 template <typename T>
+bool pointIsLeft(T x_0, T x_1, T x_2, T y_0, T y_1, T y_2)
+{
+    T v = ((x_2 - x_0) * (y_1 - y_0)) - ((x_1 - x_0) * (y_2 - y_0)); 
+    if(v <= 0)  {return true;}
+    else        {return false;}
+}
+//--------------------------------------------------------------------------
+template <typename T>
 bool isReverseEdgeInHull(T _edge, std::vector<T> _hull)
 {
     // swap the elements in the edge
@@ -17,6 +25,7 @@ bool isReverseEdgeInHull(T _edge, std::vector<T> _hull)
 template <typename T>
 void insertBeforeElement(T _element, typename std::vector<T>::iterator _bei, std::vector<T>& _hull)
 {
+    
     // bei is base index
     if(_bei != _hull.begin())
     {
@@ -29,15 +38,19 @@ void insertBeforeElement(T _element, typename std::vector<T>::iterator _bei, std
 }
 //--------------------------------------------------------------------------
 template <typename T>
-void insertAfterElement(T _element, typename std::vector<T>::iterator _bei, std::vector<T>& _hull)
+typename std::vector<T>::iterator insertAfterElement(T _element, typename std::vector<T>::iterator _bei, std::vector<T>& _hull)
 {
     if(_bei != _hull.end())
     {
-        _hull.insert(_bei + 1, _element);
+        typename std::vector<T>::iterator it = _hull.insert(_bei + 1, _element);
+        return it;
     }
     else
     {
-        _hull.insert(_bei, _element);
+        typename std::vector<T>::iterator it = _hull.insert(_bei, _element);
+        return it;
     }
 }
+//  --------------------------------------------------------------------------
+
 

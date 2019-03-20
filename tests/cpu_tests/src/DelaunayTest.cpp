@@ -108,7 +108,7 @@ TEST(Delauany, removeItem)
     Edge e2(p3, p4);
     std::vector<Edge> hull = {e,e2};
     // erase element from the hull
-    hull.erase(std::remove(hull.begin(), hull.end(), e), hull.end());
+    hull.erase(std::remove(hull.begin(), hull.end(), Edge(p1,p2)), hull.end());
 //   for(auto edge : hull)
 //   {
 //       std::cout<<"START "<<edge.startPoint.x << " " << edge.startPoint.y << std::endl;
@@ -158,15 +158,15 @@ TEST(Delaunay, insertElement)
     // creating a dummy hull with integers to see if i can insert elements
     std::vector<int> hull = {1, 2, 3};
     auto idx = hull.end() ;
-    auto newIt = hull.end();
-    if(idx != hull.end())
-    {
-        newIt = hull.insert(idx +1, 4);
-    }
-    else
-    {
-        newIt = hull.insert(idx, 4);
-    }
+//  if(idx != hull.end())
+//  {
+//      newIt = hull.insert(idx +1, 4);
+//  }
+//  else
+//  {
+//      newIt = hull.insert(idx, 4);
+//  }
+    auto newIt = insertAfterElement(4, idx, hull);
     EXPECT_EQ(hull[3], 4);
     // insert an element before the iterator
     insertBeforeElement(5, newIt, hull);
@@ -178,3 +178,31 @@ TEST(Delaunay, insertElement)
 //   }
     
 }
+//-----------------------------------------------------------------------------------------------------------------
+TEST(Delaunay, triangulate)
+{
+    using namespace ced::cpu;
+    Point p0(0,0);
+    Point p1(1,1);
+    Point p2(2,0);
+
+    Point p3(3,1);
+    Point p4(4,-1);
+    Point p5(6,0);
+    std::vector<Point> pts = {p0, p1, p2, p3, p4, p5};
+    std::vector<Triangle> tri;
+    triangulate(pts, tri);
+    //std::cout<<tri.size()<<" SIZE";
+    EXPECT_EQ(tri[0], Triangle(p1, p0, p2)); 
+    EXPECT_EQ(tri[1], Triangle(p1, p2, p3)); 
+    EXPECT_EQ(tri[2], Triangle(p2, p0, p4)); 
+    EXPECT_EQ(tri[3], Triangle(p2, p4, p5)); 
+//  for(auto x : tri)
+//  {
+//      for(auto y : x.getVertices())
+//      {
+//          std::cout<<y.x<< " "<<y.y << std::endl;
+//      }
+//  }
+}
+

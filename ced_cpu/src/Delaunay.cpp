@@ -1,6 +1,4 @@
 #include "Delaunay.hpp"
-#include "Triangle.hpp"
-#include "Edge.hpp"
 namespace ced
 {
     namespace cpu
@@ -14,23 +12,20 @@ namespace ced
             // is right
             else            { return false; }
         }
-        //  --------------------------------------------------------------------------
-        void triangulate(std::vector<Point> _points)
+        void triangulate(std::vector<Point> _points, std::vector<Triangle>& _triangles)
         {
-            // triangeList should be in the function referenced
-            std::vector<Triangle> triangleList;
-            // hull should be in the function referenced
-            std::vector<Edge> hull;
+            // create a hull
+            std::vector<Edge> hull; 
             // create the first triangle
             // you need to check if the third point is on the right
-            Point p0 = _points[0];
-            Point p1 = _points[1];
-            Point p2 = _points[2];
+            Point p0 = std::move(_points[0]);
+            Point p1 = std::move(_points[1]);
+            Point p2 = std::move(_points[2]);
             if(!isLeft(p0, p1, p2))
             {
                 // create a triangle 
                 // insert that triangle in the list
-                triangleList.push_back(Triangle(p1, p0, p2));
+                _triangles.push_back(Triangle(p1, p0, p2));
                 hull.push_back(Edge(p1, p0));
                 hull.push_back(Edge(p0, p2));
                 hull.push_back(Edge(p2, p1));
@@ -38,53 +33,57 @@ namespace ced
             }
             else
             {
-                triangleList.push_back(Triangle(p0, p1, p2));
+                _triangles.push_back(Triangle(p0, p1, p2));
                 hull.push_back(Edge(p0, p1));
                 hull.push_back(Edge(p1, p2));
                 hull.push_back(Edge(p2, p0));
             }
             // iterate over the rest of the points
             uint sizeOfPoints = _points.size();
+            uint sizeOfHull = hull.size();
             for(uint i=3; i < sizeOfPoints; ++i)
             {
-                // new point to add
                 Point p = _points[i];
-                for(auto edge : hull)
+                for(uint eg=0; eg < sizeOfHull; ++eg)
                 {
-                    // the start and end point of my edge
-                    Point s = edge.startPoint;
-                    Point e = edge.endPoint;
-                    // check if the new point is on the right of the edge
+                    Point s = hull[eg].startPoint;
+                    Point e = hull[eg].endPoint;
                     if(!isLeft(s, e, p))
                     {
-                        Edge baseEdge = edge;
-                        // get iterator 
-                        Edge lowSp = Edge(s, p); 
-                        Edge upperPe = Edge(p, e); 
-                        triangleList.push_back(Triangle(p1, p0, p2));
-                        // hull check if the reverse is in there 
-                        // need to create a test for that
-                        if(isReverseEdgeInHull(lowSp, hull))
+                        // base edge element
+                        Edge baseEdge = hull[eg];
+                        // iterator index base edge 
+                        std::vector<Edge>::iterator it = hull.begin() + eg;
+                        std::vector<Edge>::iterator newIt = hull.begin() + eg;
+                        // construct triangle
+                        _triangles.push_back(Triangle(e, s, p));
+                        // lower edge
+                        Edge lowEdge(s, p);
+                        // upper edge
+                        Edge upperEdge(p, e);
+                        // check if reverse is in Hull
+                        if(isReverseEdgeInHull(upperEdge, hull))
                         {
-                            // remove the edge
+                            // remove the reversed version of the hull
+                            hull.erase(std::remove(hull.begin(), hull.end(), Edge(e,p)), hull.end());
                         }
                         else
                         {
-                            // insert before
-                        }
-
-                        if(isReverseEdgeInHull(upperPe, hull))
+                            // insert
+                            newIt = insertAfterElement(upperEdge, it, hull); 
+                        } 
+                        if(isReverseEdgeInHull(lowEdge, hull))
                         {
-                            // remove the edge
+                            hull.erase(std::remove(hull.begin(), hull.end(), Edge(p,s)), hull.end());
                         }
                         else
                         {
-                            // insert after
+                            insertBeforeElement(lowEdge, newIt, hull);
                         }
+                        hull.erase(std::remove(hull.begin(), hull.end(), baseEdge), hull.end());
                     }
-                }
+                } 
             }
-
         }
     }
 }

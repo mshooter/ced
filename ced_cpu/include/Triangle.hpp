@@ -62,6 +62,7 @@ namespace ced
                 /// @ return: vector of triangles
                 //-------------------------------------
                 std::vector<Triangle> getNeighbourTriangles();
+                bool operator==(const Triangle& rhs) const;
             private: 
                 //-------------------------------------
                 /// @build vertices 

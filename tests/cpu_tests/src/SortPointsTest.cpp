@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "SortPoints.hpp"
+#include "Point.hpp"
 
 TEST(sortPoints, partition)
 {
@@ -57,10 +58,10 @@ TEST(sortPoints, quickSortFunction)
     ced::cpu::quickSort(unsortedList, 0, 3);
     EXPECT_EQ(unsortedList[0].x, 3);
     EXPECT_EQ(unsortedList[0].y, 0);
-
+  
     EXPECT_EQ(unsortedList[1].x, 3);
     EXPECT_EQ(unsortedList[1].y, 1);
-
+  
     EXPECT_EQ(unsortedList[2].x, 20);
     EXPECT_EQ(unsortedList[3].x, 21);
 }

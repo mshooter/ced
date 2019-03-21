@@ -189,7 +189,8 @@ TEST(Delaunay, triangulate)
     Point p3(3,1);
     Point p4(4,-1);
     Point p5(6,0);
-    std::vector<Point> pts = {p0, p1, p2, p3, p4, p5};
+    Point p6(7,-1);
+    std::vector<Point> pts = {p0, p1, p2, p3, p4, p5, p6};
     std::vector<Triangle> tri;
     triangulate(pts, tri);
     //std::cout<<tri.size()<<" SIZE";
@@ -199,10 +200,24 @@ TEST(Delaunay, triangulate)
     EXPECT_EQ(tri[3], Triangle(p2, p4, p5)); 
 //  for(auto x : tri)
 //  {
-//      for(auto y : x.getVertices())
+//     for(auto p : x.getVertices())
 //      {
-//          std::cout<<y.x<< " "<<y.y << std::endl;
-//      }
+//          std::cout<<p.x << " " << p.y << std::endl;
+//      } 
 //  }
 }
+//-----------------------------------------------------------------------------------------------------------------
+TEST(Delaunay, findNeighbourTriangles)
+{
+    using namespace ced::cpu;
+    Point p0(0,0);
+    Point p1(1,1);
+    Point p2(2,0);
 
+    Point p3(3,1);
+    std::vector<Point> pts = {p0, p1, p2, p3};
+    std::vector<Triangle> triangles;
+    triangulate(pts, triangles);
+    // iterater through the triangles
+    
+}

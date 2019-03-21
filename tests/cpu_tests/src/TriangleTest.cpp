@@ -11,8 +11,7 @@ TEST(Triangle, addVertex)
     EXPECT_EQ(tri.getVertices()[0].x, 2);
     EXPECT_EQ(tri.getVertices()[0].y, 3);
 }
-
-
+// --------------------------------------------------------------------------
 TEST(Triangle, addTriangle)
 {
     ced::cpu::Point  p =   ced::cpu::Point(2,3);
@@ -34,7 +33,7 @@ TEST(Triangle, addTriangle)
     EXPECT_EQ(triangleVerts[1].x, 21);
     EXPECT_EQ(triangleVerts[2].x, 3);
 }
-
+// --------------------------------------------------------------------------
 TEST(Triangle, addPoints)
 {
     ced::cpu::Point  p =   ced::cpu::Point(2,3);
@@ -51,4 +50,18 @@ TEST(Triangle, addPoints)
 
     EXPECT_EQ(tri.getVertices()[2].x, 5);
     EXPECT_EQ(tri.getVertices()[2].y, 1);
+}
+// --------------------------------------------------------------------------
+TEST(Triangle, queryEdges)
+{
+    using namespace ced::cpu;
+    Point  p  =   Point(0,3);
+    Point  p1 =   Point(21,4);
+    Point  p2 =   Point(5,1);
+    
+    Triangle tri(p, p1, p2);
+    std::vector<Edge> edges = tri.getEdges();
+    EXPECT_EQ(edges[0].startPoint.x , 0);
+    EXPECT_EQ(edges[1].startPoint.x , 21);
+    EXPECT_EQ(edges[2].startPoint.x , 5);
 }

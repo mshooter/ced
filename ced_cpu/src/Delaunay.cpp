@@ -12,10 +12,12 @@ namespace ced
             // is right
             else            { return false; }
         }
+        //  --------------------------------------------------------------------------
         void triangulate(std::vector<Point> _points, std::vector<Triangle>& _triangles)
         {
             // create a hull
             std::vector<Edge> hull; 
+            std::vector<Edge> connectedEdge;
             // create the first triangle
             // you need to check if the third point is on the right
             Point p0 = std::move(_points[0]);
@@ -80,10 +82,13 @@ namespace ced
                         {
                             insertBeforeElement(lowEdge, newIt, hull);
                         }
+                        connectedEdge.push_back(baseEdge); 
                         hull.erase(std::remove(hull.begin(), hull.end(), baseEdge), hull.end());
                     }
                 } 
             }
+            //return connectedEdge;
         }
+        //  --------------------------------------------------------------------------
     }
 }

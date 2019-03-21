@@ -3,15 +3,18 @@
 #define SORTPOINTS_H_INCLUDED
 
 #include <vector>
-#include "Point.hpp"
 
 namespace ced
 {
     namespace cpu
     {
-        int partition(std::vector<Point>& _points, int lo, int hi);
+        template <typename T>
+        int partition(std::vector<T>& _points, int lo, int hi);
 
-        void quickSort(std::vector<Point>& _pts, int lo, int hi);
+        template <typename T>
+        void quickSort(std::vector<T>& _pts, int lo, int hi);
+        
+        #include "SortPoints.inl"
     }
 }
 

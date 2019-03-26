@@ -3,7 +3,7 @@ namespace ced
 {
     namespace cpu
     {
-        bool circumCircle(Point A, Point B, Point C, Point D)
+        bool isPointInCircle(Point A, Point B, Point C, Point D)
         {
             int m_00 = A.x - D.x;
             int m_01 = B.x - D.x;
@@ -23,11 +23,12 @@ namespace ced
             // negative is inside the circle 
             return determinant < 0;
         }
+        //  ----------------------------------------------------------------------------------------
         float circumRadius(Point A, Point B, Point C)
         {
+            // edges need to do the minus operator
             float ax = static_cast<float>(B.x - A.x);
             float ay = static_cast<float>(B.y - A.y);
-
             float bx = static_cast<float>(C.x - B.x);
             float by = static_cast<float>(C.y - B.y);
             float cx = static_cast<float>(A.x - C.x);
@@ -41,7 +42,25 @@ namespace ced
             float a = std::sqrt(axx + ayy);
             float b = std::sqrt(bxx + byy);
             float c = std::sqrt(cxx + cyy);
-            return (a * b * c) / std::sqrt((a + b + c) * (b + c - a) * ( c + a - b) * (a + b - c));
+            return (a * b * c) / std::sqrt((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c));
+        }
+        //  ----------------------------------------------------------------------------------------
+        Point circumCenter(Point A, Point B, Point C)
+        {
+            // calculate midpoints
+            Point midAB = {(A+B)/2}; 
+            Point midAC = {(A+C)/2}; 
+            float slopeAB = (B.y - A.y) / (B.x - A.x); 
+            slopeAB = -(1/slopeAB);
+            float slopeAC = (C.y - A.y) / (C.x - A.x); 
+            slopeAC = -(1/slopeAC);
+            // solving mx + b = y 
+            // solve for b 
+            float bAB = midAB.y - slopeAB * midAB.x;
+            float bAC = midAC.y - slopeAC * midAC.x;
+            float x = (bAB - bAC) / (slopeAC - slopeAB);
+            float y = (slopeAB * x) + bAB; 
+            return Point{x, y};
         }
     }
 }

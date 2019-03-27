@@ -65,61 +65,60 @@ TEST(CircleProperty, insideCircle)
     EXPECT_EQ(determinant, -2);
 }
 #include "CircumCircle.hpp"
-#include <iostream>
 TEST(CircleProperty, CircumRadius)
 {
     using namespace ced::cpu;
-    Point A(0,1);
-    Point B(1,1);
+    Point A(1,1);
+    Point B(0,0);
     Point C(2,0);
     float ax = static_cast<float>(B.x - A.x);
     float ay = static_cast<float>(B.y - A.y);
-    ASSERT_EQ(ax, 1);
-    ASSERT_EQ(ay, 0);
+    ASSERT_EQ(ax, -1);
+    ASSERT_EQ(ay, -1);
 
     float bx = static_cast<float>(C.x - B.x);
     float by = static_cast<float>(C.y - B.y);
-    ASSERT_EQ(bx, 1);
-    ASSERT_EQ(by, -1);
+    ASSERT_EQ(bx, 2);
+    ASSERT_EQ(by, 0);
 
     float cx = static_cast<float>(A.x - C.x);
     float cy = static_cast<float>(A.y - C.y);
-    ASSERT_EQ(cx, -2);
+    ASSERT_EQ(cx, -1);
     ASSERT_EQ(cy, 1);
     
     float axx = ax * ax;
     float ayy = ay * ay;
     ASSERT_EQ(axx, 1);
-    ASSERT_EQ(ayy, 0);
+    ASSERT_EQ(ayy, 1);
 
     float bxx = bx * bx;
     float byy = by * by;
-    ASSERT_EQ(bxx, 1);
-    ASSERT_EQ(byy, 1);
+    ASSERT_EQ(bxx, 4);
+    ASSERT_EQ(byy, 0);
 
     float cxx = cx * cx;
     float cyy = cy * cy;
-    ASSERT_EQ(cxx, 4);
+    ASSERT_EQ(cxx, 1);
     ASSERT_EQ(cyy, 1);
 
     float a = std::sqrt(axx + ayy);
-    ASSERT_FLOAT_EQ(a, 1);
+    ASSERT_FLOAT_EQ(a, std::sqrt(2));
 
     float b = std::sqrt(bxx + byy);
-    ASSERT_FLOAT_EQ(b, std::sqrt(2));
+    ASSERT_FLOAT_EQ(b, 2.0f);
 
     float c = std::sqrt(cxx + cyy);
-    ASSERT_FLOAT_EQ(c, std::sqrt(5));
+    ASSERT_FLOAT_EQ(c, std::sqrt(2));
 
     // T ee N 
     float T = a * b * c; 
-    ASSERT_FLOAT_EQ(T, std::sqrt(10));
+    ASSERT_FLOAT_EQ(T, 4.0f);
 
     float N = (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c);
-    ASSERT_FLOAT_EQ(N, 4);
+    ASSERT_FLOAT_EQ(N, 16);
 
     float r = circumRadius(A, B, C); 
-    EXPECT_FLOAT_EQ(r, std::sqrt(10) / 2.0f);
+    EXPECT_FLOAT_EQ(r, 1.0f);
 }
 
 TEST(CircleProperty, CircumCenter)

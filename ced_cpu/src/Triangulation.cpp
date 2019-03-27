@@ -1,9 +1,10 @@
 #include "Triangulation.hpp"
 #include "Compare.hpp"
-
+#include "Distance2P.hpp"
+#include "TriOrientation.hpp"
+#include "CircumCircle.hpp"
 #include <algorithm>
 #include <limits>
-#include <cmath>
 
 namespace ced
 {
@@ -33,20 +34,19 @@ namespace ced
             // seed center calculation
             float cx = (minx + maxx) / 2.0f;
             float cy = (miny + maxy) / 2.0f;
+            Point c = {cx, cy};
             
             // assign indexes 
             unsigned int i0;
             unsigned int i1;
             unsigned int i2;
 
-            // iterate over the points, find the closest point to the centroid
+            // find seed
             float minDistance = std::numeric_limits<float>::max();
             unsigned int i = 0;
             for(auto point : _points)
             {
-                float deltaX = cx - point.x;
-                float deltaY = cy - point.y;
-                float distance = std::sqrt((deltaX * deltaX) + (deltaY*deltaY));
+                float distance = distance2P<float, Point>(c, point);
                 if(distance < minDistance)
                 {
                    i0 = i;  
@@ -54,6 +54,48 @@ namespace ced
                 }
                 ++i;
             } 
+            
+            // find point close to seed 
+            minDistance = std::numeric_limits<float>::max(); 
+            i = 0;
+            for(auto point : _points)
+            {
+                if(i != i0)
+                {
+                    float distance = distance2P<float, Point>(_points[i0], point);
+                    if(distance < minDistance && distance > 0.0f)
+                    {
+                        i1 = i;
+                        minDistance = distance;
+                    }
+                }
+                ++i;
+            }
+
+            // find point to create smallest CC with first two points 
+            float minRadius = std::numeric_limits<float>::max();
+            i = 0; 
+            for(auto point : _points)
+            {
+                if(i != i0 && i != i1)
+                {
+                    float r = circumRadius(_points[i0], _points[i1], point);
+                    if(r < minRadius)
+                    {
+                        i2 = i;
+                        minRadius = r;
+                    }
+                }
+                ++i;
+            }
+            // throw an error if the radius is equal to numeric_limit
+            // check the orientation of the triangle
+            if(isCCW<Point, float>(_points[i0], _points[i1], _points[i2]))
+            {
+                // swap index and points
+                // std::swap();
+                // std::swap();
+            }
         }
     }
 }

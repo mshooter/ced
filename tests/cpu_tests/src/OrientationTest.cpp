@@ -21,7 +21,7 @@ TEST(Orientation, CCW)
     ASSERT_FLOAT_EQ(tau, 1.0f);
 
     // if it is zero it is colinear
-    EXPECT_TRUE((rho-tau) < 0);
+    EXPECT_TRUE(rho < tau);
 }
 
 TEST(Orientation, CCWfunction)
@@ -30,7 +30,7 @@ TEST(Orientation, CCWfunction)
     Point A(0,0);
     Point B(1,1);
     Point C(2,0);
-    bool tri =  isCCW(A,B,C);
+    bool tri =  isCCW<Point, float>(A,B,C);
     
     EXPECT_FALSE(tri); 
 }

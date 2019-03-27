@@ -117,48 +117,74 @@ TEST(CircleProperty, CircumRadius)
     float N = (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c);
     ASSERT_FLOAT_EQ(N, 16);
 
-    float r = circumRadius(A, B, C); 
+    float r = circumRadius<Point, float>(A, B, C); 
     EXPECT_FLOAT_EQ(r, 1.0f);
 }
 
 TEST(CircleProperty, CircumCenter)
 {
     using namespace ced::cpu; 
-    Point A(2,0);
-    Point B(1,1);
-    Point C(0,1);
+    Point P(2,0);
+    Point Q(1,1);
+    Point R(0,0);
 
-    // looking for midpoint   
-    Point midAB = {(A+B)/2}; 
-    ASSERT_EQ(midAB, Point(1.5f, 0.5f));
+    float a, b, c, e, f, g; 
+    a = Q.y - P.y; 
+    ASSERT_FLOAT_EQ(a, 1.0f);
 
-    Point midAC = {(A+C)/2}; 
-    ASSERT_EQ(midAC, Point(1.0f, 0.5f));
+    b = P.x - Q.x; 
+    ASSERT_FLOAT_EQ(b, 1.0f);
+
+    c = a*(P.x) + b*(P.y); 
+    ASSERT_FLOAT_EQ(c, 2.0f);
+
+    e = R.y - Q.y; 
+    ASSERT_FLOAT_EQ(e, -1.0f);
+
+    f = Q.x - R.x; 
+    ASSERT_FLOAT_EQ(f, 1.0f);
+
+    g = e*(Q.x) + f*(Q.y); 
+    ASSERT_FLOAT_EQ(g, 0.0f);
+
+
+    Point mp = ((P+Q)/2.0f);
+    ASSERT_EQ(mp.x, 1.5f);
+    ASSERT_EQ(mp.y, 0.5f);
+
+    c = -b * (mp.x) + a * (mp.y);
+    ASSERT_EQ(c, -1.0f);
+
+    b = -b;
+    std::swap(a,b);
+    ASSERT_EQ(a, -1.0f);
+    ASSERT_EQ(b, 1.0f);
+
+    Point mpp = ((Q+R) / 2.0f);
+    ASSERT_EQ(mpp.x, 0.5f);
+    ASSERT_EQ(mpp.y, 0.5f);
+
+    g = -f * (mpp.x) + e * (mpp.y);
+    ASSERT_EQ(g, -1.0f);
     
-    // determine slope
-    // get the negative reciprocal of the slope to get slope of the perpendicular bisector
-    float slopeAB = (B.y - A.y) / (B.x - A.x); 
-    slopeAB = -(1/slopeAB);
-    ASSERT_FLOAT_EQ(slopeAB, 1.0f);
+    f = -f;
+    std::swap(e,f);
+    ASSERT_EQ(e, -1.0f);
+    ASSERT_EQ(f, -1.0f);
 
-    float slopeAC = (C.y - A.y) / (C.x - A.x); 
-    slopeAC = -(1/slopeAC);
-    ASSERT_FLOAT_EQ(slopeAC, 2.0f);
-    // solving mx + b = y 
-    // solve for b 
-    float bAB = midAB.y - slopeAB * midAB.x;
-    ASSERT_FLOAT_EQ(bAB, -1.0f); 
-    float bAC = midAC.y - slopeAC * midAC.x;
-    ASSERT_FLOAT_EQ(bAC, -1.5f); 
-    
-    // solve for x 
-    float x = (bAB - bAC) / (slopeAC - slopeAB);
-    float y = (slopeAB * x) + bAB; 
-    EXPECT_EQ(x, 0.5f);
-    EXPECT_EQ(y, -0.5f);
+    float D = a * f - e * b;
+    ASSERT_EQ(D, 2);
 
-    Point cc = circumCenter(A, B, C);
-    EXPECT_EQ(cc.x, 0.5f);    
-    EXPECT_EQ(cc.y, -0.5f);    
+    if(D!=0)
+    {
+        float x = (f*c - b*g) / D;
+        ASSERT_EQ(x, 1);
+        float y = (a*g - e*c) / D;
+        ASSERT_EQ(y, 0);
+    }
+
+    Point cc = circumCenter<Point>(P, Q, R);
+    EXPECT_EQ(cc.x, 1);    
+    EXPECT_EQ(cc.y, 0);    
     
 }

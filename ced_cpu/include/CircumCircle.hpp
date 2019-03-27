@@ -2,6 +2,7 @@
 #define CIRCUMCIRCLE_H_INCLUDED
 
 #include <cmath>
+#include <cstdlib>
 #include "Point.hpp"
 
 namespace ced
@@ -15,21 +16,27 @@ namespace ced
         /// @param[_in] B : second point of the triangle 
         /// @param[_in] C : third point of the triangle 
         //  -------------------------------------------------------------------------
-        bool isPointInCircle(Point A, Point B, Point C, Point D); 
+        template <typename T>
+        bool isPointInCircle(T A, T B, T C, T D); 
         //  -------------------------------------------------------------------------
         /// @build : returns the circum radius
         /// @param[_in] A : first point of the triangle 
         /// @param[_in] B : second point of the triangle 
         /// @param[_in] C : third point of the triangle 
         //  -------------------------------------------------------------------------
-        float circumRadius(Point A, Point B, Point C);
+        template <typename T, typename U>
+        U circumRadius(T A, T B, T C);
         //  -------------------------------------------------------------------------
         /// @build : returns the circum center 
         /// @param[_in] A : first point of the triangle 
         /// @param[_in] B : second point of the triangle 
         /// @param[_in] C : third point of the triangle 
         //  -------------------------------------------------------------------------
-        Point circumCenter(Point A, Point B, Point C);
+        //www.geeksforgeeks.org/program-find-circumcenter-triangle-2/
+        template <typename T>
+        T circumCenter(T A, T B, T C);
+        
+        #include "CircumCircle.inl"
     }
 }
 

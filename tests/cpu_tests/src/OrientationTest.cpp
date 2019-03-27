@@ -30,7 +30,7 @@ TEST(Orientation, CCWfunction)
     Point A(0,0);
     Point B(1,1);
     Point C(2,0);
-    bool tri =  isCCW<Point, float>(A,B,C);
+    bool CW =  isCCW<Point, float>(A,B,C);
     
-    EXPECT_FALSE(tri); 
+    EXPECT_FALSE(CW); 
 }

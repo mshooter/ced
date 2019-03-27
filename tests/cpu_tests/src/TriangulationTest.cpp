@@ -91,7 +91,7 @@ TEST(Triangulation, findThirdPointCreateCC)
         if(i != i0 && i != i1)
         { 
             //std::cout<<"POINT"<<point.x<<point.y<<std::endl;
-            r = circumRadius(verts[i0], verts[i1], point); 
+            r = circumRadius<Point, float>(verts[i0], verts[i1], point); 
             if(r < min_radius )
             {
                 i2 = i;
@@ -103,3 +103,47 @@ TEST(Triangulation, findThirdPointCreateCC)
     EXPECT_EQ(i2, (unsigned int)2);
     EXPECT_FLOAT_EQ(r, 1.0f);
 }
+//  -------------------------------------------------------------------------
+#include "TriOrientation.hpp"
+TEST(Triangulation, isCWW)
+{
+    using namespace ced::cpu;
+    Point p1 = {0,0};
+    Point p2 = {1,1};
+    Point p3 = {2,0};
+    
+    std::vector<Point> verts = {p1, p2, p3};
+    unsigned int i0 = 1;
+    unsigned int i1 = 0;
+    unsigned int i2 = 2;
+    bool ccw = isCCW<Point, float>(verts[i0], verts[i1], verts[i2]);
+    ASSERT_TRUE(ccw);
+    
+    if(ccw)
+    {
+        std::swap(i1, i2);
+        std::swap(verts[i1], verts[i2]);
+    }
+    
+    EXPECT_EQ(i0, (unsigned int)1);
+    EXPECT_EQ(i1, (unsigned int)2);
+    EXPECT_EQ(i2, (unsigned int)0);
+
+    EXPECT_EQ(verts[0], p3);
+    EXPECT_EQ(verts[1], p2);
+    EXPECT_EQ(verts[2], p1);
+
+}
+//  -------------------------------------------------------------------------
+TEST(Triangulation, ccCenter)
+{
+    using namespace ced::cpu;
+    Point p1 = {0,0};
+    Point p2 = {1,1};
+    Point p3 = {2,0};
+    std::vector<Point> verts = {p3, p2, p1};
+    Point cc = circumCenter<Point>(verts[0], verts[1], verts[0]); 
+    EXPECT_EQ(cc.x, -1);
+    EXPECT_EQ(cc.y, 0);
+}
+//  -------------------------------------------------------------------------

@@ -73,7 +73,9 @@ T circumCenter(T P, T Q, T R)
     }
     else
     {
-        std::exit(EXIT_FAILURE);
+        float x = (f*c - b*g) / (1);
+        float y = (a*g - e*c) / (1);
+        return T{x, y};
     }
 
 }

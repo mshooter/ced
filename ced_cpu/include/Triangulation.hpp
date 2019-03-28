@@ -4,8 +4,6 @@
 #include <vector>
 #include <Point.hpp>
 
-// TODO: Need to implement the link function and add triangle
-// TODO: and do not have a class triangulation, have a function!
 namespace ced
 {
     namespace cpu
@@ -20,7 +18,7 @@ namespace ced
         /// @param[_in] _ahe2 : index of adjacent half-edge ids
         //  -----------------------------------------------------------------------
         template <typename T>
-        void addTriangle(T _id0, T _id1, T _id2, T _ahe0, T _ahe1, T _ahe2, std::vector<T>& _triangles);
+        T addTriangle(T _id0, T _id1, T _id2, T _ahe0, T _ahe1, T _ahe2, std::vector<T>& _triangles, std::vector<T>& halfedges);
         //  -----------------------------------------------------------------------
         /// @build : triangulate 
         /// @param[_in] : list of points
@@ -28,28 +26,23 @@ namespace ced
         //  -----------------------------------------------------------------------
         void triangulate(std::vector<Point>& _points);
         //  -----------------------------------------------------------------------
-        /// @build: triangulation data structure
+        /// @build : calculate the hash key 
         //  -----------------------------------------------------------------------
-        struct triangulation
-        {
-            //  -----------------------------------------------------------------------
-            /// @build : triangles[e] returns the point id where the half edge starts
-            //  -----------------------------------------------------------------------
-            std::vector<unsigned int> triangles;
-            //  -----------------------------------------------------------------------
-            /// @build : halfedges[e] returns the opposite half-edge in the adjacent triangle 
-            /// or -1 if there is not adjacent tirangle
-            //  -----------------------------------------------------------------------
-            std::vector<unsigned int> halfedges; 
-
-            std::vector<unsigned int> hull_e_prev; // edge to the previous edge 
-            std::vector<unsigned int> hull_e_next; // edge to the next edge 
-            std::vector<unsigned int> hull_e_triAdj; // edge to adjacent triangle   
-            std::vector<unsigned int> hash; // angular edge hash   
-            unsigned int hash_size; // angular edge hash   
-            unsigned int hull_start;
-
-        };        
+        template <typename T, typename U>
+        T hash_key(const U _point, const U _cc, T _hashSize);
+        //  -----------------------------------------------------------------------
+        /// @build : calculate pseudo angle
+        //  -----------------------------------------------------------------------
+        template <typename T, typename U>
+        T pseudo_angle(const U _point);
+        //  -----------------------------------------------------------------------
+        /// @build : link the adjacent halfedges
+        //  -----------------------------------------------------------------------
+        void link(int _triangleIndex, int _idHalfEdge, std::vector<int>& halfedges);
+        //  -----------------------------------------------------------------------
+        /// @build : template implementations
+        //  -----------------------------------------------------------------------
+        #include "Triangulation.inl"
     }
 }
 

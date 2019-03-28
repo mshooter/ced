@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <cstdlib>
-#include "Point.hpp"
 
 namespace ced
 {
@@ -35,7 +34,9 @@ namespace ced
         //www.geeksforgeeks.org/program-find-circumcenter-triangle-2/
         template <typename T>
         T circumCenter(T A, T B, T C);
-        
+        //  -------------------------------------------------------------------------
+        /// @build : template implementations 
+        //  -------------------------------------------------------------------------
         #include "CircumCircle.inl"
     }
 }

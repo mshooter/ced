@@ -2,6 +2,7 @@
 Makefile
 */Makefile
 *.qmake*
+benchmarks/cpu_benchmark/cpu_benchmark
 Demo/Demo
 tests/cpu_tests/cpu_tests
 *lib

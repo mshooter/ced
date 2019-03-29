@@ -15,3 +15,34 @@ static void BM_addTriangle(benchmark::State& state)
     }
 }
 BENCHMARK(BM_addTriangle);
+//  ----------------------------------------------------------------------------------------------
+static void BM_link(benchmark::State& state)
+{
+    using namespace ced::cpu;
+    std::vector<int> halfedges;
+    for(auto _ : state)
+    {
+        link(0,-1, halfedges);
+    }
+}
+BENCHMARK(BM_link);
+//  ----------------------------------------------------------------------------------------------
+static void BM_pseudoAngle(benchmark::State& state)
+{
+    using namespace ced::cpu;
+    for(auto _ : state)
+    {
+        benchmark::DoNotOptimize(pseudo_angle<float, Point>(Point(1,3)));
+    }
+}
+BENCHMARK(BM_pseudoAngle);
+//  ----------------------------------------------------------------------------------------------
+static void BM_hashkey(benchmark::State& state)
+{
+    using namespace ced::cpu;
+    for(auto _ : state)
+    {
+        benchmark::DoNotOptimize(hash_key(Point(1,1), Point(1,0), 2));
+    }
+}
+BENCHMARK(BM_hashkey);

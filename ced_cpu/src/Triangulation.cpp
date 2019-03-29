@@ -142,9 +142,29 @@ namespace ced
         //  --------------------------------------------------------------------------------------
         void link(int _triangleID, int _halfedgeID, std::vector<int>& halfedges)
         {
+            int s = halfedges.size();
+            if(_triangleID == s)
+            {
+                halfedges.push_back(_halfedgeID);      
+            }
+            else if(_triangleID < s)
+            {
+                halfedges[_triangleID] = _halfedgeID;
+            }
+
             // there was a segmentatoin error its because of this the vector is not build yet
-            halfedges[_triangleID] = _halfedgeID; 
-            if(_halfedgeID != -1)   halfedges[_halfedgeID] = _triangleID; 
+            if(_halfedgeID != -1)
+            {
+                s = halfedges.size();
+                if(_halfedgeID == s)
+                {
+                    halfedges.push_back(_triangleID);           
+                }
+                else if(_halfedgeID < s)
+                {
+                    halfedges[_halfedgeID] = _triangleID;
+                } 
+            }
         }
     }
 }

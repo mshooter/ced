@@ -53,12 +53,12 @@ T circumCenter(T P, T Q, T R)
     f = Q.x - R.x; 
     g = e*(Q.x) + f*(Q.y); 
 
-    Point mp = ((P+Q)/2.0f);
+    T mp = ((P+Q)/2.0f);
     c = -b * (mp.x) + a * (mp.y);
     b = -b;
     std::swap(a,b);
 
-    Point mpp = ((Q+R) / 2.0f);
+    T mpp = ((Q+R) / 2.0f);
     g = -f * (mpp.x) + e * (mpp.y);
     f = -f;
     std::swap(e,f);

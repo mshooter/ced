@@ -33,7 +33,7 @@ TEST(CircleProperty, OutsideCircle)
     // EXPECT_EQ(determinant, 8);
     EXPECT_FALSE(determinant < 0);
 }
-
+#include "CircumCircle.hpp"
 TEST(CircleProperty, insideCircle)
 {
     using namespace ced::cpu;
@@ -63,8 +63,9 @@ TEST(CircleProperty, insideCircle)
     // clockwise order -> determinant < 0 lies inside the circle
     EXPECT_TRUE(determinant < 0);
     EXPECT_EQ(determinant, -2);
+    EXPECT_TRUE(isPointInCircle(A, B, C, D)); 
 }
-#include "CircumCircle.hpp"
+
 TEST(CircleProperty, CircumRadius)
 {
     using namespace ced::cpu;

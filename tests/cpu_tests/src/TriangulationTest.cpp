@@ -200,7 +200,7 @@ TEST(Triangulation, hashKey)
 TEST(Triangulation, link)
 {
     using namespace ced::cpu;
-    std::vector<uint> halfedges;
+    std::vector<unsigned int> halfedges;
     halfedges.reserve(3);
     // if invalid indx
     link(0, INVALID_IDX, halfedges);

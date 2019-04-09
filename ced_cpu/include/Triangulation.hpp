@@ -21,6 +21,7 @@ namespace ced
         void link(const unsigned int idx1, const unsigned int idx2, std::vector<uint>& halfedges); 
         /// @build : vertex indices & adjacent half-edge ids
         unsigned int add_triangle(uint i0, uint i1, uint i2, uint h_i0, uint h_i1, uint h_i2, std::vector<uint>& triangles, std::vector<uint>& halfedges); 
+        unsigned int legalise(unsigned int a, std::vector<uint>& edge_stack, std::vector<uint> triangles, std::vector<uint> halfedges, std::vector<Point> pts);
     }
 }
 

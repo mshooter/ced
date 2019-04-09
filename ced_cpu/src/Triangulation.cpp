@@ -23,11 +23,12 @@ namespace ced
             ids.reserve(ptsListSize);
             // max and min
             std::vector<unsigned int> triangles; // where edge starts
-            std::vector<unsigned int> halfedges = {INVALID_IDX, INVALID_IDX, INVALID_IDX}; // reverse of edge 
+            std::vector<unsigned int> halfedges; // reverse of edge 
             std::vector<unsigned int> hull_prev; // edge to the previous edge 
             std::vector<unsigned int> hull_next; // edge to the next edge 
             std::vector<unsigned int> hull_tri; // edge to adjacent triangle   
             std::vector<unsigned int> hash; // angular edge hash 
+            std::vector<unsigned int> edge_stack; 
             // init a hash table for storing edges of the advancing convex hull
             int hash_size = static_cast<unsigned int>(std::llround(std::ceil(std::sqrt(ptsListSize))));            
             hash.resize(hash_size);
@@ -80,10 +81,40 @@ namespace ced
             for(auto& id : ids)
             {
                 uint k = &id - &ids[0]; 
-                const uint idx = id; 
-                const Point p = _points[idx]; 
+                const uint i = id; 
+                const Point p = _points[i]; 
                 // skip near duplicates
-                if(idx != 0 && equalPts(p, pp)) continue;
+                if(i > 0 && equalPts(p, pp)) continue;
+                pp = p;
+                // check java version seems simpler
+                // skip seed triangle points
+                if( equalPts(p, pi0) || equalPts(p, pi1) || equalPts(p, pi2))   continue;
+                // find a visible edge on the convex hull using edge hash
+                uint start = 0;
+                uint key = hash_key(p, cc, hash_size);
+                for(unsigned int j = 0; j < hash_size; ++j)
+                {
+                    start = hash[(key+j)%hash_size];
+                    if(start != INVALID_IDX && start != hull_next[start]) break;
+                } 
+                start = hull_prev[start];
+                unsigned int e = start;
+                unsigned int q; 
+                while(q = hull_next[e], !isCCW<float>(pp, _points[e], _points[q]))
+                {
+                    e = q;
+                    if(e == start)
+                    {
+                        e = INVALID_IDX;
+                        break;
+                    }
+                }
+                if(e == INVALID_IDX) continue; // likeliy a near duplicate; skip it;
+                // add first triangle from the point
+                unsigned int t = add_triangle(t, i, hull_next[e], INVALID_IDX,  INVALID_IDX, hull_tri[e]);
+                hull_tri[i] = legalize(t+2);
+                hull_tri[e] = t;
+                ++hull_size;
             }
         }
         //  --------------------------------------------------------------------------------------
@@ -159,7 +190,7 @@ namespace ced
             Point pcc = p - cc; 
             float fangle = pseudo_angle(pcc) * static_cast<float>(hashSize); 
             int iangle = static_cast<int>(fangle);
-            return (iangle > fangle ? --iangle : iangle);
+            return (iangle > fangle ? --iangle : iangle) % hashSize;
         }
         //  --------------------------------------------------------------------------------------
         void link(const unsigned int idx1, const unsigned int idx2, std::vector<uint>& halfedges)
@@ -179,6 +210,7 @@ namespace ced
             }
 
             if(idx2 != INVALID_IDX)
+        unsigned int legalise(unsigned int idxEdge);
             {
                 unsigned int s1 = halfedges.size();
                 if(idx2 == s1)
@@ -207,5 +239,40 @@ namespace ced
             link(triListSize + 2, h_i2, halfedges);
             return triListSize;
         } 
+        //  --------------------------------------------------------------------------------------
+        unsigned int legalise(unsigned int a, std::vector<uint>& edge_stack, std::vector<uint> triangles, std::vector<uint> halfedges, std::vector<Point> pts)
+        {
+            // drawing on the webstie
+            uint i = 0;
+            uint ar = 0;
+            edge_stack.clear(); 
+            while(true)
+            {
+                const uint b = halfedges[a];
+                const uint a0 = 3 * (a / 3);
+                ar = a0 + (a + 2) % 3;
+                if(b == INVALID_IDX)
+                {
+                    if(i > 0)
+                    {
+                        --i;
+                        a = edge_stack[i];
+                        // continue ??        
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                
+                const uint b0 = 3 * (b/3);
+                const uint al = a0 + (a + 1) % 3;
+                const uint bl = b0 + (b + 2) % 3;
+                const uint p0 = triangles[ar];
+                const uint pr = triangles[a];
+                const uint pl = triangles[al];
+                const uint p1 = triangles[bl];
+            }
+        }
     }
 }

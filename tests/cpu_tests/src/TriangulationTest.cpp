@@ -222,21 +222,3 @@ TEST(Triangulation, addTriangle)
     EXPECT_EQ(add_triangle(0, 1, 2, INVALID_IDX, INVALID_IDX, INVALID_IDX, triangles, halfedges), (uint)0);
 }
 //  -------------------------------------------------------------------------
-#include <iostream>
-TEST(Triangulation, skipDuplicates)
-{
-    using namespace ced::cpu; 
-    std::vector<int> vert = {1,2,3,4}; 
-    Point pp;
-    for(auto& x : vert)
-    {
-        uint k = &x - &vert[0]; 
-        const uint idx = x; 
-        const Point p = _points[idx]; 
-        // skip near duplicates
-        // if point is not centroid/seed and if the points are equal -> skip
-        if(k > 0 && equalPts(p, pp)) continue;
-    }
-    
-}
-//  -------------------------------------------------------------------------

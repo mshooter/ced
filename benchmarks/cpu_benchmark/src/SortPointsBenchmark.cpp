@@ -42,10 +42,10 @@ static void BM_partitionDist(benchmark::State& state)
     Point D = {3,0};
     Point cc = {1,0};
     std::vector<Point> pts = {A, C, D , B};
-    std::vector<int> ids = {0, 1, 2, 3};
+    std::vector<unsigned int> ids = {0, 1, 2, 3};
     for(auto _ : state)
     {
-        benchmark::DoNotOptimize(partitionDist<int, Point>(ids, pts, cc, 0, pts.size()-1));
+        benchmark::DoNotOptimize(partitionDist<float>(ids, pts, cc, 0, pts.size()-1));
     }    
 }
 BENCHMARK(BM_partitionDist);
@@ -59,10 +59,10 @@ static void BM_quickSortDist(benchmark::State& state)
     Point D = {3,0};
     Point cc = {1,0};
     std::vector<Point> pts = {A, C, D , B};
-    std::vector<int> ids = {0, 1, 2, 3};
+    std::vector<unsigned int> ids = {0, 1, 2, 3};
     for(auto _ : state)
     {
-        quickSortDist<int, Point>(ids, pts, cc, 0, pts.size()-1);
+        quickSortDist<float>(ids, pts, cc, 0, pts.size()-1);
     }    
 }
 BENCHMARK(BM_quickSortDist);

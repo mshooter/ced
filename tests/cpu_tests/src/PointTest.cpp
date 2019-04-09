@@ -47,3 +47,12 @@ TEST(Point, add)
     EXPECT_EQ(p0 + p1, ced::cpu::Point(4,2));
     
 }
+//  ----------------------------------------------------
+TEST(Point, equalPts)
+{
+    using namespace ced::cpu;
+    Point p(2,2);
+    Point p1(2,2);
+
+    EXPECT_TRUE(equalPts(p,p1));
+}

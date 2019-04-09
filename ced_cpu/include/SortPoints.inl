@@ -37,16 +37,16 @@ void quickSort(std::vector<T>& _pts, int lo, int hi)
     }
 }
 //  ----------------------------------------------------------
-template <typename T, typename U>
-int partitionDist(std::vector<T>& _ids, std::vector<U> _points, U cc, int lo, int hi)
+template <typename T>
+int partitionDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
 {
     // element to pivot 
-    float dist1 = distance2P<float, U>(_points[lo], cc);
+    T dist1 = distance2P<T>(_points[lo], cc);
     // index
     int i=lo;
     for(int j=lo+1; j <= hi; ++j)
     {
-        float dist2 = distance2P<float, U>(_points[j], cc); 
+        T dist2 = distance2P<T>(_points[j], cc); 
         if(dist2 < dist1)
         {
             i=i+1;
@@ -57,15 +57,15 @@ int partitionDist(std::vector<T>& _ids, std::vector<U> _points, U cc, int lo, in
     return i;
 }
 //  ----------------------------------------------------------
-template <typename T, typename U>
-void quickSortDist(std::vector<T>& _ids, std::vector<U> _points, U cc, int lo, int hi)
+template <typename T>
+void quickSortDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
 {
     int r; 
     if(lo < hi)
     {
-        r = partitionDist<T, U>(_ids, _points, cc, lo, hi);
-        quickSortDist(_ids, _points, cc, lo, r-1);
-        quickSortDist(_ids, _points, cc, r+1, hi);
+        r = partitionDist<T>(_ids, _points, cc, lo, hi);
+        quickSortDist<T>(_ids, _points, cc, lo, r-1);
+        quickSortDist<T>(_ids, _points, cc, r+1, hi);
     }
 }
 

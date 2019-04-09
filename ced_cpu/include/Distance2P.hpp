@@ -2,6 +2,7 @@
 #define DISTANCE2P_H_INCLUDED
 
 #include <cmath>
+#include <Point.hpp>
 
 namespace ced
 {
@@ -12,8 +13,8 @@ namespace ced
         /// @param[_in] : first point
         /// @param[_in] : second point
         //  ------------------------------------
-        template <typename T, typename U>
-        T distance2P(U _p1, U _p2);
+        template <typename T>
+        T distance2P(Point _p1, Point _p2);
         //  ------------------------------------
         /// @build : template implementation of the distance function
         //  ------------------------------------

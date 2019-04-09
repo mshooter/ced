@@ -12,7 +12,7 @@ static void BM_isPointInCircle(benchmark::State& state)
     Point D = {2,0};
     for(auto _ : state)
     {
-        benchmark::DoNotOptimize(isPointInCircle<Point>(A, B, C, D));
+        benchmark::DoNotOptimize(isPointInCircle<float>(A, B, C, D));
     }
 }
 BENCHMARK(BM_isPointInCircle);
@@ -25,7 +25,7 @@ static void BM_circumRadius(benchmark::State& state)
     Point C = {2,0};
     for(auto _ : state)
     {
-        benchmark::DoNotOptimize(circumRadius<Point, float>(A, B, C));
+        benchmark::DoNotOptimize(circumRadius<float>(A, B, C));
     }
 }
 BENCHMARK(BM_circumRadius);
@@ -38,7 +38,7 @@ static void BM_circumCenter(benchmark::State& state)
     Point C = {2,0};
     for(auto _ : state)
     {
-        benchmark::DoNotOptimize(circumCenter<Point>(A, B, C));
+        benchmark::DoNotOptimize(circumCenter(A, B, C));
     }
 }
 BENCHMARK(BM_circumCenter);

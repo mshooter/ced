@@ -77,7 +77,7 @@ TEST(sortPoints, quickSortDistance)
     Point cc = {1,0};
 
     std::vector<Point> verts = {p1, p2, p3, p4, p5}; 
-    std::vector<int> ids; 
+    std::vector<unsigned int> ids; 
     ids.reserve(verts.size());
     int vertS = verts.size();
     for(int i=0; i < vertS; ++i)
@@ -85,16 +85,16 @@ TEST(sortPoints, quickSortDistance)
         ids.push_back(i);
     }
     ASSERT_EQ(ids.size(), (unsigned int)5);
-    ASSERT_EQ(ids[0], 0);
-    ASSERT_EQ(ids[1], 1);
-    ASSERT_EQ(ids[2], 2);
-    ASSERT_EQ(ids[3], 3);
-    ASSERT_EQ(ids[4], 4);
+    ASSERT_EQ(ids[0], (unsigned int)0);
+    ASSERT_EQ(ids[1], (unsigned int)1);
+    ASSERT_EQ(ids[2], (unsigned int)2);
+    ASSERT_EQ(ids[3], (unsigned int)3);
+    ASSERT_EQ(ids[4], (unsigned int)4);
 
-    quickSortDist(ids, verts, cc, 0, 3);
-    EXPECT_EQ(ids[0], 3);
-    EXPECT_EQ(ids[1], 0);
-    EXPECT_EQ(ids[2], 1);
-    EXPECT_EQ(ids[3], 2);
-    EXPECT_EQ(ids[4], 4);
+    quickSortDist<float>(ids, verts, cc, 0, 3);
+    EXPECT_EQ(ids[0], (unsigned int)3);
+    EXPECT_EQ(ids[1], (unsigned int)0);
+    EXPECT_EQ(ids[2], (unsigned int)1);
+    EXPECT_EQ(ids[3], (unsigned int)2);
+    EXPECT_EQ(ids[4], (unsigned int)4);
 }

@@ -3,6 +3,8 @@
 #define POINT_H_INCLUDED
 
 #include <utility>
+#include <cmath>
+#include "params.hpp"
 
 namespace ced
 {
@@ -54,6 +56,10 @@ namespace ced
             //  ----------------------------------------------------------
             float y;
         };
+        //  ----------------------------------------------------------
+        /// @build: checks if the points are equal
+        //  ----------------------------------------------------------
+        bool equalPts(Point p1, Point p2);
         //  ----------------------------------------------------------
         /// @build: template implementation
         //  ----------------------------------------------------------

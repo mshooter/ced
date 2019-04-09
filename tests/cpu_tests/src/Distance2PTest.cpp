@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "Distance2P.hpp"
-#include "Point.hpp"
 
 TEST(Distance2P, distanceFunction)
 {
@@ -8,6 +7,6 @@ TEST(Distance2P, distanceFunction)
     Point c = {2,1};
     Point p = {4,3};
 
-    float d = distance2P<float, Point>(c, p);
-    EXPECT_FLOAT_EQ(d, std::sqrt(8));
+    float d = distance2P<float>(c, p);
+    EXPECT_FLOAT_EQ(d, 8);
 }

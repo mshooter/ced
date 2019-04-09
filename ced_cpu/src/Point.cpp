@@ -40,5 +40,10 @@ namespace ced
             p.y = y / scalar;
             return p;
         }
+        //  ----------------------------------------------------------
+        bool equalPts(Point p1, Point p2)
+        {
+            return (std::fabs(p1.x - p2.x) <= EPSILON) && (std::fabs(p1.y - p2.y) <= EPSILON);
+        } 
     }
 }

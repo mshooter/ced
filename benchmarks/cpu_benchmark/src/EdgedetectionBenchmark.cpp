@@ -5,7 +5,8 @@
 #include "Image.hpp"
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
-
+const char* linuxPath = "/home/s4928793/Desktop/Cat/cat.jpg";
+const char* path = "/Users/moirashooter/Desktop/Cat/catt.jpg";
 static void BM_gaussianFilter(benchmark::State& state)
 {
     using namespace ced::cpu;
@@ -19,7 +20,7 @@ BENCHMARK(BM_gaussianFilter);
 static void BM_grayscale(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Image img("/home/s4928793/Desktop/Cat/cat.jpg");
+    Image img(path);
     for(auto _ : state)
     {
         img.convertToGrayscale();
@@ -30,7 +31,7 @@ BENCHMARK(BM_grayscale);
 static void BM_applyFilter(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Image img("/home/s4928793/Desktop/Cat/cat.jpg");
+    Image img(path);
     img.convertToGrayscale();
     std::vector<float> gfilter = gaussianFilter(5, 1.4f);
     for(auto _ : state)
@@ -44,7 +45,7 @@ BENCHMARK(BM_applyFilter);
 static void BM_calculateGradients(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Image img("/home/s4928793/Desktop/Cat/cat.jpg");
+    Image img(path);
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = gaussianFilter(gDimension, 1.4f); 
@@ -74,7 +75,7 @@ BENCHMARK(BM_calculateGradients);
 static void BM_nonMaxSup(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Image img("/home/s4928793/Desktop/Cat/cat.jpg");
+    Image img(path);
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = gaussianFilter(gDimension, 1.4f); 
@@ -104,7 +105,7 @@ BENCHMARK(BM_nonMaxSup);
 static void BM_hysterysis(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Image img("/home/s4928793/Desktop/Cat/cat.jpg");
+    Image img(path);
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = gaussianFilter(gDimension, 1.4f); 

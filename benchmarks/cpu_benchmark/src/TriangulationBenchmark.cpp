@@ -51,7 +51,7 @@ BENCHMARK(BM_hashkey);
 static void BM_link(benchmark::State& state)
 {
     using namespace ced::cpu;
-    std::vector<uint> halfedges;
+    std::vector<unsigned int> halfedges;
     halfedges.reserve(3);
     for(auto _ : state)
     {
@@ -65,8 +65,8 @@ BENCHMARK(BM_link);
 static void BM_addTriangle(benchmark::State& state)
 {
     using namespace ced::cpu;
-    std::vector<uint> halfedges;
-    std::vector<uint> triangles; 
+    std::vector<unsigned int> halfedges;
+    std::vector<unsigned int> triangles; 
     halfedges.reserve(3);
     triangles.reserve(3);
     for(auto _ : state)
@@ -75,4 +75,22 @@ static void BM_addTriangle(benchmark::State& state)
     }
 }
 BENCHMARK(BM_addTriangle);
+//  ---------------------------------------------------------------------
+static void BM_triangulation(benchmark::State& state)
+{
+    using namespace ced::cpu;
+    Point p1 = {0,0};
+    Point p2 = {1,1};
+    Point p3 = {2,0};
+    Point p4 = {6,2};
+    
+    std::vector<Point> verts = {p1, p2, p3, p4};
+    std::vector<unsigned int> triangles;
+    triangulate(verts, triangles);
+    for(auto _ : state)
+    {
+        triangulate(verts, triangles);
+    }
+}
+BENCHMARK(BM_triangulation);
 //  ---------------------------------------------------------------------

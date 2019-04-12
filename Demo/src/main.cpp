@@ -3,6 +3,7 @@
 #include "Image.hpp"
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
+#include "Triangulation.hpp"
 
 int main()
 {
@@ -54,6 +55,33 @@ int main()
     ced::cpu::hysterysis(magnitude, height, width, 0.2f, 0.3f);
     img.setPixelData(magnitude);
 
+    using namespace ced::cpu;
+    // get the image width 
+    std::vector<unsigned int> vheight;
+    for(unsigned int i=0; i < img.getHeight(); ++i)
+    {
+        vheight.push_back(i);
+    }
+    std::vector<unsigned int> vwidth;
+    for(unsigned int i=0; i < img.getWidth(); ++i)
+    {
+        vwidth.push_back(i);
+    }
+    // get the image height
+    std::vector<Point> verts;
+    for(auto y : vheight)
+    {
+        for(auto x : vwidth)
+        {
+           verts.push_back(Point(x,y)); 
+        }
+    }
+    std::vector<unsigned int> triangles;
+    triangulate(verts, triangles);
+    for(auto x : triangles)
+   {
+       std::cout<<verts[x].x<<verts[x].y<<std::endl;
+   }
     
     return 0;
 }

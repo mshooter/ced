@@ -222,3 +222,21 @@ TEST(Triangulation, addTriangle)
     EXPECT_EQ(add_triangle(0, 1, 2, INVALID_IDX, INVALID_IDX, INVALID_IDX, triangles, halfedges), (uint)0);
 }
 //  -------------------------------------------------------------------------
+TEST(Triangulation, tri)
+{
+    using namespace ced::cpu;
+    Point p1 = {0,0};
+    Point p2 = {1,1};
+    Point p3 = {2,0};
+    Point p4 = {6,2};
+    
+    std::vector<Point> verts = {p1, p2, p3, p4};
+    std::vector<unsigned int> triangles;
+    triangulate(verts, triangles);
+    EXPECT_EQ(triangles.size(), (unsigned int)6);
+    for(auto x : triangles)
+   {
+       std::cout<<verts[x].x<<verts[x].y<<std::endl;
+   }
+}
+//  -------------------------------------------------------------------------

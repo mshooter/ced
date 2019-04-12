@@ -15,14 +15,13 @@ namespace ced
 {
     namespace cpu
     {
-        void triangulate(std::vector<Point> const& _points)
+        void triangulate(std::vector<Point> const& _points, std::vector<unsigned int>& triangles)
         {
             unsigned int ptsListSize = _points.size();
             // id list
             std::vector<unsigned int> ids;
             ids.reserve(ptsListSize);
             // max and min
-            std::vector<unsigned int> triangles; // where edge starts
             std::vector<unsigned int> halfedges; // reverse of edge 
             std::vector<unsigned int> hull_prev; // edge to the previous edge 
             std::vector<unsigned int> hull_next; // edge to the next edge 
@@ -84,7 +83,7 @@ namespace ced
                 const unsigned int i = id; 
                 const Point p = _points[i]; 
                 // skip near duplicates
-                if(i > 0 && equalPts(p, pp)) continue;
+                if(k > 0 && equalPts(p, pp)) continue;
                 pp = p;
                 // check java version seems simpler
                 // skip seed triangle points
@@ -92,7 +91,7 @@ namespace ced
                 // find a visible edge on the convex hull using edge hash
                 unsigned int start = 0;
                 unsigned int key = hash_key(p, cc, hash_size);
-                for(unsigned int j = 0; j < hash_size; ++j)
+                for(int j = 0; j < hash_size; ++j)
                 {
                     start = hash[(key+j)%hash_size];
                     if(start != INVALID_IDX && start != hull_next[start]) break;
@@ -111,10 +110,43 @@ namespace ced
                 }
                 if(e == INVALID_IDX) continue; // likeliy a near duplicate; skip it;
                 // add first triangle from the point
-                unsigned int t = add_triangle(t, i, hull_next[e], INVALID_IDX,  INVALID_IDX, hull_tri[e], triangles, halfedges);
-                //hull_tri[i] = legalize(t+2);
+                unsigned int t = add_triangle(e, i, hull_next[e], INVALID_IDX,  INVALID_IDX, hull_tri[e], triangles, halfedges);
+                hull_tri[i] = legalise(t+2, edge_stack, triangles, halfedges, hull_next, hull_tri, _points, hull_start);
                 hull_tri[e] = t;
                 ++hullSize;
+                // walk forward through the hull, adding more triangles and flipping recursively
+                unsigned int next = hull_next[e];
+                while(q = hull_next[next], isCCW<float>(pp, _points[next], _points[q]))
+                {
+                    t = add_triangle(next, i, q, hull_tri[i], INVALID_IDX, hull_tri[next], triangles, halfedges);
+                    hull_tri[i] = legalise(t+2, edge_stack, triangles, halfedges, hull_next, hull_tri, _points, hull_start);
+                    hull_next[next] = next; // mark as removed 
+                    --hullSize;
+                    next = q;
+                }
+
+                // walk backward through the hull, adding more triangles and flipping recursively
+                if(e == start)
+                {
+                    while(q = hull_prev[e], isCCW<float>(pp, _points[q], _points[e]))
+                    {
+                       t = add_triangle(q, i, e, INVALID_IDX, hull_tri[e], hull_tri[q], triangles, halfedges);
+                       legalise(t+2, edge_stack, triangles, halfedges, hull_next, hull_tri, _points, hull_start);
+                       hull_tri[q] = t; 
+                       hull_next[e] = e; // mark as removed
+                       --hullSize;
+                       e = q;
+                    }
+                }
+                // update the hull indices
+                hull_prev[i] = e; 
+                hull_start = e;  
+                hull_prev[next] = i; 
+                hull_next[e] = i;
+                hull_next[i] = next;
+                hash[hash_key(pp, cc, hash_size)] = i;
+                hash[hash_key(_points[e], cc, hash_size)] = e;
+
             }
         }
         //  --------------------------------------------------------------------------------------
@@ -205,9 +237,9 @@ namespace ced
                 halfedges[idx1] = idx2;
             }
             else
-            {
-                throw std::runtime_error("Cannot link edge");
-            }
+           {
+               throw std::runtime_error("Cannot link edge");
+           }
 
             if(idx2 != INVALID_IDX)
             {
@@ -220,14 +252,21 @@ namespace ced
                 {
                     halfedges[idx2] = idx1;
                 }
-                else
-                {
-                    throw std::runtime_error("Cannot link edge");
-                }
+               else
+               {
+                   throw std::runtime_error("Cannot link edge");
+               }
             } 
         }
         //  --------------------------------------------------------------------------------------
-        unsigned int add_triangle(unsigned int i0, unsigned int i1, unsigned int i2, unsigned int h_i0, unsigned int h_i1, unsigned int h_i2, std::vector<unsigned int>& triangles, std::vector<unsigned int>& halfedges)
+        unsigned int add_triangle(  unsigned int i0, 
+                                    unsigned int i1, 
+                                    unsigned int i2, 
+                                    unsigned int h_i0, 
+                                    unsigned int h_i1, 
+                                    unsigned int h_i2, 
+                                    std::vector<unsigned int>& triangles, 
+                                    std::vector<unsigned int>& halfedges)
         {
             unsigned int triListSize = triangles.size();
             triangles.push_back(i0);
@@ -239,9 +278,15 @@ namespace ced
             return triListSize;
         } 
         //  --------------------------------------------------------------------------------------
-        unsigned int legalise(unsigned int a, std::vector<unsigned int>& edge_stack, std::vector<unsigned int> triangles, std::vector<unsigned int> halfedges, std::vector<Point> pts, unsigned int& hull_start, std::vector<unsigned int>& hull_next, std::vector<unsigned int>& hull_tri)
+        unsigned int legalise(  unsigned int a, 
+                                std::vector<unsigned int>& edge_stack, 
+                                std::vector<unsigned int> triangles, 
+                                std::vector<unsigned int> halfedges, 
+                                std::vector<unsigned int>& hull_next, 
+                                std::vector<unsigned int>& hull_tri,
+                                std::vector<Point> pts, 
+                                unsigned int& hull_start )
         {
-            // drawing on the webstie
             unsigned int i = 0;
             unsigned int ar = 0;
             edge_stack.clear(); 

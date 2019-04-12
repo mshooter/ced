@@ -79,16 +79,16 @@ BENCHMARK(BM_addTriangle);
 static void BM_triangulation(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Point p1 = {0,0};
-    Point p2 = {1,1};
-    Point p3 = {2,0};
-    Point p4 = {6,2};
-    
-    std::vector<Point> verts = {p1, p2, p3, p4};
-    std::vector<unsigned int> triangles;
-    triangulate(verts, triangles);
+
     for(auto _ : state)
     {
+        Point p1 = {0,0};
+        Point p2 = {1,1};
+        Point p3 = {2,0};
+        Point p4 = {6,2};
+    
+        std::vector<Point> verts = {p1, p2, p3, p4};
+        std::vector<unsigned int> triangles;
         triangulate(verts, triangles);
     }
 }

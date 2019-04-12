@@ -4,7 +4,9 @@
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
 #include "Triangulation.hpp"
-
+#include "GetPixelPoints.hpp" 
+#include <numeric>
+#include <random>
 int main()
 {
     // read image 
@@ -56,32 +58,29 @@ int main()
     img.setPixelData(magnitude);
 
     using namespace ced::cpu;
-    // get the image width 
-    std::vector<unsigned int> vheight;
-    for(unsigned int i=0; i < img.getHeight(); ++i)
-    {
-        vheight.push_back(i);
-    }
-    std::vector<unsigned int> vwidth;
-    for(unsigned int i=0; i < img.getWidth(); ++i)
-    {
-        vwidth.push_back(i);
-    }
-    // get the image height
-    std::vector<Point> verts;
-    for(auto y : vheight)
-    {
-        for(auto x : vwidth)
-        {
-           verts.push_back(Point(x,y)); 
-        }
-    }
+    // all white pixels
+    std::vector<Point> white_verts;
+    std::vector<Point> original_verts;
+    // get the original points
+    getWhitePixelsCoords(white_verts, original_verts, magnitude, height, width);
+    // user defines that he only wants a certain number of pixels
     std::vector<unsigned int> triangles;
-    triangulate(verts, triangles);
-    for(auto x : triangles)
-   {
-       std::cout<<verts[x].x<<verts[x].y<<std::endl;
-   }
+    std::cout<<"triangulate"<<std::endl;
+    //triangulate(white_verts, triangles);
+    std::fill(magnitude.begin(), magnitude.end(), 0);
     
-    return 0;
+    for(int i=0; i < 2000 ; ++i)
+    {
+        Point v = original_verts[i];
+        magnitude[(v.x + v.y * width) * 3 ] = 1;
+        magnitude[(v.x + v.y * width) * 3 + 1] = 1;
+        magnitude[(v.x + v.y * width) * 3 + 2] = 1;
+
+    }
+
+    img.setHeight(height);
+    img.setWidth(width);
+    img.setPixelData(magnitude);
+    img.saveImage(outgradient);
+
 }

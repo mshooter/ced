@@ -15,9 +15,7 @@ namespace ced
         /// @param[_in] : the height and the width of the image
         //  -----------------------------------------------------------
         void getWhitePixelsCoords(  std::vector<Point>& _whitePixelsCoord,
-                                    std::vector<Point>& _allPixCoord,
                                     std::vector<float> _imgPix,
-                                    int height, 
                                     int width);
     }
 }

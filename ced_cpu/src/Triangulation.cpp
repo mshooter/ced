@@ -51,7 +51,7 @@ namespace ced
             Point pi1 = _points[i1];
             Point pi2 = _points[i2];
             // orientation
-            if(isCCW<float>(pi0, pi1, pi2))
+            if((isCCW<float>(pi0, pi1, pi2)) < 0)
             {
                 std::swap(i1, i2);
                 std::swap(pi1, pi2);
@@ -99,7 +99,7 @@ namespace ced
                 start = hull_prev[start];
                 unsigned int e = start;
                 unsigned int q; 
-                while(q = hull_next[e], !isCCW<float>(pp, _points[e], _points[q]))
+                while(q = hull_next[e], (!(isCCW<float>(pp, _points[e], _points[q])<0)))
                 {
                     e = q;
                     if(e == start)
@@ -116,7 +116,7 @@ namespace ced
                 ++hullSize;
                 // walk forward through the hull, adding more triangles and flipping recursively
                 unsigned int next = hull_next[e];
-                while(q = hull_next[next], isCCW<float>(pp, _points[next], _points[q]))
+                while(q = hull_next[next], (isCCW<float>(pp, _points[next], _points[q])<0))
                 {
                     t = add_triangle(next, i, q, hull_tri[i], INVALID_IDX, hull_tri[next], triangles, halfedges);
                     hull_tri[i] = legalise(t+2, edge_stack, triangles, halfedges, hull_next, hull_tri, _points, hull_start);
@@ -128,7 +128,7 @@ namespace ced
                 // walk backward through the hull, adding more triangles and flipping recursively
                 if(e == start)
                 {
-                    while(q = hull_prev[e], isCCW<float>(pp, _points[q], _points[e]))
+                    while(q = hull_prev[e], (isCCW<float>(pp, _points[q], _points[e])<0))
                     {
                        t = add_triangle(q, i, e, INVALID_IDX, hull_tri[e], hull_tri[q], triangles, halfedges);
                        legalise(t+2, edge_stack, triangles, halfedges, hull_next, hull_tri, _points, hull_start);

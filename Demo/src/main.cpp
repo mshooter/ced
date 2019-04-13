@@ -4,7 +4,8 @@
 #include "NonMaximumSupression.hpp"
 #include "Hysterysis.hpp"
 #include "Triangulation.hpp"
-#include "GetPixelPoints.hpp" 
+#include "GetPixelPoints.hpp"
+#include "GenGeomImg.hpp"
 #include <numeric>
 #include <random>
 int main()
@@ -26,7 +27,11 @@ int main()
         const char *outgradient = "/home/s4928793/Desktop/Cat/nonMaximumSupressioncat.jpg";
         const char *finalout    = "/home/s4928793/Desktop/Cat/finalcat.jpg";
     #endif
+    // original image
     ced::cpu::Image img(filename);
+    std::vector<float> originalPixelData = img.getPixelData();
+    img.setPixelData(originalPixelData);
+    img.saveImage(outgray);
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = ced::cpu::gaussianFilter(gDimension, 1.4f); 
@@ -61,26 +66,26 @@ int main()
     // all white pixels
     std::vector<Point> white_verts;
     std::vector<Point> original_verts;
-    // get the original points
-    getWhitePixelsCoords(white_verts, original_verts, magnitude, height, width);
+    getWhitePixelsCoords(white_verts, magnitude, width);
+    std::shuffle(white_verts.begin(), white_verts.end(), std::default_random_engine());
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+10);
     // user defines that he only wants a certain number of pixels
     std::vector<unsigned int> triangles;
     std::cout<<"triangulate"<<std::endl;
-    //triangulate(white_verts, triangles);
-    std::fill(magnitude.begin(), magnitude.end(), 0);
-    
-    for(int i=0; i < 2000 ; ++i)
+    for(auto p : nwhite_verts)
     {
-        Point v = original_verts[i];
-        magnitude[(v.x + v.y * width) * 3 ] = 1;
-        magnitude[(v.x + v.y * width) * 3 + 1] = 1;
-        magnitude[(v.x + v.y * width) * 3 + 2] = 1;
+        magnitude[(p.x + p.y * width) * 3 + 0] = 1;
+        magnitude[(p.x + p.y * width) * 3 + 1] = 1;
+        magnitude[(p.x + p.y * width) * 3 + 2] = 1;
 
     }
+    // triangulation is weird
+    triangulate(nwhite_verts, triangles);
+    genGeomImg(originalPixelData, triangles, nwhite_verts, width, height);
 
     img.setHeight(height);
     img.setWidth(width);
-    img.setPixelData(magnitude);
+    img.setPixelData(originalPixelData);
     img.saveImage(outgradient);
 
 }

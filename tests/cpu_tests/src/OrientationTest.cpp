@@ -9,5 +9,6 @@ TEST(Orientation, CCWfunction)
     Point C(2,0);
     bool CW =  isCCW<float>(A,B,C);
     
-    EXPECT_FALSE(CW); 
+    EXPECT_FALSE((CW<0)); 
 }
+

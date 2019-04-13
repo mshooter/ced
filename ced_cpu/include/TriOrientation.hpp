@@ -14,8 +14,7 @@ namespace ced
         /// @param[_in] _p3 : third point 
         //  ------------------------------------------------
         template <typename T>
-        bool isCCW(T _p1, T _p2, T _p3);
-        
+        T isCCW(T _p1, T _p2, T _p3);
         #include "TriOrientation.inl"
     }
 }

@@ -234,10 +234,10 @@ TEST(Triangulation, triangulation)
     std::vector<unsigned int> triangles;
     triangulate(verts, triangles);
     EXPECT_EQ(triangles.size(), (unsigned int)6);
-//   for(auto x : triangles)
-//  {
-//      std::cout<<verts[x].x<<verts[x].y<<std::endl;
-//  }
+//        for(auto x : triangles)
+//       {
+//           std::cout<<verts[x].x<<verts[x].y<<std::endl;
+//       }
 }
 //  -------------------------------------------------------------------------
 #include <numeric>

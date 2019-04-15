@@ -1,4 +1,4 @@
-# Canny Edge Detection 
+# LowPolyArt
 
 ## Introduction 
 Programming project for Bournemouth university, for the unit Advanced programming. 

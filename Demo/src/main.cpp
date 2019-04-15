@@ -5,9 +5,16 @@
 #include "Hysterysis.hpp"
 #include "Triangulation.hpp"
 #include "GetPixelPoints.hpp"
-#include "GenGeomImg.hpp"
+#include "Distance2P.hpp"
+#include "TriOrientation.hpp"
+#include "SortPoints.hpp"
 #include <numeric>
 #include <random>
+#include "GenerateRandomPoints.hpp"
+#include "AssignTriToPix.hpp"
+#include "AssignColToPix.hpp"
+
+using namespace ced::cpu;
 int main()
 {
     // read image 
@@ -15,7 +22,7 @@ int main()
     // std::unique_ptr<ImageInput>
     // std::unique_ptr<ImageOutput>
     #ifdef __APPLE__
-        const char *filename    = "/Users/moirashooter/Desktop/Cat/baby.jpg";
+        const char *filename    = "/Users/moirashooter/Desktop/Cat/bob.jpg";
         const char *outgray     = "/Users/moirashooter/Desktop/Cat/graycat.jpg";
         const char *outgaussian = "/Users/moirashooter/Desktop/Cat/gaussiancat.jpg";
         const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
@@ -30,13 +37,15 @@ int main()
     // original image
     ced::cpu::Image img(filename);
     std::vector<float> originalPixelData = img.getPixelData();
+    unsigned int o_height = img.getHeight();
+    unsigned int o_width = img.getWidth(); 
     img.setPixelData(originalPixelData);
     img.saveImage(outgray);
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = ced::cpu::gaussianFilter(gDimension, 1.4f); 
     // convert to gray scale
-    img.convertToGrayscale();
+    img.convertToGrayscale(); 
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
@@ -54,37 +63,50 @@ int main()
                           );
     // nonmaximum supression    
     ced::cpu::nonMaximumSupression(height, width, orientation, magnitude);
-    img.setHeight(height);
-    img.setWidth(width);
-    img.setPixelData(magnitude);
-    img.saveImage(outgradient);
     //     final image
-    ced::cpu::hysterysis(magnitude, height, width, 0.2f, 0.3f);
-    img.setPixelData(magnitude);
-
-    using namespace ced::cpu;
-    // all white pixels
+    ced::cpu::hysterysis(magnitude, height, width, 0.4f, 0.5f);
+    // get white pixels
     std::vector<Point> white_verts;
-    std::vector<Point> original_verts;
-    getWhitePixelsCoords(white_verts, magnitude, width);
-    std::shuffle(white_verts.begin(), white_verts.end(), std::default_random_engine());
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+10);
-    // user defines that he only wants a certain number of pixels
+    getWhitePixelsCoords(white_verts, magnitude, height, width);
+    // how many white pixels
+    std::random_device rd;
+    std::mt19937 k(rd());
+    std::shuffle(white_verts.begin(), white_verts.end(), k);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
+    std::fill(magnitude.begin(), magnitude.end(), 0);
+    std::vector<Point>  rand_verts;
+    // generateRandomPoints
+    // and add to white points
+    generateRandomPoints(rand_verts, nwhite_verts, 100, height, width);
+    nwhite_verts.insert(nwhite_verts.end(), rand_verts.begin(), rand_verts.end());
+    quickSort(nwhite_verts, 0, nwhite_verts.size());
+    // show how many points there is  
+   //for(auto r : nwhite_verts)
+   //{
+   //    magnitude[(r.x + r.y * width) * 3 + 0] = 1.0f;
+   //    magnitude[(r.x + r.y * width) * 3 + 1] = 1.0f;
+   //    magnitude[(r.x + r.y * width) * 3 + 2] = 1.0f;
+   //}
+   //img.setHeight(height);
+   //img.setWidth(width);
+   //img.setPixelData(magnitude);
+   //img.saveImage(finalout);
+    // triangulate
     std::vector<unsigned int> triangles;
-    std::cout<<"triangulate"<<std::endl;
-    for(auto p : nwhite_verts)
-    {
-        magnitude[(p.x + p.y * width) * 3 + 0] = 1;
-        magnitude[(p.x + p.y * width) * 3 + 1] = 1;
-        magnitude[(p.x + p.y * width) * 3 + 2] = 1;
-
-    }
-    // triangulation is weird
     triangulate(nwhite_verts, triangles);
-    genGeomImg(originalPixelData, triangles, nwhite_verts, width, height);
-
-    img.setHeight(height);
-    img.setWidth(width);
+    // assign triangle to pixel
+    std::vector<Point> ptIdx; 
+    std::vector<unsigned int> triangle; 
+    assignTriToPix(triangle, ptIdx, triangles, nwhite_verts, height, width);
+    // assign colour to pixels depending on triangle 
+    std::cout<<triangles.size()/3<<std::endl;
+    int currtt = 0;
+    int oldtt = 0;
+    // creates triangles
+    assignColToPix(originalPixelData, triangles.size()/3, triangle, ptIdx, o_height, o_width);
+    // output
+    img.setHeight(o_height);
+    img.setWidth(o_width);
     img.setPixelData(originalPixelData);
     img.saveImage(outgradient);
 

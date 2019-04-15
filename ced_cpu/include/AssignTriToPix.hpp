@@ -1,18 +1,23 @@
 #ifndef ASSIGNTRITOPIX_H_INCLUDED
 #define ASSIGNTRITOPIX_H_INCLUDED
 
-#include "Point.hpp"
 #include <vector>
+#include "Point.hpp"
 
 namespace ced
 {
     namespace cpu
     {
-        // iterate over every pixel (width, height) check which midpoint is closest to pix -> assign index to that pix
-        void assignTriToPix(    const int& height, 
-                                const int& width, 
-                                const std::vector<Point>& _mpts, 
-                                std::vector<unsigned int>& _pixTriIdx);
+        void assignTriToPix(
+                std::vector<unsigned int>& triangleIDs,
+                std::vector<Point>& pixelInTriangle, 
+                const std::vector<unsigned int>& _triangles,
+                const std::vector<Point>& coordinates, 
+                const unsigned int& height,
+                const unsigned int& width
+                );
+        float area(Point a, Point b, Point c);
+        bool isInside(Point a, Point b, Point c, Point p);
     }
 }
 

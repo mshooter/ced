@@ -76,8 +76,7 @@ namespace ced
             {
                 for(int j=0; j < m_width; ++j)
                 {
-                    float pixelData =
-                    (
+                    float pixelData = (
                         m_pixelData[(j+i*m_width) * m_channels + 0]  +  
                         m_pixelData[(j+i*m_width) * m_channels + 1]  +  
                         m_pixelData[(j+i*m_width) * m_channels + 2]

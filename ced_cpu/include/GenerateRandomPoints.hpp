@@ -9,7 +9,12 @@ namespace ced
 {
     namespace cpu
     {
-        std::vector<Point> generateRandomPoints(const unsigned int _amountOfPoints, const unsigned int height, const unsigned int width); 
+        void generateRandomPoints(   
+                std::vector<Point>& coordinateList,
+                const std::vector<Point>& whites,
+                const unsigned int& _amountOfPoints, 
+                const unsigned int& height, 
+                const unsigned int& width); 
     }
 }
 

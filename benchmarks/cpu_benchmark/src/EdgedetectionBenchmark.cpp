@@ -7,6 +7,7 @@
 #include "Hysterysis.hpp"
 const char* linuxPath = "/home/s4928793/Desktop/Cat/cat.jpg";
 const char* path = "/Users/moirashooter/Desktop/Cat/catt.jpg";
+
 static void BM_gaussianFilter(benchmark::State& state)
 {
     using namespace ced::cpu;

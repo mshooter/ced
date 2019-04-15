@@ -8,7 +8,7 @@ namespace ced
 {
     namespace gpu
     {
-        __global__ thrust::device_vector<float> gaussianFilter(int _dimension = 5, float = _sigma 1.4f); 
+        __host__ thrust::device_vector<float> gaussianFilter(int _dimension = 5, float = _sigma 1.4f); 
         
     }
 }

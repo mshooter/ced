@@ -42,6 +42,7 @@ namespace ced
                 ids.push_back(i);   
             }
             // need to calculate centroid 
+            // need to give it myself
             Point sc = calculateCentroidCenter(_points);
             unsigned int i0 = INVALID_IDX; 
             unsigned int i1 = INVALID_IDX; 

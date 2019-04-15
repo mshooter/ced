@@ -4,17 +4,20 @@ namespace ced
 {
     namespace cpu
     {
-        void getWhitePixelsCoords(std::vector<Point>& _whitePixelsCoord, std::vector<float> _imgPix, int width)
+        void getWhitePixelsCoords(
+                std::vector<Point>& _whitePixelsCoord, 
+                const std::vector<float>& edgePixData, 
+                const int& height, 
+                const int& width)
         {
-            for(unsigned int i = 0; i < _imgPix.size(); ++i)
+            for(int i =0; i < height; ++i)
             {
-                int w = i / 3;
-                int h = i % 3;
-                if( _imgPix[(w + h * width) * 3 + 0] == 1 || 
-                    _imgPix[(w + h * width) * 3 + 1] == 1 ||
-                    _imgPix[(w + h * width) * 3 + 2] == 1)
+                for(int j =0; j < width; ++j)
                 {
-                    _whitePixelsCoord.push_back(Point(w,h));
+                    if((edgePixData[(j + i * width) * 3 + 0]+edgePixData[(j + i * width) * 3 + 1] + edgePixData[(j + i * width) * 3 + 2])/3.0f > 0 )
+                    {
+                        _whitePixelsCoord.push_back(Point(j, i));
+                    }
                 }
             }
         }

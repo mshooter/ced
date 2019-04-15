@@ -2,7 +2,7 @@
 #define COMPARE_H_INCLUDED
 
 #include "Point.hpp"
-
+#include <utility>
 namespace ced
 {
     namespace cpu
@@ -15,6 +15,8 @@ namespace ced
         /// @build: compares the y coordinate
         //  -------------------------------------------------------
         bool compareY(const Point& lhs, const Point& rhs);
+        
+        bool compareXofPair(const std::pair<unsigned int, unsigned int>& lhs, const std::pair<unsigned int, unsigned int>& rhs);
     }
 }
 

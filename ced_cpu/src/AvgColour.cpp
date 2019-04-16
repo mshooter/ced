@@ -4,24 +4,23 @@ namespace ced
 {
     namespace cpu
     {
-        void avgColour( std::vector<float>& _imgData, 
-                        const std::vector<Point>& pixelIdxTri, 
+        void avgColour( const std::vector<float>& _imgData, 
+                        const std::vector<unsigned int>& pixIds, 
                         float& r,
                         float& g, 
-                        float& b,
-                        const unsigned int& height,
-                        const unsigned int& width)
+                        float& b)
         {
-            for(auto p : pixelIdxTri)
+            float pixIDSize = pixIds.size();
+            for(auto& id : pixIds)
             {
-                r += _imgData[(p.x + p.y * width) * 3 + 0];
-                g += _imgData[(p.x + p.y * width) * 3 + 1];  
-                b += _imgData[(p.x + p.y * width) * 3 + 2];
+                r += _imgData[id * 3 + 0];
+                g += _imgData[id * 3 + 1];  
+                b += _imgData[id * 3 + 2];
 
             }
-            r /= static_cast<float>(pixelIdxTri.size());
-            g /= static_cast<float>(pixelIdxTri.size());
-            b /= static_cast<float>(pixelIdxTri.size());
+            r /= pixIDSize;
+            g /= pixIDSize;
+            b /= pixIDSize;
         }
     }
 }

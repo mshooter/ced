@@ -2,6 +2,7 @@
 #define ASSIGNCOLTOPIX_H_INCLUDED
 
 #include <vector>
+#include <map>
 #include "Point.hpp"
 
 
@@ -11,11 +12,8 @@ namespace ced
     {
         void assignColToPix(
                 std::vector<float>& imgData,
-                const unsigned int& amountOfTriangles, 
-                const std::vector<unsigned int> triangleIDs, 
-                const std::vector<Point> triPixelIdx,
-                const unsigned int& height,
-                const unsigned int& width);
+                std::multimap<unsigned int, unsigned int> pixIDdepTri, 
+                const unsigned int& amountOfTriangles);
     }
 }
 

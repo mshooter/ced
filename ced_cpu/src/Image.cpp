@@ -5,6 +5,10 @@ namespace ced
     namespace cpu
     {
         //----------------------------------------------------------------------------
+        Image::~Image()
+        {
+            m_pixelData.clear();
+        }
         Image::Image(const char* _path)
         {
             using namespace OIIO;

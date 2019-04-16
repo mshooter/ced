@@ -8,13 +8,11 @@ namespace ced
 {
     namespace cpu
     {
-        void avgColour( std::vector<float>& _imgData, 
-                        const std::vector<Point>& pixelIdxTri, 
+        void avgColour( const std::vector<float>& _imgData, 
+                        const std::vector<unsigned int>& pixIds, 
                         float& r,
                         float& g, 
-                        float& b,
-                        const unsigned int& height,
-                        const unsigned int& width);
+                        float& b);
     }
 }
 

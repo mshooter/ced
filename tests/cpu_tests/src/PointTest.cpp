@@ -56,3 +56,14 @@ TEST(Point, equalPts)
 
     EXPECT_TRUE(equalPts(p,p1));
 }
+//  ----------------------------------------------------
+TEST(Point, dotProduct)
+{
+    using namespace ced::cpu;
+    Point a = {3,7};
+    Point b = {10,12};
+    
+    int dotProductResult = a.x * b.x + a.y * b.y; 
+    EXPECT_EQ(114, dotProductResult);
+    EXPECT_EQ(dot<int>(a, b), 114);
+}

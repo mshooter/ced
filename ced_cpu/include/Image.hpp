@@ -14,7 +14,7 @@ namespace ced
             public:
                 Image(const char* _path); 
                 Image() = default; 
-                ~Image() = default; 
+                ~Image(); 
                 void setPixelData(std::vector<float> _pixels);
                 void setWidth(int _width);
                 void setHeight(int _height);

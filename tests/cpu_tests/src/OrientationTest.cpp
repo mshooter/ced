@@ -7,7 +7,7 @@ TEST(Orientation, CCWfunction)
     Point A(0,0);
     Point B(1,1);
     Point C(2,0);
-    bool CW =  isCCW<float>(A,B,C);
+    float CW =  isCCW<float>(A,B,C);
     
     EXPECT_FALSE((CW<0)); 
 }

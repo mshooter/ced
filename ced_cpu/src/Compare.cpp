@@ -16,7 +16,7 @@ namespace ced
         //  -------------------------------------------------------
         bool compareXofPair(const std::pair<unsigned int, unsigned int>& lhs, const std::pair<unsigned int, unsigned int>& rhs)
         {
-            return lhs.first < rhs.second;
+            return lhs.second < rhs.second;
         }
     }
 }

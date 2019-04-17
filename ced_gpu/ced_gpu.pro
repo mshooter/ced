@@ -18,7 +18,7 @@ INCLUDEPATH += \
     $$PWD/include \ 
     /public/devel/2018/include/OpenImageIO
 
-LIBS += -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO
+LIBS += -L/usr/local/lib -L/public/devel/2018/lib64 -lOpenImageIO
 
 HEADERS += $$files($$PWD/include/*(.hpp | cuh), true) 
 CUDA_SOURCES += $$files($$PWD/src/*.cu,true) 

@@ -1,15 +1,15 @@
-// GaussianFilter.cuh
 #ifndef GAUSSIANFILTER_H_INCLUDED 
 #define GAUSSIANFILTER_H_INCLUDED
 
-#include <thrust/device_vector.h>
+#include <cuda_runtime.h>
+#include <cuda.h>
+#include <cuda_runtime_api.h>
 
 namespace ced
 {
     namespace gpu
     {
-        __host__ thrust::device_vector<float> gaussianFilter(int _dimension = 5, float = _sigma 1.4f); 
-        
+        __global__ void helloWorld();
     }
 }
 

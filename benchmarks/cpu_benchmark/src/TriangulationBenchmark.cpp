@@ -9,9 +9,10 @@ static void BM_calculateCentroidCenter(benchmark::State& state)
     Point B = {1,1};
     Point C = {3,0};
     Point D = {2,0};
-    std::vector<Point> pts = {A, B, C, D};
+
     for(auto _ : state)
     {
+        std::vector<Point> pts = {A, B, C, D};
         benchmark::DoNotOptimize(calculateCentroidCenter(pts));
     } 
 }
@@ -39,10 +40,11 @@ BENCHMARK(BM_createFirstTri);
 static void BM_hashkey(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Point p1 = {0,0};
-    Point p2 = {1,1};
+
     for(auto _ : state)
     {
+        Point p1 = {0,0};
+        Point p2 = {1,1};
         benchmark::DoNotOptimize(hash_key(p1, p2, 3));
     }
 }
@@ -51,10 +53,11 @@ BENCHMARK(BM_hashkey);
 static void BM_link(benchmark::State& state)
 {
     using namespace ced::cpu;
-    std::vector<unsigned int> halfedges;
-    halfedges.reserve(3);
+
     for(auto _ : state)
     {
+        std::vector<unsigned int> halfedges;
+        halfedges.reserve(3);
         link(0, INVALID_IDX, halfedges);
         link(1, INVALID_IDX, halfedges);
         link(2, INVALID_IDX, halfedges);
@@ -65,12 +68,13 @@ BENCHMARK(BM_link);
 static void BM_addTriangle(benchmark::State& state)
 {
     using namespace ced::cpu;
-    std::vector<unsigned int> halfedges;
-    std::vector<unsigned int> triangles; 
-    halfedges.reserve(3);
-    triangles.reserve(3);
+
     for(auto _ : state)
     {
+        std::vector<unsigned int> halfedges;
+        std::vector<unsigned int> triangles; 
+        halfedges.reserve(3);
+        triangles.reserve(3);
         benchmark::DoNotOptimize(add_triangle(0,1,2,INVALID_IDX, INVALID_IDX, INVALID_IDX,triangles,halfedges));
     }
 }

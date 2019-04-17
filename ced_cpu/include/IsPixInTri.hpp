@@ -2,7 +2,7 @@
 #define ISPIXINTRI_H_INCLUDED
 
 #include "Point.hpp"
-
+//htpps://jsfiddle.net/jniac/rctb3gfL/
 namespace ced
 {
     namespace cpu

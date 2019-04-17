@@ -30,7 +30,7 @@ int main()
         const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
         const char *finalout    = "/Users/moirashooter/Desktop/Cat/edge_image.jpg";
     #else
-        const char *filename    = "/home/s4928793/Desktop/Cat/cat.jpg";
+        const char *filename    = "/home/s4928793/Desktop/Cat/logo.jpg";
         const char *outgray     = "/home/s4928793/Desktop/Cat/graycat.jpg";
         const char *outgaussian = "/home/s4928793/Desktop/Cat/gaussiancat.jpg";
         const char *outgradient = "/home/s4928793/Desktop/Cat/nonMaximumSupressioncat.jpg";
@@ -70,15 +70,21 @@ int main()
     std::vector<Point> white_verts;
     getWhitePixelsCoords(white_verts, magnitude, height, width);
     // how many white pixels
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
+    std::random_device rd;
+    std::mt19937 k(rd());
+    std::shuffle(white_verts.begin(), white_verts.end(), k);
+    std::cout<<white_verts.size()<<std::endl;
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin() + 500);
 
     // generateRandomPoints
     // and add to white points
-    std::fill(magnitude.begin(), magnitude.end(), 0);
+    // std::fill(magnitude.begin(), magnitude.end(), 0);
     //std::vector<Point>  rand_verts;
-    //generateRandomPoints(rand_verts, nwhite_verts, 100, height, width);
+    //generateRandomPoints(rand_verts, nwhite_verts, 500, o_height, o_width);
     //nwhite_verts.insert(nwhite_verts.end(), rand_verts.begin(), rand_verts.end());
+    //std::shuffle(nwhite_verts.begin(), nwhite_verts.end(), k);
     //quickSort(nwhite_verts, 0, nwhite_verts.size());
+    //  ----------------------------------------------------------------------------
     // show how many points there is  
     for(auto r : nwhite_verts)
     {
@@ -90,7 +96,7 @@ int main()
     img.setWidth(width);
     img.setPixelData(magnitude);
     img.saveImage(finalout);
-    
+    //  ----------------------------------------------------------------------------
     // triangulate
     std::vector<unsigned int> triangles;
     triangulate(nwhite_verts, triangles);

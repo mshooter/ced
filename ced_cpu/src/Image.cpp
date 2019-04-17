@@ -51,24 +51,25 @@ namespace ced
             int nwidth = m_width - _dimension  + 1;
             int nheight = m_height - _dimension + 1;
             std::vector<float> nvimage (nheight*nwidth*m_channels, 0.0f);
-            for(int i=0; i < nheight; ++i)
+            for(int x=0; x < nheight * nwidth; ++x)
             {
-                for(int j=0; j < nwidth; ++j)
-                  {
-                     for(int h=i; h < i + _dimension; ++h)
-                     {
-                         for(int w=j; w < j + _dimension; ++w)
-                         {
-                              int base = (j+i*nwidth)* m_channels;
-                              int ibase = (w+h*m_width) * m_channels;
-                              int fbase = ((h-i) + (w-j) * _dimension);
-                              nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
-                              nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
-                              nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
-                         }
-                     }
-                  }
-              }
+                int j = x % nwidth;
+                int i = x / nwidth;
+
+                for(int h=i; h < i + _dimension; ++h)
+                {
+                    for(int w=j; w < j + _dimension; ++w)
+                    {
+                       int base = (j+i*nwidth)* m_channels;
+                       int ibase = (w+h*m_width) * m_channels;
+                       int fbase = ((h-i) + (w-j) * _dimension);
+                       nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
+                       nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
+                       nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
+
+                    }
+                }
+            }
             m_pixelData = std::move(nvimage);
             m_width = std::move(nwidth);
             m_height = std::move(nheight);

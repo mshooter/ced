@@ -4,11 +4,12 @@
 static void BM_TriOrientation(benchmark::State& state)
 {
     using namespace ced::cpu;
-    Point p = {0,0};
-    Point p1 = {1,1};
-    Point p2 = {2,0};
+
     for(auto _ : state)
     {
+        Point p = {0,0};
+        Point p1 = {1,1};
+        Point p2 = {2,0};
         benchmark::DoNotOptimize(isCCW<float>(p, p1, p2)); 
     }
 }

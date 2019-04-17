@@ -1,6 +1,6 @@
 # dynamic lib
-TEMPLATE = lib
-TARGET = ced_gpu 
+TEMPLATE = app
+TARGET = gpu_tests 
 
 QT -= core gui 
 
@@ -9,19 +9,22 @@ OBJECTS_DIR = obj
 CUDA_OBJECTS_DIR = cudaobj
 CONFIG += console c++11
 CONFIG -= app_bundle 
-DESTDIR = $$PWD/lib
+
+DEPENDPATH += . ../../ced_gpu 
+INCLUDEPATH += ../../ced_gpu/include 
 
 QMAKE_CXXFLAGS += -std=c++11 -fPIC -g -O3 
 
 INCLUDEPATH += \
-    /usr/local/include \ 
-    $$PWD/include \ 
-    /public/devel/2018/include/OpenImageIO
+   /usr/local/include/gtest \ 
+   /usr/local/include \ 
+   $$PWD/include  
 
-LIBS += -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO
+LIBS += -L../../ced_gpu/lib -lced_gpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO -lgtest
 
-HEADERS += $$files($$PWD/include/*(.hpp | cuh), true) 
-CUDA_SOURCES += $$files($$PWD/src/*.cu,true) 
+CUDA_SOURCES += $$files($$PWD/src/*.cu, true) 
+SOURCES += $$files($$PWD/src/*.cpp, true)
+HEADERS += $$files($$PWD/include/*.hpp, true)
 #   ---------------------------------------------------------------------------------------------------------------------------------------------------
 # CUDA stuff
 # qt project setup for cuda compiler
@@ -73,3 +76,4 @@ cudalink.CONFIG = combine
 cudalink.dependency_type = TYPE_C
 cudalink.depend_command = $${CUDA_COMPILE_BASE} -M
 QMAKE_EXTRA_COMPILERS += cudalink
+

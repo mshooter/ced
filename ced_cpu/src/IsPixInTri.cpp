@@ -6,24 +6,32 @@ namespace ced
     {
         bool isPixInTri(Point a, Point b, Point c, Point p)
         {
-            // compute vectors
-            Point v0 = c - a;      
-            Point v1 = b - a;      
-            Point v2 = p - a;      
+            float v_abx = (b.x - a.x);
+            float v_aby = (b.y - a.y);
 
-            // compute dot product
-            int dot00 = dot<int>(v0, v0);
-            int dot01 = dot<int>(v1, v0);
-            int dot02 = dot<int>(v0, v2);
-            int dot11 = dot<int>(v1, v1);
-            int dot12 = dot<int>(v1, v2);
+            float v_cax = (c.x - a.x);
+            float v_cay = (c.y - a.y);
+
+            float v_acx = (a.x - c.x);
+            float v_acy = (a.y - c.y);
+
+            float v_cbx = (c.x - b.x);
+            float v_cby = (c.y - b.y);
+
+            float det = v_abx * v_cay - v_aby * v_cax;
             
-            // compute barycentric coordinates
-            float invDenom = 1.0f/static_cast<float>(dot00 * dot11 - dot01 * dot01);
-            float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-            float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-            
-            return ((u>=0)&&(v>=0)&&(u+v<=1));
+            float pa_y = (p.y - a.y); 
+            float pb_y = (p.y - b.y); 
+            float pc_y = (p.y - c.y); 
+
+            float pa_x = (p.x - a.x); 
+            float pb_x = (p.x - b.x); 
+            float pc_x = (p.x - c.x); 
+
+            float u = det * (v_abx * pa_y - v_aby * pa_x);
+            float v = det * (v_cbx * pb_y - v_cby * pb_x);
+            float t = det * (v_acx * pc_y - v_acy * pc_x);
+            return (u > 0 && v > 0 && t > 0);
         }
     }
 }

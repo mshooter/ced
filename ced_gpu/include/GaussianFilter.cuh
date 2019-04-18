@@ -1,17 +1,21 @@
-#ifndef GAUSSIANFILTER_H_INCLUDED 
-#define GAUSSIANFILTER_H_INCLUDED
+#ifndef GAUSSIANFILTER_CUH_INCLUDED
+#define GAUSSIANFILTER_CUH_INCLUDED
 
-#include <cuda_runtime.h>
-#include <cuda.h>
-#include <cuda_runtime_api.h>
+#include <vector>
 
 namespace ced
 {
     namespace gpu
     {
-        __global__ void helloWorld();
+        //------------------------------------------------------------
+        /// @build gaussianFilter 
+        /// @param[_in] _dimension : dimension of the filter 
+        /// @param[_in] _sigma : the amount of blur 
+        /// @return : [vector] values of a gaussianblur filter
+        //------------------------------------------------------------
+        __host__ std::vector<float> gaussianFilter(int _dimension = 5, float _sigma = 1.4f);
+        
     }
 }
 
-#endif //GAUSSIANFILTER_H_INCLUDED
-  
+#endif // GAUSSIANFILTER_CUH_INCLUDED

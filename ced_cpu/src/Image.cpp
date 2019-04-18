@@ -53,20 +53,19 @@ namespace ced
             std::vector<float> nvimage (nheight*nwidth*m_channels, 0.0f);
             for(int x=0; x < nheight * nwidth; ++x)
             {
-                int j = x % nwidth;
                 int i = x / nwidth;
+                int j = x % nwidth;
 
                 for(int h=i; h < i + _dimension; ++h)
                 {
                     for(int w=j; w < j + _dimension; ++w)
                     {
-                       int base = (j+i*nwidth)* m_channels;
-                       int ibase = (w+h*m_width) * m_channels;
-                       int fbase = ((h-i) + (w-j) * _dimension);
-                       nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
-                       nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
-                       nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
-
+                        int base =  x * m_channels;
+                        int ibase = (w+h*m_width) * m_channels;
+                        int fbase = ((w-j) + (h-i) * _dimension);
+                        nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
+                        nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
+                        nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
                     }
                 }
             }
@@ -77,19 +76,16 @@ namespace ced
         //----------------------------------------------------------------------------
         void Image::convertToGrayscale()
         {
-            for(int i=0; i < m_height; ++i)
+            for(int id = 0; id < m_height * m_width; ++id)
             {
-                for(int j=0; j < m_width; ++j)
-                {
-                    float pixelData = (
-                        m_pixelData[(j+i*m_width) * m_channels + 0]  +  
-                        m_pixelData[(j+i*m_width) * m_channels + 1]  +  
-                        m_pixelData[(j+i*m_width) * m_channels + 2]
-                    ) / 3.0f; 
-                    m_pixelData[(j+i*m_width) * m_channels + 0 ] = pixelData;
-                    m_pixelData[(j+i*m_width) * m_channels + 1 ] = pixelData;
-                    m_pixelData[(j+i*m_width) * m_channels + 2 ] = pixelData;
-                }
+                float pixelData = (
+                    m_pixelData[id * m_channels + 0]  +  
+                    m_pixelData[id * m_channels + 1]  +  
+                    m_pixelData[id * m_channels + 2]
+                ) / 3.0f;
+                m_pixelData[id * m_channels + 0 ] = pixelData;
+                m_pixelData[id * m_channels + 1 ] = pixelData;
+                m_pixelData[id * m_channels + 2 ] = pixelData;
             }
         }
         //----------------------------------------------------------------------------

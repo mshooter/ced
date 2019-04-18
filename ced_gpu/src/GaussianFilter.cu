@@ -1,13 +1,13 @@
 #include "GaussianFilter.cuh"
-#include <cstdio>
-
+#include <thrust/device_vector.h>
+#include <thrust/transform.h>
 namespace ced
 {
     namespace gpu
     {
-        __global__ void helloWorld()
+        __global__ std::vector<float> gaussianFilter(int _dimension, float _sigma);
         {
-            printf("Hello World from Gpu");
+
         }
     }
 }

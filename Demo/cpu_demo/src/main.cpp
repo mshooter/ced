@@ -16,27 +16,14 @@
 #include "AvgColour.hpp"
 #include "IsPixInTri.hpp"
 
+#include "ParamsImageIO.hpp"
+
+
 using namespace ced::cpu;
 int main()
 {
     // read image 
     using namespace OIIO; 
-    // std::unique_ptr<ImageInput>
-    // std::unique_ptr<ImageOutput>
-    #ifdef __APPLE__
-        const char *filename    = "/Users/moirashooter/Desktop/Cat/bob.jpg";
-        const char *outgray     = "/Users/moirashooter/Desktop/Cat/graycat.jpg";
-        const char *outgaussian = "/Users/moirashooter/Desktop/Cat/gaussiancat.jpg";
-        const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
-        const char *finalout    = "/Users/moirashooter/Desktop/Cat/edge_image.jpg";
-    #else
-        const char *filename    = "/home/s4928793/Desktop/Cat/logo.jpg";
-        const char *outgray     = "/home/s4928793/Desktop/Cat/graycat.jpg";
-        const char *outgaussian = "/home/s4928793/Desktop/Cat/gaussiancat.jpg";
-        const char *outgradient = "/home/s4928793/Desktop/Cat/nonMaximumSupressioncat.jpg";
-        const char *finalout    = "/home/s4928793/Desktop/Cat/edge_image.jpg";
-    #endif
-    // original image
     ced::cpu::Image img(filename);
     std::vector<float> originalPixelData = img.getPixelData();
     unsigned int o_height = img.getHeight();
@@ -47,10 +34,11 @@ int main()
     std::vector<float> gfilter = ced::cpu::gaussianFilter(gDimension, 1.4f); 
     // convert to gray scale
     img.convertToGrayscale(); 
-    // img.saveImage(outgray);
+    img.saveImage(outgray);
+    std::cout<<"oie"<<std::endl;
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
+    img.saveImage(outgaussian);
     // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();

@@ -4,7 +4,8 @@ Makefile
 *.qmake*
 benchmarks/gpu_benchmark/gpu_benchmark
 benchmarks/cpu_benchmark/cpu_benchmark
-Demo/Demo
+Demo/cpu_demo/cpu_demo
+Demo/gpu_demo/cpu_demo
 tests/cpu_tests/cpu_tests
 tests/gpu_tests/gpu_tests
 *lib

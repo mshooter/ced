@@ -42,39 +42,4 @@ TEST(AssignPixToTri, assignPixToTri)
             }
         }
     }
-    
-    // this is probably another test
-    std::vector<unsigned int> ids;
-
-    for(unsigned int t = 0 ; t < 2; ++t)
-    {
-        ids.clear();
-        for(auto const& x : pixelsWithTri)
-        {
-            if(t == x.first)
-            {
-                ids.push_back(x.second);
-            } 
-        }
-        // do something 
-    }
-
-
-   EXPECT_EQ(ids[0], 0);
-   EXPECT_EQ(ids[1], 5);
-   EXPECT_EQ(ids[2], 6);
-   EXPECT_EQ(ids[3], 10);
-   EXPECT_EQ(ids[4], 11);
-
-   EXPECT_EQ(ids[5], 12);
-   EXPECT_EQ(ids[6], 15);
-   EXPECT_EQ(ids[7], 16);
-   EXPECT_EQ(ids[8], 17);
-   EXPECT_EQ(ids[9], 18);
-
-   EXPECT_EQ(ids[10], 20);
-   EXPECT_EQ(ids[11], 21);
-   EXPECT_EQ(ids[12], 22);
-   EXPECT_EQ(ids[13], 23);
-   EXPECT_EQ(ids[14], 24);
 }

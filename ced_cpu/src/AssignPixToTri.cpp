@@ -19,8 +19,8 @@ namespace ced
             for(unsigned int t = 0; t < amountOfTri; ++t)
             {
 
-                unsigned int idTri0 = triangleIDs[(t*3+0)];
-                unsigned int idTri1 = triangleIDs[(t*3+1)];
+                unsigned int idTri0 = triangleIDs[(t*3+0)]; 
+                unsigned int idTri1 = triangleIDs[(t*3+1)]; 
                 unsigned int idTri2 = triangleIDs[(t*3+2)];
                 Point v0 = coordinates[idTri0];
                 Point v1 = coordinates[idTri1];

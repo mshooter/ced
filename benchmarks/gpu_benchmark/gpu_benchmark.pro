@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = gpu_demo 
+TARGET = gpu_benchmark 
 
 QT -= core gui 
 
@@ -11,6 +11,7 @@ CONFIG -= app_bundle
 
 DEPENDPATH += . ../../ced_gpu 
 INCLUDEPATH += ../../ced_gpu/include 
+
 DEPENDPATH += . ../../ced_cpu 
 INCLUDEPATH += ../../ced_cpu/include 
 
@@ -22,7 +23,7 @@ INCLUDEPATH += \
     ../include\
    $$PWD/include \ 
 
-LIBS += -L../../ced_cpu/lib -lced_cpu -L../../ced_gpu/lib -lced_gpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO -lgtest
+LIBS += -L../../ced_cpu/lib -lced_cpu -L../../ced_gpu/lib -lced_gpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO -lbenchmark -lgtest
 
 CUDA_SOURCES += $$files($$PWD/src/*.cu, true) 
 SOURCES += $$files($$PWD/src/*.cpp, true)

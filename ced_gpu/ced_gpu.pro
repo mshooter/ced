@@ -12,13 +12,17 @@ CONFIG -= app_bundle
 DESTDIR = $$PWD/lib
 
 QMAKE_CXXFLAGS += -std=c++11 -fPIC -g -O3 
+DEPENDPATH += . ../ced_cpu 
+INCLUDEPATH += ../ced_cpu/include 
+
 
 INCLUDEPATH += \
     /usr/local/include \ 
     $$PWD/include \ 
+    $$PWD../ced_cpu/include \ 
     /public/devel/2018/include/OpenImageIO
 
-LIBS += -L/usr/local/lib -L/public/devel/2018/lib64 -lOpenImageIO
+LIBS += -L../ced_cpu/lib -lced_cpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO 
 
 HEADERS += $$files($$PWD/include/*(.hpp | cuh), true) 
 CUDA_SOURCES += $$files($$PWD/src/*.cu,true) 

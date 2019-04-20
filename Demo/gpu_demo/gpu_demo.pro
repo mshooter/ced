@@ -11,6 +11,7 @@ CONFIG -= app_bundle
 
 DEPENDPATH += . ../../ced_gpu 
 INCLUDEPATH += ../../ced_gpu/include 
+
 DEPENDPATH += . ../../ced_cpu 
 INCLUDEPATH += ../../ced_cpu/include 
 

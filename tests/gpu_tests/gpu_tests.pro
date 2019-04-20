@@ -12,6 +12,8 @@ CONFIG -= app_bundle
 
 DEPENDPATH += . ../../ced_gpu 
 INCLUDEPATH += ../../ced_gpu/include 
+DEPENDPATH += . ../../ced_cpu 
+INCLUDEPATH += ../../ced_cpu/include 
 
 QMAKE_CXXFLAGS += -std=c++11 -fPIC -g -O3 
 
@@ -20,7 +22,7 @@ INCLUDEPATH += \
    /usr/local/include \ 
    $$PWD/include  
 
-LIBS += -L../../ced_gpu/lib -lced_gpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO -lgtest
+LIBS += -L../../ced_cpu/lib -lced_cpu -L../../ced_gpu/lib -lced_gpu -L/usr/local/lib  -L/public/devel/2018/lib64 -lOpenImageIO -lgtest
 
 CUDA_SOURCES += $$files($$PWD/src/*.cu, true) 
 SOURCES += $$files($$PWD/src/*.cpp, true)

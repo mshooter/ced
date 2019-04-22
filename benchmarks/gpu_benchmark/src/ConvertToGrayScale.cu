@@ -34,4 +34,3 @@ static void ConvertToGrayScale(benchmark::State& state)
     }
 }
 BENCHMARK(ConvertToGrayScale)->Range(1, 1<<17)->UseManualTime();
-//BENCHMARK(ConvertToGrayScale)->Range(1, 1<<17);

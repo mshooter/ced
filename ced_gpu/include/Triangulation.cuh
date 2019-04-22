@@ -2,6 +2,7 @@
 #define TRIANGULATION_CUH_INCLUDED
 
 #include <thrust/device_vector.h>
+#include "Point.hpp"
 
 namespace ced
 {

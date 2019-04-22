@@ -21,14 +21,8 @@ namespace ced
             // sum red and green
             thrust::transform(thrust::device, red.begin(), red.end(), green.begin(), result.begin(), thrust::plus<float>());
             thrust::transform(thrust::device, result.begin(), result.end(), blue.begin(), result.begin(), thrust::plus<float>());
-            //thrust::for_each(thrust::device,
-            //    thrust::make_zip_iterator(thrust::make_tuple(red.begin(), green.begin(), blue.begin(), result.begin())),
-            //    thrust::make_zip_iterator(thrust::make_tuple(red.end(), green.end(), blue.end(), result.end())),
-            //    add_three_vectors());
-
             // DIVIDE
             thrust::transform(thrust::device, result.begin(), result.end(), result.begin(), divideByConstant<float>(3.0f));
-
             // assign result element to red, green and blue
             thrust::copy(thrust::device, result.begin(), result.end(), red.begin());    
             thrust::copy(thrust::device, result.begin(), result.end(), green.begin());    

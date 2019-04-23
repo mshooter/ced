@@ -9,12 +9,12 @@ using namespace ced::gpu;
 
 TEST(PseudoAngle, pseudoangle)
 {
-    Point p = {1,1};
-    Point p1 = {1,2};
-    Point p2 = {3,4};
-    Point p3 = {5,6};
-    std::vector<Point> vec = {p, p1, p2, p3};
-    thrust::device_vector<Point> d_vec = vec;
+    float2 p = make_float2(1,1);
+    float2 p1 = make_float2(1,2);
+    float2 p2 = make_float2(3,4);
+    float2 p3 = make_float2(5,6);
+    std::vector<float2> vec = {p, p1, p2, p3};
+    thrust::device_vector<float2> d_vec = vec;
     thrust::device_vector<float> d_angles(vec.size());
     std::vector<float> h_angles(vec.size());
     thrust::transform(d_vec.begin(), d_vec.end(), d_angles.begin(), angle_funct());

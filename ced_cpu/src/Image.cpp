@@ -47,6 +47,7 @@ namespace ced
             m_channels = std::move(_channels);
         }
         //----------------------------------------------------------------------------
+        // TODO: first thing  
         void Image::applyFilter(std::vector<float> _filter, int _dimension)
         {
             int nwidth = m_width - _dimension  + 1;

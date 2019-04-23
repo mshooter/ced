@@ -14,11 +14,11 @@ namespace ced
     namespace gpu
     {
         __host__ void createFirstTri(
-            const thrust::device_vector<Point>& d_pts,
+            const thrust::device_vector<float2>& d_pts,
             int& i0, 
             int& i1, 
             int& i2, 
-            const Point& centroid )
+            const float2& centroid )
         {
             // first point
             thrust::device_vector<float> d_dist(d_pts.size());
@@ -36,8 +36,8 @@ namespace ced
             thrust::device_vector<float> d_rad(d_pts.size());
             d_itr.resize(d_pts.size()); 
             thrust::sequence(d_itr.begin(), d_itr.end());
-            Point v0 = d_pts[i0];
-            Point v1 = d_pts[i1];
+            float2 v0 = d_pts[i0];
+            float2 v1 = d_pts[i1];
             thrust::transform(thrust::device, d_pts.begin(), d_pts.end(), d_rad.begin(), circumRadius(v0, v1));
             start  = thrust::make_zip_iterator(thrust::make_tuple(d_rad.begin(), d_itr.begin()));
             finish = thrust::make_zip_iterator(thrust::make_tuple(d_rad.end(), d_itr.end()));

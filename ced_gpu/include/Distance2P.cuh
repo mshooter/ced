@@ -1,8 +1,6 @@
 #ifndef DISTANCE2P_CUH_INCLUDED
 #define DISTANCE2P_CUH_INCLUDED
 
-#include "Point.cuh"
-
 namespace ced
 {
     namespace gpu
@@ -10,12 +8,12 @@ namespace ced
         template <typename T>
         struct distance2P
         {
-            const Point cc;
+            const float2 cc;
 
-            distance2P(Point _cc) : cc(_cc) {}
+            distance2P(float2 _cc) : cc(_cc) {}
 
             __host__ __device__
-            T operator()(const Point& ptItr) const 
+            T operator()(const float2& ptItr) const 
             {
                 T distanceX = cc.x - ptItr.x; 
                 T distanceY = cc.y - ptItr.y;

@@ -1,7 +1,6 @@
 #ifndef CIRCUMCIRCLE_CUH_INCLUDED
 #define CIRCUMCIRCLE_CUH_INCLUDED
     
-#include "Point.cuh"
 #include <limits>
 
 namespace ced
@@ -10,11 +9,11 @@ namespace ced
     {
         struct circumRadius
         {
-            const Point A;
-            const Point B;
-            circumRadius(Point _p0, Point _p1) : A(_p0), B(_p1) {}
+            const float2 A;
+            const float2 B;
+            circumRadius(float2 _p0, float2 _p1) : A(_p0), B(_p1) {}
             __host__ __device__
-            float operator()(const Point& C)
+            float operator()(const float2& C)
             {
                 float delta_abx = B.x-A.x;
                 float delta_aby = B.y-A.y;
@@ -39,6 +38,8 @@ namespace ced
                 } 
             }
         };
+        
+        __host__ __device__ float2 circumCenter(const float2& A, const float2& B, const float2& C);
     }
 }
 

@@ -8,7 +8,6 @@
 #include <thrust/iterator/zip_iterator.h>
 #include <thrust/tuple.h>
 #include <vector>
-#include "Point.cuh"
 
 using namespace ced::gpu;
 // create first triangle
@@ -16,12 +15,12 @@ TEST(Triangulation, findPointClosestToSeed)
 {
     float cx  = 1.0f;
     float cy  = 0.5f;
-    Point cc = {cx, cy};
-    Point p0 = {0.0f, 0.0f};
-    Point p1 = {1.0f, 1.0f};
-    Point p2 = {2.0f, 0.0f};
-    std::vector<Point> h_pts = {p0, p1, p2};
-    thrust::device_vector<Point> d_pts = h_pts;
+    float2 cc = make_float2(cx, cy);
+    float2 p0 = make_float2(0.0f, 0.0f);
+    float2 p1 = make_float2(1.0f, 1.0f);
+    float2 p2 = make_float2(2.0f, 0.0f);
+    std::vector<float2> h_pts = {p0, p1, p2};
+    thrust::device_vector<float2> d_pts = h_pts;
     thrust::device_vector<float> d_dist(h_pts.size());
 
     thrust::transform(thrust::device, d_pts.begin(), d_pts.end(), d_dist.begin(), distance2P<float>(cc));
@@ -57,13 +56,13 @@ TEST(Triangulation, findSecondPointClosestToSeed)
     float cx  = 1.0f;
     float cy  = 0.5f;
     int i0 = 1;
-    Point cc = {cx, cy};
-    Point p0 = {0.0f, 0.0f};
-    Point p1 = {1.0f, 1.0f};
-    Point p2 = {2.0f, 0.0f};
-    std::vector<Point> h_pts = {p0, p1, p2};
+    float2 cc = make_float2(cx, cy);
+    float2 p0 = make_float2(0.0f, 0.0f);
+    float2 p1 = make_float2(1.0f, 1.0f);
+    float2 p2 = make_float2(2.0f, 0.0f);
+    std::vector<float2> h_pts = {p0, p1, p2};
     // init device
-    thrust::device_vector<Point> d_pts = h_pts;
+    thrust::device_vector<float2> d_pts = h_pts;
     thrust::device_vector<float> d_dist(h_pts.size());
     thrust::device_vector<int> d_itr(h_pts.size());
     thrust::sequence(d_itr.begin(), d_itr.end());
@@ -87,11 +86,11 @@ TEST(Triangulation, findSecondPointClosestToSeed)
 }
 struct circumRadius
 {
-    const Point A;
-    const Point B;
-    circumRadius(Point _p0, Point _p1) : A(_p0), B(_p1) {}
+    const float2 A;
+    const float2 B;
+    circumRadius(float2 _p0, float2 _p1) : A(_p0), B(_p1) {}
     __host__ __device__
-    float operator()(const Point& C)
+    float operator()(const float2& C)
     {
         float delta_abx = B.x-A.x;
         float delta_aby = B.y-A.y;
@@ -123,13 +122,13 @@ TEST(Triangulation, findThirdPointCircum)
     float cy  = 0.5f;
     int i0 = 1;
     int i1 = 0;
-    Point cc = {cx, cy};
-    Point p0 = {0.0f, 0.0f};
-    Point p1 = {1.0f, 1.0f};
-    Point p2 = {2.0f, 0.0f};
-    std::vector<Point> h_pts = {p0, p1, p2};
+    float2 cc = make_float2(cx, cy);
+    float2 p0 = make_float2(0.0f, 0.0f);
+    float2 p1 = make_float2(1.0f, 1.0f);
+    float2 p2 = make_float2(2.0f, 0.0f);
+    std::vector<float2> h_pts = {p0, p1, p2};
     // init device
-    thrust::device_vector<Point> d_pts = h_pts;
+    thrust::device_vector<float2> d_pts = h_pts;
     thrust::device_vector<float> d_rad(h_pts.size());
     thrust::device_vector<int> d_itr(h_pts.size());
     thrust::sequence(d_itr.begin(), d_itr.end());
@@ -137,8 +136,8 @@ TEST(Triangulation, findThirdPointCircum)
     ASSERT_EQ(h_itr[0],0);
     ASSERT_EQ(h_itr[1],1);
     ASSERT_EQ(h_itr[2],2);
-    Point v0 = d_pts[i0];
-    Point v1 = d_pts[i1];
+    float2 v0 = d_pts[i0];
+    float2 v1 = d_pts[i1];
     // calculate all circumradiuses of three points, of the two first points you find and then the current point
     thrust::transform(thrust::device, d_pts.begin(), d_pts.end(), d_rad.begin(), circumRadius(v0, v1));
     std::vector<float> h_rad(d_rad.begin(), d_rad.end());
@@ -157,15 +156,15 @@ TEST(Triangulation, functiongpu)
 {
     float cx  = 1.0f;
     float cy  = 0.5f;
-    int i0 = std::numeric_limits<float>::max();
-    int i1 = std::numeric_limits<float>::max();
-    int i2 = std::numeric_limits<float>::max();
-    Point cc = {cx, cy};
-    Point p0 = {0.0f, 0.0f};
-    Point p1 = {1.0f, 1.0f};
-    Point p2 = {2.0f, 0.0f};
-    std::vector<Point> h_pts = {p0, p1, p2};
-    thrust::device_vector<Point> d_pts = h_pts;
+    int i0 = -1;
+    int i1 = -1;
+    int i2 = -1;
+    float2 cc = make_float2(cx, cy);
+    float2 p0 = make_float2(0.0f, 0.0f);
+    float2 p1 = make_float2(1.0f, 1.0f);
+    float2 p2 = make_float2(2.0f, 0.0f);
+    std::vector<float2> h_pts = {p0, p1, p2};
+    thrust::device_vector<float2> d_pts = h_pts;
     createFirstTri(d_pts, i0, i1, i2, cc); 
     EXPECT_EQ(i0,1);
     EXPECT_EQ(i1,0);

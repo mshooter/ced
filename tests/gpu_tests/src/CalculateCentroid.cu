@@ -11,7 +11,7 @@ TEST(CalculateCentroid, calculateCentroid)
     std::vector<float> h_y = {0.0f, 1.0f, 0.0f};
     thrust::device_vector<float> d_x = h_x;
     thrust::device_vector<float> d_y = h_y;
-    ced::gpu::Point centroid = ced::gpu::calculateCentroid(d_x, d_y);
+    float2 centroid = ced::gpu::calculateCentroid(d_x, d_y);
     EXPECT_EQ(centroid.x, 1.0f);    
     EXPECT_EQ(centroid.y, 0.5f);    
     float minx = d_x[thrust::min_element(thrust::device, d_x.begin(), d_x.end())- d_x.begin()];

@@ -2,14 +2,18 @@
 #define TRIANGULATION_CUH_INCLUDED
 
 #include <thrust/device_vector.h>
-#include "Point.hpp"
+#include "Point.cuh"
 
 namespace ced
-{
+{   
     namespace gpu
     {
-        __host__ void createFirstTri(thrust::device_vector<Point> pts, unsigned int& i0, unsigned int& i1, unsigned int& i2, Point centroid);
-        __device__ unsigned int hashKey(Point p, Point cc, unsigned int hashSize);
+        __host__ void createFirstTri(
+            const thrust::device_vector<Point>& d_pts,
+            int& i0, 
+            int& i1, 
+            int& i2, 
+            const Point& centroid );
     }
 }
 

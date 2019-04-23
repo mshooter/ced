@@ -8,3 +8,4 @@ constexpr unsigned int INVALID_IDX = std::numeric_limits<unsigned int>::max();
 
 
 #endif // PARAMS_H_INCLUDED
+

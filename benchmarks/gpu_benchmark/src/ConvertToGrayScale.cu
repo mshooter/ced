@@ -33,4 +33,4 @@ static void ConvertToGrayScale(benchmark::State& state)
         state.SetIterationTime(elapsed_seconds.count());
     }
 }
-BENCHMARK(ConvertToGrayScale)->Range(1, 1<<17)->UseManualTime();
+BENCHMARK(ConvertToGrayScale)->UseManualTime();

@@ -1,6 +1,8 @@
 #ifndef POINT_CUH_INCLUDED
 #define POINT_CUH_INCLUDED
 
+#include "params.hpp"
+
 namespace ced
 {
     namespace gpu
@@ -17,11 +19,11 @@ namespace ced
             //  ----------------------------------------------------------
             /// @build: default constructor
             //  ----------------------------------------------------------
-            __host__ __device__ Point() = default;
+            __host__ __device__ Point() {;}
             //  ----------------------------------------------------------
             /// @build: assign operator 
             //  ----------------------------------------------------------
-            __host__ __device__ Point& operator=(const Point&) = default;
+            Point& operator=(const Point&) = default;
             //  ----------------------------------------------------------
             /// @build: compare operator 
             //  ----------------------------------------------------------

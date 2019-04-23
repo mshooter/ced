@@ -1,17 +1,16 @@
 #include "CalculateCentroid.cuh"
-
 #include <thrust/extrema.h>
 
 namespace ced
 {
     namespace gpu
     {
-        __host__ Point calculateCentroid(thrust::device_vector<float> x, thrust::device_vector<float> y)
+        __host__ Point calculateCentroid(const thrust::device_vector<float>& d_x, const thrust::device_vector<float>& d_y)
         {
-            float minx = thrust::min_element(x.begin(), x.end());
-            float maxx = thrust::max_element(x.begin(), x.end());
-            float miny = thrust::min_element(y.begin(), y.end());
-            float maxy = thrust::max_element(y.begin(), y.end());
+            float minx = d_x[thrust::min_element(thrust::device, d_x.begin(), d_x.end())- d_x.begin()];
+            float maxx = d_x[thrust::max_element(thrust::device, d_x.begin(), d_x.end())- d_x.begin()];
+            float miny = d_y[thrust::min_element(thrust::device, d_y.begin(), d_y.end())- d_y.begin()];
+            float maxy = d_y[thrust::max_element(thrust::device, d_y.begin(), d_y.end())- d_y.begin()];
 
             float cx = (minx + maxx) / 2.0f;
             float cy = (miny + maxy) / 2.0f;

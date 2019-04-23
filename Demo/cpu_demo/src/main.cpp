@@ -35,7 +35,6 @@ int main()
     // convert to gray scale
     img.convertToGrayscale(); 
     img.saveImage(outgray);
-    std::cout<<"oie"<<std::endl;
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
     img.saveImage(outgaussian);

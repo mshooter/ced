@@ -1,4 +1,5 @@
 #include "Image.hpp"
+
 namespace ced
 {
     namespace cpu
@@ -51,21 +52,22 @@ namespace ced
             int nwidth = m_width - _dimension  + 1;
             int nheight = m_height - _dimension + 1;
             std::vector<float> nvimage (nheight*nwidth*m_channels, 0.0f);
+
             for(int x=0; x < nheight * nwidth; ++x)
             {
-                int i = x / m_width;
-                int j = x % m_width;
-                for(int h=i; h < i + _dimension; ++h)
+                int i = x / nwidth;
+                int j = (x % nwidth);
+                for(int y = 0; y < _dimension * _dimension; ++y)
                 {
-                     for(int w=j; w < j + _dimension; ++w)
-                     {
-                          int base = (j+i*nwidth)* m_channels;
-                          int ibase = (w+h*m_width) * m_channels;
-                          int fbase = ((w-j) + (h-i)* _dimension);
-                          nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
-                          nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
-                          nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
-                     }
+                    int h = y / _dimension;
+                    int w = (y %_dimension);
+                    // red green blue
+                    int base = x * m_channels;
+                    int ibase = ((w+j) + (h+i) * m_width) * m_channels;
+                    int fbase = y;
+                    nvimage[base+0] +=  m_pixelData[ibase+0] * _filter[fbase];
+                    nvimage[base+1] +=  m_pixelData[ibase+1] * _filter[fbase];
+                    nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
                 }
             }
             m_pixelData = std::move(nvimage);

@@ -2,12 +2,13 @@
 #define CALCULATECENTROID_CUH_INCLUDED
 
 #include <thrust/device_vector.h>
+#include "Point.cuh"
 
 namespace ced
 {
     namespace gpu
     {
-        __host__ Point calculateCentroid(thrust::device_vector<Point> pts);
+        __host__ Point calculateCentroid(const thrust::device_vector<float>& d_x, const thrust::device_vector<float>& d_y);
     }
 }
 

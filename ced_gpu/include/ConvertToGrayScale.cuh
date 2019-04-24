@@ -7,7 +7,7 @@ namespace ced
 {
     namespace gpu
     {
-        __host__ void converToGrayScale(
+            void convertToGrayScale(
             thrust::device_vector<float>& red,
             thrust::device_vector<float>& green,
             thrust::device_vector<float>& blue

@@ -4,44 +4,33 @@
 #include <thrust/device_vector.h>
 
 #include "ParamsImageIO.hpp"
-#include "../../ced_cpu/include/Image.hpp"
 
 #include "ConvertToGrayScale.cuh"
+#include "GaussianFilter.cuh"
+#include "Image.hpp"
 
 int main(int argc, char** argv)
 {
     //  ------------------------------------init image------------------------------------
-    ced::cpu::Image img(filename);
+    ced::gpu::Image img(filename);
     std::vector<float> originalPixelData = img.getPixelData();
     unsigned int width = img.getWidth();
     unsigned int height = img.getHeight();
     unsigned int num_pixels = width * height;
-    thrust::device_vector<float> red(num_pixels); 
-    thrust::device_vector<float> green(num_pixels); 
-    thrust::device_vector<float> blue(num_pixels); 
-    for(unsigned int id = 0; id < num_pixels; ++id)
-    {
-        red[id] = originalPixelData[id * 3 + 0];
-        green[id] = originalPixelData[id * 3 + 1];
-        blue[id] = originalPixelData[id * 3 + 2];
-    }
-    ced::gpu::converToGrayScale(red, green, blue);    
-    std::vector<float> h_red(num_pixels);
-    std::vector<float> h_green(num_pixels);
-    std::vector<float> h_blue(num_pixels);
-    thrust::copy(red.begin(), red.end(), h_red.begin());    
-    thrust::copy(green.begin(), green.end(), h_green.begin());    
-    thrust::copy(blue.begin(), blue.end(), h_blue.begin());    
-    for(unsigned int id = 0; id < num_pixels; ++id)
-    {
-        originalPixelData[id * 3 + 0] = h_red[id];
-        originalPixelData[id * 3 + 1] = h_green[id];
-        originalPixelData[id * 3 + 2] = h_blue[id];
-    }
-    img.setPixelData(originalPixelData);
-    img.saveImage(outgray);
+    img.convertToGrayscale();
+    img.saveImage(outgray, true);
     // ----------------------------------image -> edge detection--------------------------
     // -----------------------------------gaussian blur-----------------------------------
+    std::vector<float> gfilter = ced::gpu::gaussianFilter(5, 1.4f);
+    img.applyFilter(gfilter, 5);
+    //img.saveImage(outgaussian, false);
+    std::vector<float> kernelX = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+    std::vector<float> kernelY = {-1, -2, -1,
+                                   0,  0,  0,
+                                   1,  2,  1};
+    img.applyFilter(kernelX, 3);
+    img.applyFilter(kernelY, 3);
+    img.saveImage(outgaussian, false);
     // -----------------------------------gray scale-------------------------------------- 
     // -----------------------------------calculate gradients-----------------------------
     // -----------------------------------nonmaximumSupression----------------------------

@@ -31,12 +31,42 @@ struct multiplyConst
     
 };
 
-
+#include "GaussianFilter.cuh"
 TEST(GaussianFilter, gaussianfilterThrust)
 {
     int _dimension = 5;
     float _sigma = 1.4f;
     const float sigma2 = _sigma * _sigma;
+    std::vector<float> gfilter = ced::gpu::gaussianFilter(_dimension, _sigma);
+    EXPECT_NEAR(gfilter[0], 0.0128f, 0.01f);
+    EXPECT_NEAR(gfilter[1], 0.0267f, 0.01f);
+    EXPECT_NEAR(gfilter[2], 0.0341f, 0.01f);
+    EXPECT_NEAR(gfilter[3], 0.0257f, 0.01f);
+    EXPECT_NEAR(gfilter[4], 0.0128f, 0.01f);
+ 
+    EXPECT_NEAR(gfilter[5], 0.0267f, 0.01f);
+    EXPECT_NEAR(gfilter[6], 0.0556f, 0.01f);
+    EXPECT_NEAR(gfilter[7], 0.0711f, 0.01f);
+    EXPECT_NEAR(gfilter[8], 0.0556f, 0.01f);
+    EXPECT_NEAR(gfilter[9], 0.0267f, 0.01f);
+    
+    EXPECT_NEAR(gfilter[10], 0.0341f, 0.01f);
+    EXPECT_NEAR(gfilter[11], 0.0711f, 0.01f);
+    EXPECT_NEAR(gfilter[12], 0.0908f, 0.01f);
+    EXPECT_NEAR(gfilter[13], 0.0711f, 0.01f);
+    EXPECT_NEAR(gfilter[14], 0.0341f, 0.01f);
+ 
+    EXPECT_NEAR(gfilter[15], 0.0267f, 0.01f);
+    EXPECT_NEAR(gfilter[16], 0.0556f, 0.01f);
+    EXPECT_NEAR(gfilter[17], 0.0711f, 0.01f);
+    EXPECT_NEAR(gfilter[18], 0.0556f, 0.01f);
+    EXPECT_NEAR(gfilter[19], 0.0267f, 0.01f);
+ 
+    EXPECT_NEAR(gfilter[20], 0.0128f, 0.01f);
+    EXPECT_NEAR(gfilter[21], 0.0267f, 0.01f);
+    EXPECT_NEAR(gfilter[22], 0.0341f, 0.01f);
+    EXPECT_NEAR(gfilter[23], 0.0267f, 0.01f);
+    EXPECT_NEAR(gfilter[24], 0.0128f, 0.01f);
     thrust::device_vector<float> filter(_dimension * _dimension);
     thrust::device_vector<int> itr(_dimension * _dimension);
     thrust::sequence(itr.begin(), itr.end());
@@ -52,7 +82,7 @@ TEST(GaussianFilter, gaussianfilterThrust)
     EXPECT_NEAR(h_filter[2], 0.0341f, 0.01f);
     EXPECT_NEAR(h_filter[3], 0.0257f, 0.01f);
     EXPECT_NEAR(h_filter[4], 0.0128f, 0.01f);
-
+ 
     EXPECT_NEAR(h_filter[5], 0.0267f, 0.01f);
     EXPECT_NEAR(h_filter[6], 0.0556f, 0.01f);
     EXPECT_NEAR(h_filter[7], 0.0711f, 0.01f);
@@ -64,13 +94,13 @@ TEST(GaussianFilter, gaussianfilterThrust)
     EXPECT_NEAR(h_filter[12], 0.0908f, 0.01f);
     EXPECT_NEAR(h_filter[13], 0.0711f, 0.01f);
     EXPECT_NEAR(h_filter[14], 0.0341f, 0.01f);
-
+ 
     EXPECT_NEAR(h_filter[15], 0.0267f, 0.01f);
     EXPECT_NEAR(h_filter[16], 0.0556f, 0.01f);
     EXPECT_NEAR(h_filter[17], 0.0711f, 0.01f);
     EXPECT_NEAR(h_filter[18], 0.0556f, 0.01f);
     EXPECT_NEAR(h_filter[19], 0.0267f, 0.01f);
-
+ 
     EXPECT_NEAR(h_filter[20], 0.0128f, 0.01f);
     EXPECT_NEAR(h_filter[21], 0.0267f, 0.01f);
     EXPECT_NEAR(h_filter[22], 0.0341f, 0.01f);

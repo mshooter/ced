@@ -6,8 +6,16 @@ namespace ced
 {
     namespace cpu
     {
-        void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelData, std::vector<float>& _orientations)
+        void calculateGradients(int& _height,
+                                int& _width,
+                                std::vector<float>& _pixelData, 
+                                std::vector<float>& _orientations)
         {
+            // initialise
+            _height -= 2; 
+            const int nwidth = _width - 2;
+            _orientations.resize(_height * nwidth);
+            
             // sobel edge detector filters 
             const std::vector<float> kernelX = {-1, 0, 1,
                                                 -2, 0, 2,
@@ -17,9 +25,7 @@ namespace ced
                                                  0,  0,  0,
                                                  1,  2,  1};
             
-            _height -= 2; 
-            const int nwidth = _width - 2;
-            _orientations.resize(_height * nwidth);
+            // start manipulating the data
             for(int x = 0; x < _height* nwidth; ++x)
             {
                 int i = x / nwidth;
@@ -36,12 +42,12 @@ namespace ced
                     Gy +=  (_pixelData[ibase+0] + _pixelData[ibase+1] + _pixelData[ibase+2]) * kernelY[fbase];
                 }
                 // 3 is the channels
-                int base = x * 3;
-                float magnitude = std::abs(Gx) + std::abs(Gy); 
-                //should be turned off
-                _pixelData[base+0] = magnitude;
-                _pixelData[base+1] = magnitude;
-                _pixelData[base+2] = magnitude;
+                // int base = x * 3;
+                // float magnitude = std::abs(Gx) + std::abs(Gy); 
+                // should be turned off because you not showing the gradients
+                // _pixelData[base+0] = magnitude;
+                // _pixelData[base+1] = magnitude;
+                // _pixelData[base+2] = magnitude;
      
                 float pi = 3.14f;
                 float pi8 = pi/8.0f;
@@ -61,7 +67,7 @@ namespace ced
                 _orientations.push_back(theta);
      
             } 
-            _pixelData.resize(nwidth * _height *3);
+            //_pixelData.resize(nwidth * _height *3);
             _width = std::move(nwidth);
         }
     }

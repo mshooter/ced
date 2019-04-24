@@ -8,7 +8,7 @@
     const char *outgradient = "/Users/moirashooter/Desktop/Cat/nonMaximumSupressioncat.jpg";
     const char *finalout    = "/Users/moirashooter/Desktop/Cat/edge_image.jpg";
 #else
-    const char *filename    = "/home/s4928793/Desktop/Cat/logo.jpg";
+    const char *filename    = "/home/s4928793/Desktop/Cat/cat.jpg";
     const char *outgray     = "/home/s4928793/Desktop/Cat/graycat.jpg";
     const char *outgaussian = "/home/s4928793/Desktop/Cat/gaussiancat.jpg";
     const char *outgradient = "/home/s4928793/Desktop/Cat/nonMaximumSupressioncat.jpg";

@@ -47,7 +47,6 @@ namespace ced
             m_channels = std::move(_channels);
         }
         //----------------------------------------------------------------------------
-        // TODO: first thing  
         void Image::applyFilter(std::vector<float> _filter, int _dimension)
         {
             int nwidth = m_width - _dimension  + 1;
@@ -71,6 +70,7 @@ namespace ced
                     nvimage[base+2] +=  m_pixelData[ibase+2] * _filter[fbase];
                 }
             }
+            m_pixelData.resize(nheight*nwidth*m_channels);
             m_pixelData = std::move(nvimage);
             m_width = std::move(nwidth);
             m_height = std::move(nheight);

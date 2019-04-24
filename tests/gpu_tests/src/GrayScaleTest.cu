@@ -51,7 +51,7 @@ TEST(Grayscale, grayscale)
     thrust::device_vector<float> result(3);
     thrust::fill(result.begin(), result.end(), 0);
     
-    ced::gpu::converToGrayScale(red, green, blue);
+    ced::gpu::convertToGrayScale(red, green, blue);
     std::vector<float> hred(red.begin(), red.end()); 
     std::vector<float> hgreen(green.begin(), green.end()); 
     std::vector<float> hblue(blue.begin(), blue.end()); 

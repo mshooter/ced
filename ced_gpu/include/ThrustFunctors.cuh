@@ -7,6 +7,10 @@ namespace ced
 {
     namespace gpu
     {
+        // TODO: might move this function to the create triangle file
+        //  ------------------------------------------------------------------------------------------ 
+        // @build : get the minimum if
+        //  ------------------------------------------------------------------------------------------ 
         struct min_if
         {
             const int i0; 
@@ -26,6 +30,19 @@ namespace ced
             }
         };
         //  ------------------------------------------------------------------------------------------ 
+        // @build : multiply by constant
+        //  ------------------------------------------------------------------------------------------ 
+        struct multiplyConst
+        {
+            const float a; 
+            multiplyConst(float _a) : a(_a) {}
+            __host__ __device__ 
+            float operator()(const float& id)
+            {
+                return id / a;
+            }
+    
+        };
     }
 }
 

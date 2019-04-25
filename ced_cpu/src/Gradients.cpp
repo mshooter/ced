@@ -8,7 +8,9 @@ namespace ced
     {
         void calculateGradients(int& _height,
                                 int& _width,
-                                std::vector<float>& _pixelData, 
+                                std::vector<float>& _red, 
+                                std::vector<float>& _green, 
+                                std::vector<float>& _blue, 
                                 std::vector<float>& _orientations)
         {
             // initialise
@@ -36,18 +38,18 @@ namespace ced
                 {
                     int h = y / 3;
                     int w = y % 3;
-                    int ibase = ((w+j)+(h+i)*_width) * 3;
+                    int ibase = ((w+j)+(h+i)*_width);
                     int fbase = y;
-                    Gx +=  (_pixelData[ibase+0] + _pixelData[ibase+1] + _pixelData[ibase+2]) * kernelX[fbase];
-                    Gy +=  (_pixelData[ibase+0] + _pixelData[ibase+1] + _pixelData[ibase+2]) * kernelY[fbase];
+                    Gx +=  (_red[ibase] + _green[ibase] + _blue[ibase]) * kernelX[fbase];
+                    Gy +=  (_red[ibase] + _green[ibase] + _blue[ibase]) * kernelY[fbase];
                 }
                 // 3 is the channels
-                // int base = x * 3;
-                // float magnitude = std::abs(Gx) + std::abs(Gy); 
-                // should be turned off because you not showing the gradients
-                // _pixelData[base+0] = magnitude;
-                // _pixelData[base+1] = magnitude;
-                // _pixelData[base+2] = magnitude;
+                int base = x;
+                float magnitude = std::abs(Gx) + std::abs(Gy); 
+                //should be turned off because you not showing the gradients
+                _red[base] = magnitude;
+                _green[base] = magnitude;
+                _blue[base] = magnitude;
      
                 float pi = 3.14f;
                 float pi8 = pi/8.0f;
@@ -67,7 +69,9 @@ namespace ced
                 _orientations.push_back(theta);
      
             } 
-            //_pixelData.resize(nwidth * _height *3);
+            _red.resize(nwidth * _height);
+            _green.resize(nwidth * _height);
+            _blue.resize(nwidth * _height);
             _width = std::move(nwidth);
         }
     }

@@ -2,13 +2,14 @@
 #define ASSIGNCOLTOTRI_H_INCLUDED
 
 #include <vector>
-#include "Point.hpp"
 
 namespace ced
 {
     namespace cpu
     {
-        void assignColourToTri( std::vector<float>& _imgData, 
+        void assignColourToTri( std::vector<float>& red, 
+                                std::vector<float>& green,
+                                std::vector<float>& blue,
                                 const std::vector<unsigned int>& pixIDs,
                                 const float& r,
                                 const float& g, 

@@ -32,6 +32,9 @@ namespace ced
                 int getWidth();
                 int getHeight();
                 int getChannels();
+                std::vector<float> getRedChannel();
+                std::vector<float> getGreenChannel();
+                std::vector<float> getBlueChannel();
                 void saveImage(const char* _path, bool _rgb);
         
             private:

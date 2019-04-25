@@ -95,7 +95,8 @@ namespace ced
                                                  _dimension);
             cudaDeviceSynchronize();
             // --------------------back to host---------------------------------------
-            std::vector<float> h_nimage(d_nimage.begin(), d_nimage.end());
+            std::vector<float> h_nimage(nwidth * nheight);
+            thrust::copy(d_nimage.begin(), d_nimage.end(), h_nimage.begin());
             // ------------------init back to host------------------------------------
             m_pixelData.resize(nheight*nwidth*m_channels);
             m_pixelData = std::move(h_nimage);
@@ -131,9 +132,20 @@ namespace ced
         {
             return m_height;
         }
-        int Image::getChannels()
+        //----------------------------------------------------------------------------
+        std::vector<float> Image::getRedChannel()
         {
-            return m_channels;
+            return m_red;
+        }
+        //----------------------------------------------------------------------------
+        std::vector<float> Image::getGreenChannel()
+        {
+            return m_green;
+        }
+        //----------------------------------------------------------------------------
+        std::vector<float> Image::getBlueChannel()
+        {
+            return m_blue;
         }
         //----------------------------------------------------------------------------
         void Image::saveImage(const char* _path, bool _rgb)

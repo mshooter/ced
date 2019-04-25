@@ -4,7 +4,9 @@ namespace ced
 {
     namespace cpu
     {
-        void assignColourToTri( std::vector<float>& _imgData, 
+        void assignColourToTri( std::vector<float>& red, 
+                                std::vector<float>& green,
+                                std::vector<float>& blue,
                                 const std::vector<unsigned int>& pixIDs,
                                 const float& r,
                                 const float& g, 
@@ -12,9 +14,9 @@ namespace ced
         {
             for(auto const& id : pixIDs)
             {
-                _imgData[id*3 + 0] = r; 
-                _imgData[id*3 + 1] = g;
-                _imgData[id*3 + 2] = b;
+                red[id] = r; 
+                green[id] = g;
+                blue[id] = b;
             }
         }
     }

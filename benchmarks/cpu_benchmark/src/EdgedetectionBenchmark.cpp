@@ -72,19 +72,23 @@ static void BM_calculateGradients(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    // sobel operator to get magnitude and orientation
-    // need to work on this  
+
     for(auto _ : state)
     {
         int height = img.getHeight();
         int width = img.getWidth();
         std::vector<float> orientation;
-        std::vector<float> magnitude = img.getPixelData();
-        calculateGradients(height,
-                           width, 
-                           magnitude,
-                           orientation
-                           );
+        std::vector<float> red   = img.getRedChannel();
+        std::vector<float> green = img.getBlueChannel();
+        std::vector<float> blue  = img.getGreenChannel();
+        ced::cpu::calculateGradients(
+                              height,
+                              width, 
+                              red, 
+                              green, 
+                              blue,
+                              orientation
+                              );
     }
 }
 BENCHMARK(BM_calculateGradients);
@@ -101,20 +105,28 @@ static void BM_nonMaxSup(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
     for(auto _ : state)
     {
-        ced::cpu::nonMaximumSupression(height, width, orientation, magnitude);
+        ced::cpu::nonMaximumSupression( height, 
+                                        width, 
+                                        orientation, 
+                                        red,
+                                        green,
+                                        blue);
     }
 }
 BENCHMARK(BM_nonMaxSup);
@@ -131,21 +143,37 @@ static void BM_hysterysis(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
-    nonMaximumSupression(height, width, orientation, magnitude);
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
+    ced::cpu::nonMaximumSupression( height, 
+                                    width, 
+                                    orientation, 
+                                    red,
+                                    green,
+                                    blue);
     for(auto _ : state)
     {
-        hysterysis(magnitude, height, width, 0.2f, 0.3f);
+   
+        ced::cpu::hysterysis(   red,
+                                green,
+                                blue, 
+                                height, 
+                                width, 
+                                0.4f, 
+                                0.7f);
+ 
     }
 }
 BENCHMARK(BM_hysterysis);
@@ -162,26 +190,41 @@ static void BM_getWhitePixels(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
-    nonMaximumSupression(height, width, orientation, magnitude);
-    hysterysis(magnitude, height, width, 0.2f, 0.3f);
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
+    ced::cpu::nonMaximumSupression( height, 
+                                    width, 
+                                    orientation, 
+                                    red,
+                                    green,
+                                    blue);
+    ced::cpu::hysterysis(   red,
+                            green,
+                            blue, 
+                            height, 
+                            width, 
+                            0.4f, 
+                            0.7f);
+
     for(auto _ : state)
     {
         std::vector<Point> white_verts; 
         std::random_device rd;
         std::mt19937 k(rd());
         std::shuffle(white_verts.begin(), white_verts.end(), k);
-        getWhitePixelsCoords(white_verts, magnitude, height, width);
+        getWhitePixelsCoords(white_verts, red, green, blue, height, width);
     }
 }
 BENCHMARK(BM_getWhitePixels);
@@ -198,28 +241,41 @@ static void BM_triangulateWhitePix(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
-    nonMaximumSupression(height, width, orientation, magnitude);
-    hysterysis(magnitude, height, width, 0.2f, 0.3f);
-
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
+    ced::cpu::nonMaximumSupression( height, 
+                                    width, 
+                                    orientation, 
+                                    red,
+                                    green,
+                                    blue);
+    ced::cpu::hysterysis(   red,
+                            green,
+                            blue, 
+                            height, 
+                            width, 
+                            0.4f, 
+                            0.7f);
     std::vector<Point> white_verts; 
     std::random_device rd;
     std::mt19937 k(rd());
     std::shuffle(white_verts.begin(), white_verts.end(), k);
-    getWhitePixelsCoords(white_verts, magnitude, height, width);
+    getWhitePixelsCoords(white_verts, red, green, blue, height, width);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
     for(auto _ : state)
     {
-        std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+300);;
         std::vector<unsigned int> triangles;
         triangulate(nwhite_verts, triangles); 
     }
@@ -232,7 +288,7 @@ static void BM_assignPixToTri(benchmark::State& state)
     using namespace ced::cpu;
     Image img(path);
     unsigned int o_height = img.getHeight();
-    unsigned int o_width = img.getWidth();
+    unsigned int o_width = img.getWidth(); 
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = gaussianFilter(gDimension, 1.4f); 
@@ -241,28 +297,42 @@ static void BM_assignPixToTri(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
-    nonMaximumSupression(height, width, orientation, magnitude);
-    hysterysis(magnitude, height, width, 0.2f, 0.3f);
-
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
+    ced::cpu::nonMaximumSupression( height, 
+                                    width, 
+                                    orientation, 
+                                    red,
+                                    green,
+                                    blue);
+    ced::cpu::hysterysis(   red,
+                            green,
+                            blue, 
+                            height, 
+                            width, 
+                            0.4f, 
+                            0.7f);
     std::vector<Point> white_verts; 
     std::random_device rd;
     std::mt19937 k(rd());
     std::shuffle(white_verts.begin(), white_verts.end(), k);
-    getWhitePixelsCoords(white_verts, magnitude, height, width);
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+300);;
+    getWhitePixelsCoords(white_verts, red, green, blue, height, width);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
     std::vector<unsigned int> triangles;
     triangulate(nwhite_verts, triangles); 
+
     for(auto _ : state)
     {
         std::multimap<unsigned int, unsigned int> pixIDdepTri;
@@ -276,9 +346,11 @@ static void BM_assignColToPix(benchmark::State& state)
 {
     using namespace ced::cpu;
     Image img(path);
-    std::vector<float> originalPixelData = img.getPixelData();
     unsigned int o_height = img.getHeight();
-    unsigned int o_width = img.getWidth();
+    unsigned int o_width = img.getWidth(); 
+    std::vector<float> o_red = img.getRedChannel();
+    std::vector<float> o_green = img.getGreenChannel();
+    std::vector<float> o_blue  = img.getBlueChannel();
     // create filter gaussian blur
     const int gDimension = 5;
     std::vector<float> gfilter = gaussianFilter(gDimension, 1.4f); 
@@ -287,34 +359,47 @@ static void BM_assignColToPix(benchmark::State& state)
     //img.saveImage(outgray);
     // apply gaussian filter
     img.applyFilter(gfilter, gDimension);
-    //img.saveImage(outgaussian);
-    // sobel operator to get magnitude and orientation
     int height = img.getHeight();
     int width = img.getWidth();
     std::vector<float> orientation;
-    std::vector<float> magnitude = img.getPixelData();
-    calculateGradients(height,
-                       width, 
-                       magnitude,
-                       orientation
-                       );
-    nonMaximumSupression(height, width, orientation, magnitude);
-    hysterysis(magnitude, height, width, 0.2f, 0.3f);
-
+    std::vector<float> red   = img.getRedChannel();
+    std::vector<float> green = img.getBlueChannel();
+    std::vector<float> blue  = img.getGreenChannel();
+    ced::cpu::calculateGradients(
+                          height,
+                          width, 
+                          red, 
+                          green, 
+                          blue,
+                          orientation
+                          );
+    ced::cpu::nonMaximumSupression( height, 
+                                    width, 
+                                    orientation, 
+                                    red,
+                                    green,
+                                    blue);
+    ced::cpu::hysterysis(   red,
+                            green,
+                            blue, 
+                            height, 
+                            width, 
+                            0.4f, 
+                            0.7f);
     std::vector<Point> white_verts; 
     std::random_device rd;
     std::mt19937 k(rd());
     std::shuffle(white_verts.begin(), white_verts.end(), k);
-    getWhitePixelsCoords(white_verts, magnitude, height, width);
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+300);;
+    getWhitePixelsCoords(white_verts, red, green, blue, height, width);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
     std::vector<unsigned int> triangles;
     triangulate(nwhite_verts, triangles); 
     std::multimap<unsigned int, unsigned int> pixIDdepTri;
-    assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
     unsigned int amountOfTri = triangles.size()/3;
+    assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
     for(auto _ : state)
     {
-        assignColToPix(originalPixelData, pixIDdepTri, amountOfTri);
+        assignColToPix(o_red, o_green, o_blue, pixIDdepTri, amountOfTri);
     }
 }
 BENCHMARK(BM_assignColToPix);

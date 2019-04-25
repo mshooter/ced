@@ -6,7 +6,9 @@ namespace ced
     {
         void getWhitePixelsCoords(
                 std::vector<Point>& _whitePixelsCoord, 
-                const std::vector<float>& edgePixData, 
+                const std::vector<float>& _red, 
+                const std::vector<float>& _green, 
+                const std::vector<float>& _blue, 
                 const int& height, 
                 const int& width)
         {
@@ -14,7 +16,7 @@ namespace ced
             {
                 for(int j =0; j < width; ++j)
                 {
-                    if((edgePixData[(j + i * width) * 3 + 0]+edgePixData[(j + i * width) * 3 + 1] + edgePixData[(j + i * width) * 3 + 2])/3.0f > 0 )
+                    if((_red[(j + i * width)]+_green[(j + i * width)] + _blue[(j + i * width)])/3.0f > 0 )
                     {
                         _whitePixelsCoord.push_back(Point(j, i));
                     }

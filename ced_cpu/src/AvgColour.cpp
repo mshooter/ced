@@ -4,7 +4,9 @@ namespace ced
 {
     namespace cpu
     {
-        void avgColour( const std::vector<float>& _imgData, 
+        void avgColour( const std::vector<float>& red, 
+                        const std::vector<float>& green,
+                        const std::vector<float>& blue,
                         const std::vector<unsigned int>& pixIds, 
                         float& r,
                         float& g, 
@@ -13,10 +15,9 @@ namespace ced
             float pixIDSize = pixIds.size();
             for(auto& id : pixIds)
             {
-                r += _imgData[id * 3 + 0];
-                g += _imgData[id * 3 + 1];  
-                b += _imgData[id * 3 + 2];
-
+                r += red[id];
+                g += green[id];  
+                b += blue[id];
             }
             r /= pixIDSize;
             g /= pixIDSize;

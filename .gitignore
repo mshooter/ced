@@ -11,4 +11,5 @@ tests/gpu_tests/gpu_tests
 *lib
 *obj
 *.obj 
+.*
 *Makefile

@@ -10,7 +10,7 @@ namespace ced
     namespace cpu
     {
         void assignPixToTri(
-                std::multimap<unsigned int, unsigned int>& trianglePixels, 
+                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
                 const std::vector<unsigned int>& triangleIDs,
                 const std::vector<Point>& coordinates, 
                 const unsigned int& height,

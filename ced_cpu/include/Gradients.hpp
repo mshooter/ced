@@ -8,7 +8,13 @@ namespace ced
 {
     namespace cpu
     {
-        void calculateGradients(int& _height, int& _width, std::vector<float>& _pixelDatam, std::vector<float>& _orientations);
+        void calculateGradients(
+                int& _height, 
+                int& _width, 
+                std::vector<float>& _red, 
+                std::vector<float>& _green, 
+                std::vector<float>& _blue, 
+                std::vector<float>& _orientations);
     }
 }
 #endif //GAUSSIANFILTER_H_INCLUDED

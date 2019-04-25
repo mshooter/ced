@@ -11,8 +11,10 @@ namespace ced
     namespace cpu
     {
         void assignColToPix(
-                std::vector<float>& imgData,
-                std::multimap<unsigned int, unsigned int> pixIDdepTri, 
+                std::vector<float>& red,
+                std::vector<float>& green,
+                std::vector<float>& blue,
+                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
                 const unsigned int& amountOfTriangles);
     }
 }

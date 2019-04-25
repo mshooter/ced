@@ -1,27 +1,26 @@
-#include "AssignPixToTri.hpp"
-#include "IsPixInTri.hpp"
-#include <algorithm>
-#include <iostream>
+#include "AssignPixToTri.cuh"
+
 namespace ced
 {
-    namespace cpu
+    namespace gpu
     {
         void assignPixToTri(
-                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
-                const std::vector<unsigned int>& triangleIDs,
-                const std::vector<Point>& coordinates, 
-                const unsigned int& height,
-                const unsigned int& width
+                std::vector<int>& map_triangleID,
+                std::vector<int>& map_pixelID,
+                const std::vector<int>& triangleIDs,
+                const std::vector<float2>& coordinates, 
+                const int& height,
+                const int& width
                 )
         {
-            unsigned int amountOfTri = triangleIDs.size()/3;
-            unsigned int amountOfPix = (width *height);
+            int amountOfTri = triangleIDs.size()/3;
+            int amountOfPix = (width *height);
             for(unsigned int t = 0; t < amountOfTri; ++t)
             {
 
-                unsigned int idTri0 = triangleIDs[(t*3+0)]; 
-                unsigned int idTri1 = triangleIDs[(t*3+1)]; 
-                unsigned int idTri2 = triangleIDs[(t*3+2)];
+                int idTri0 = triangleIDs[(t*3+0)]; 
+                int idTri1 = triangleIDs[(t*3+1)]; 
+                int idTri2 = triangleIDs[(t*3+2)];
                 Point v0 = coordinates[idTri0];
                 Point v1 = coordinates[idTri1];
                 Point v2 = coordinates[idTri2];
@@ -29,6 +28,7 @@ namespace ced
                 int miny = std::min({v0.y, v1.y, v2.y});
                 int maxx = std::max({v0.x, v1.x, v2.x});
                 int maxy = std::max({v0.y, v1.y, v2.y});
+                // serialized
                 for(int x = miny; x < maxy; ++x)
                 {
                     for(int y = minx; y < maxx; ++y)
@@ -36,7 +36,7 @@ namespace ced
                         Point p = {y, x};   
                         if(isPixInTri(v0,v1,v2,p))
                         {
-                            pixIDdepTri.insert({t,(y+x*width)});
+                            trianglePixels.insert({t, (y+x*width)});
                         }
                     }
                 }

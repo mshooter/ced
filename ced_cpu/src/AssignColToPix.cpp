@@ -3,20 +3,20 @@
 #include "AvgColour.hpp"
 #include <iterator>
 #include <algorithm>
-#include <iostream>
 
 namespace ced
 {
     namespace cpu
     {
         void assignColToPix(
-                std::vector<float>& imgData,
-                std::multimap<unsigned int, unsigned int> pixIDdepTri, 
+                std::vector<float>& red,
+                std::vector<float>& green,
+                std::vector<float>& blue,
+                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
                 const unsigned int& amountOfTriangles)
         {
             for(unsigned int t = 0 ; t < amountOfTriangles; ++t)
             {
-                // this is wrong
                 std::vector<unsigned int> triPix;
                 for(auto const& x : pixIDdepTri)
                 {
@@ -28,8 +28,8 @@ namespace ced
                 float r = 0;
                 float g = 0;
                 float b = 0;
-                avgColour(imgData, triPix, r, g, b);
-                assignColourToTri(imgData, triPix, r, g, b);
+                avgColour(red, green, blue, triPix, r, g, b);
+                assignColourToTri(red, green, blue, triPix, r, g, b);
             }
         }
     }

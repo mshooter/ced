@@ -1,6 +1,7 @@
 #ifndef MATH_CUH_INCLUDED
 #define MATH_CUH_INCLUDED
 
+#include <thrust/tuple.h>
 namespace ced
 {
     namespace gpu

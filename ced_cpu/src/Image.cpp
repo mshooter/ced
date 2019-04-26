@@ -8,6 +8,9 @@ namespace ced
         Image::~Image()
         {
             m_pixelData.clear();
+            m_red.clear();
+            m_green.clear();
+            m_blue.clear();
         }
         //----------------------------------------------------------------------------
         Image::Image(const char* _path)
@@ -27,7 +30,7 @@ namespace ced
                 m_red.resize(m_height*m_width);
                 m_green.resize(m_height*m_width);
                 m_blue.resize(m_height*m_width);
-                for(unsigned int id = 0; id < m_width * m_height; ++id)
+                for(int id = 0; id < m_width * m_height; ++id)
                 {
                     m_red[id]     = m_pixelData[id * 3 + 0];
                     m_green[id]   = m_pixelData[id * 3 + 1];
@@ -99,6 +102,7 @@ namespace ced
             m_red.resize(nheight*nwidth);
             m_green.resize(nheight*nwidth);
             m_blue.resize(nheight*nwidth);
+
             m_red = std::move(red);
             m_green = std::move(green);
             m_blue = std::move(blue);
@@ -165,7 +169,7 @@ namespace ced
             {
                 if(_rgb)
                 {
-                    for(unsigned int id = 0; id < m_width * m_height; ++id)
+                    for(int id = 0; id < m_width * m_height; ++id)
                     {
                         m_pixelData[id * 3 + 0] = m_red[id]  ; 
                         m_pixelData[id * 3 + 1] = m_green[id]; 

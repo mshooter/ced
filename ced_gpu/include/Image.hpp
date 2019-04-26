@@ -19,6 +19,9 @@ namespace ced
                 void setWidth(int _width);
                 void setHeight(int _height);
                 void setChannels(int _channels);
+                void setRedChannel(const std::vector<float>& _red);
+                void setGreenChannel(const std::vector<float>& _green);
+                void setBlueChannel(const std::vector<float>& _blue);
                 //------------------------------------------------------------
                 /// @build applying a filter
                 /// @param[_in] _img : input image 
@@ -35,7 +38,7 @@ namespace ced
                 std::vector<float> getRedChannel();
                 std::vector<float> getGreenChannel();
                 std::vector<float> getBlueChannel();
-                void saveImage(const char* _path, bool _rgb);
+                void saveImage(const char* _path, bool _rgb = false);
         
             private:
                 int m_width; 

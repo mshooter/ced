@@ -13,7 +13,6 @@ namespace ced
                 std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
                 const std::vector<unsigned int>& triangleIDs,
                 const std::vector<Point>& coordinates, 
-                const unsigned int& height,
                 const unsigned int& width
                 );
     }

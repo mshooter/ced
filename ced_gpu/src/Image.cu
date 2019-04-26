@@ -2,9 +2,10 @@
 
 #include <thrust/device_vector.h>
 #include <thrust/device_ptr.h>
+#include <thrust/functional.h>
 
 #include "ImageApplyFilter.cuh"
-#include "ConvertToGrayScale.cuh"
+#include "Math.cuh"
 
 namespace ced
 {
@@ -65,6 +66,21 @@ namespace ced
             m_channels = std::move(_channels);
         }
         //----------------------------------------------------------------------------
+        void Image::setRedChannel(const std::vector<float>& _red)
+        {
+            m_red = _red;
+        }
+        //----------------------------------------------------------------------------
+        void Image::setGreenChannel(const std::vector<float>& _green)
+        {
+            m_green = _green;
+        }
+        //----------------------------------------------------------------------------
+        void Image::setBlueChannel(const std::vector<float>& _blue)
+        {
+            m_blue = _blue;
+        }
+        //----------------------------------------------------------------------------
         void Image::applyFilter(std::vector<float> _filter, int _dimension)
         {
             // ----------------------host allocation----------------------------------
@@ -73,12 +89,24 @@ namespace ced
             int nwidth = m_width - _dimension  + 1;
             int nheight = m_height - _dimension + 1;
             // --------------------device allocation----------------------------------
-            thrust::device_vector<float> d_oimage = m_pixelData;
-            thrust::device_vector<float> d_nimage(nheight * nwidth * m_channels);
+            thrust::device_vector<float> d_ored     = m_red;
+            thrust::device_vector<float> d_ogreen   = m_green;
+            thrust::device_vector<float> d_oblue    = m_blue;
+
+            thrust::device_vector<float> d_nred(nheight * nwidth);
+            thrust::device_vector<float> d_ngreen(nheight * nwidth);
+            thrust::device_vector<float> d_nblue(nheight * nwidth);
+
             thrust::device_vector<float> d_filter = _filter;            
             // --------------------typecast raw ptr-----------------------------------
-            float* d_oimage_ptr = thrust::raw_pointer_cast(d_oimage.data());
-            float* d_nimage_ptr = thrust::raw_pointer_cast(d_nimage.data());
+            float* d_ored_ptr   = thrust::raw_pointer_cast(d_ored.data());
+            float* d_ogreen_ptr = thrust::raw_pointer_cast(d_ogreen.data());
+            float* d_oblue_ptr  = thrust::raw_pointer_cast(d_oblue.data());
+
+            float* d_nred_ptr    = thrust::raw_pointer_cast(d_nred.data());
+            float* d_ngreen_ptr  = thrust::raw_pointer_cast(d_ngreen.data());
+            float* d_nblue_ptr   = thrust::raw_pointer_cast(d_nblue.data());
+
             float* d_filter_ptr = thrust::raw_pointer_cast(d_filter.data());
             // --------------------execution config-----------------------------------
             int blockW = 32;
@@ -87,19 +115,26 @@ namespace ced
                             iDivUp(nheight, blockH));
             const dim3 threadBlock(blockW, blockH);
             // --------------------calling kernel-------------------------------------
-            d_applyFilter<<<grid, threadBlock>>>(d_oimage_ptr, 
-                                                 d_nimage_ptr,   
+            d_applyFilter<<<grid, threadBlock>>>(d_ored_ptr, 
+                                                 d_ogreen_ptr,
+                                                 d_oblue_ptr,
+                                                 d_nred_ptr,   
+                                                 d_ngreen_ptr,   
+                                                 d_nblue_ptr,   
                                                  d_filter_ptr,
                                                  nwidth,
                                                  nheight, 
                                                  _dimension);
             cudaDeviceSynchronize();
             // --------------------back to host---------------------------------------
-            std::vector<float> h_nimage(nwidth * nheight);
-            thrust::copy(d_nimage.begin(), d_nimage.end(), h_nimage.begin());
-            // ------------------init back to host------------------------------------
-            m_pixelData.resize(nheight*nwidth*m_channels);
-            m_pixelData = std::move(h_nimage);
+            m_red.resize(nheight*nwidth);
+            m_green.resize(nheight*nwidth);
+            m_blue.resize(nheight*nwidth);
+
+            thrust::copy(d_nred.begin()     , d_nred.end()  , m_red.begin());
+            thrust::copy(d_ngreen.begin()   , d_ngreen.end(), m_green.begin());
+            thrust::copy(d_nblue.begin()    , d_nblue.end() , m_blue.begin());
+
             m_width = std::move(nwidth);
             m_height = std::move(nheight);
         }
@@ -110,12 +145,28 @@ namespace ced
             thrust::device_vector<float> d_red = m_red;
             thrust::device_vector<float> d_green = m_green;
             thrust::device_vector<float> d_blue = m_blue;
-            // call function
-            convertToGrayScale(d_red, d_green, d_blue);
+            thrust::device_vector<float> d_result(m_red.size());
+            // sum red and green
+            thrust::transform(  d_red.begin(), 
+                                d_red.end(), 
+                                d_green.begin(), 
+                                d_result.begin(), 
+                                thrust::plus<float>());
+
+            thrust::transform(  d_result.begin(), 
+                                d_result.end(), 
+                                d_blue.begin(), 
+                                d_result.begin(), 
+                                thrust::plus<float>());
+            // DIVIDE
+            thrust::transform(  d_result.begin(), 
+                                d_result.end(), 
+                                d_result.begin(), 
+                                divideByConstant<float>(3.0f));
             // copy back to host
-            thrust::copy(d_red.begin(), d_red.end(), m_red.begin());
-            thrust::copy(d_green.begin(), d_green.end(), m_green.begin());
-            thrust::copy(d_blue.begin(), d_blue.end(), m_blue.begin());
+            thrust::copy(d_result.begin()   ,   d_result.end()  , m_red.begin());
+            thrust::copy(d_result.begin()   ,   d_result.end()  , m_green.begin());
+            thrust::copy(d_result.begin()   ,   d_result.end()  , m_blue.begin());
         }
         //----------------------------------------------------------------------------
         std::vector<float> Image::getPixelData()

@@ -5,9 +5,12 @@ namespace ced
 {
     namespace gpu
     {
-        // passing by reference can not be used in kernels
-        __global__ void d_applyFilter(  float* _d_oimage_ptr, 
-                                        float* _d_nimage_ptr, 
+        __global__ void d_applyFilter(  float* _d_ored_ptr, 
+                                        float* _d_ogreen_ptr,
+                                        float* _d_oblue_ptr,
+                                        float* _d_nred_ptr, 
+                                        float* _d_ngreen_ptr, 
+                                        float* _d_nblue_ptr, 
                                         float* _d_filter_ptr,
                                         int _nwidth,
                                         int _nheight, 

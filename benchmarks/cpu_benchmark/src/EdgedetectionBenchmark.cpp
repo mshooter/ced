@@ -335,8 +335,8 @@ static void BM_assignPixToTri(benchmark::State& state)
 
     for(auto _ : state)
     {
-        std::multimap<unsigned int, unsigned int> pixIDdepTri;
-        assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
+//       std::multimap<unsigned int, unsigned int> pixIDdepTri;
+//       assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
     }
 }
 BENCHMARK(BM_assignPixToTri);
@@ -396,10 +396,10 @@ static void BM_assignColToPix(benchmark::State& state)
     triangulate(nwhite_verts, triangles); 
     std::multimap<unsigned int, unsigned int> pixIDdepTri;
     unsigned int amountOfTri = triangles.size()/3;
-    assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
+    //assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
     for(auto _ : state)
     {
-        assignColToPix(o_red, o_green, o_blue, pixIDdepTri, amountOfTri);
+        //assignColToPix(o_red, o_green, o_blue, pixIDdepTri, amountOfTri);
     }
 }
 BENCHMARK(BM_assignColToPix);

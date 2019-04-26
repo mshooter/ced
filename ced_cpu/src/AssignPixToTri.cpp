@@ -10,12 +10,10 @@ namespace ced
                 std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
                 const std::vector<unsigned int>& triangleIDs,
                 const std::vector<Point>& coordinates, 
-                const unsigned int& height,
                 const unsigned int& width
                 )
         {
             unsigned int amountOfTri = triangleIDs.size()/3;
-            unsigned int amountOfPix = (width *height);
             for(unsigned int t = 0; t < amountOfTri; ++t)
             {
 

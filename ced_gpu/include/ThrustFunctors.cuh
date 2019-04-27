@@ -43,6 +43,65 @@ namespace ced
             }
     
         };
+        struct divideZip
+        {
+            __host__ __device__
+            thrust::tuple<float, float, float> operator()(const thrust::tuple<float, float, float>& t, const float& d)
+            {
+                thrust::tuple <float, float, float> result;
+                thrust::get<0>(result) = thrust::get<0>(t)/ d;
+                thrust::get<1>(result) = thrust::get<1>(t)/ d;
+                thrust::get<2>(result) = thrust::get<2>(t)/ d;
+                return result;
+            }
+        };
+        //  ----------------------------------------------------------------------------------------
+        struct isLower_bound
+        {
+            const float min_value;
+            isLower_bound(float _min_value) : min_value(_min_value){}
+            __host__ __device__
+            bool operator()(const float& t)
+            {
+                if(t < min_value)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
+        //  ----------------------------------------------------------------------------------------
+        struct isUpper_bound
+        {
+            const float max_value;
+            isUpper_bound(float _max_value) : max_value(_max_value){}
+            __host__ __device__
+            bool operator()(const float& t)
+            {
+                if(t > max_value)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
+        //  ----------------------------------------------------------------------------------------
+        struct set_value
+        {
+            const int value;
+            set_value(int _value) : value(_value){}
+            __host__ __device__
+            float operator()(const float& t)
+            {
+                return value;
+            }
+        };
     }
 }
 

@@ -18,7 +18,6 @@
 
 #include "ParamsImageIO.hpp"
 
-
 using namespace ced::cpu;
 using namespace OIIO; 
 int main()
@@ -122,9 +121,9 @@ int main()
     // assign triangle to pixel
     std::multimap<unsigned int, unsigned int> pixIDdepTri; 
     unsigned int amountOfTri = triangles.size()/3;
-    assignPixToTri(pixIDdepTri, triangles, nwhite_verts, o_height, o_width);
+    assignPixToTri(pixIDdepTri, triangles, nwhite_verts,o_width);
+    // -> gpu 
     assignColToPix(o_red, o_green, o_blue, pixIDdepTri, amountOfTri);
-
     img.setRedChannel(o_red);
     img.setGreenChannel(o_green);
     img.setBlueChannel(o_blue);

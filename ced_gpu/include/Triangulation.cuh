@@ -8,11 +8,16 @@ namespace ced
     namespace gpu
     {
         __host__ void createFirstTri(
-            const thrust::device_vector<float2>& d_pts,
+            const thrust::device_vector<float>& d_x,
+            const thrust::device_vector<float>& d_y,
             int& i0, 
             int& i1, 
             int& i2, 
             const float2& centroid );
+        //  ----------------------------------------------------------------------------------------------
+        __host__ void triangulate(   thrust::device_vector<float>& x,
+                                     thrust::device_vector<float>& y,
+                                     thrust::device_vector<int>& triangles);
     }
 }
 

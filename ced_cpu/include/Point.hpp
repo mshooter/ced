@@ -4,7 +4,6 @@
 
 #include <utility>
 #include <cmath>
-#include "params.hpp"
 
 namespace ced
 {

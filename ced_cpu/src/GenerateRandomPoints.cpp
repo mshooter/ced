@@ -7,12 +7,12 @@ namespace ced
     {
         void generateRandomPoints(
                 std::vector<Point>& coordinateList,
-                const unsigned int& _amountOfPoints, 
-                const unsigned int& height, 
-                const unsigned int& width)
+                const int& _amountOfPoints, 
+                const int& height, 
+                const int& width)
         {
 
-            for(unsigned int i = 0 ; i < _amountOfPoints; ++i)
+            for(int i = 0 ; i < _amountOfPoints; ++i)
             {
                 coordinateList.push_back(Point(rand()%width, rand()%height));
             }

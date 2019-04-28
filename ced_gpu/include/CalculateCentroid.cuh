@@ -7,7 +7,8 @@ namespace ced
 {
     namespace gpu
     {
-        __host__ float2 calculateCentroid(const thrust::device_vector<float>& d_x, const thrust::device_vector<float>& d_y);
+        __host__ float calculateCentroidx(const thrust::device_vector<float>& d_x);
+        __host__ float calculateCentroidy( const thrust::device_vector<float>& d_y);
     }
 }
 

@@ -10,7 +10,7 @@ namespace ced
         void avgColour( const std::vector<float>& red, 
                         const std::vector<float>& green,
                         const std::vector<float>& blue,
-                        const std::vector<unsigned int>& pixIds, 
+                        const std::vector<int>& pixIds, 
                         float& r,
                         float& g, 
                         float& b);

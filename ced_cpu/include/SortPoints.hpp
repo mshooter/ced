@@ -31,7 +31,7 @@ namespace ced
         /// @param[_in] : high range
         //  ----------------------------------------------------------
         template <typename T>
-        int partitionDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi);
+        int partitionDist(std::vector<int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi);
         //  ----------------------------------------------------------
         /// @build : quickSort Distance2P
         /// @param[_in] : ids vector
@@ -40,7 +40,7 @@ namespace ced
         /// @param[_in] : high range
         //  ----------------------------------------------------------
         template <typename T>
-        void quickSortDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi);
+        void quickSortDist(std::vector<int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi);
         //  ----------------------------------------------------------
         /// @build: implementation of sorting points template 
         //  ----------------------------------------------------------

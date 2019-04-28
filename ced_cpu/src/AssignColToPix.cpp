@@ -12,12 +12,12 @@ namespace ced
                 std::vector<float>& red,
                 std::vector<float>& green,
                 std::vector<float>& blue,
-                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
-                const unsigned int& amountOfTriangles)
+                std::multimap<int, int>& pixIDdepTri, 
+                const int& amountOfTriangles)
         {
-            for(unsigned int t = 0 ; t < amountOfTriangles; ++t)
+            for(int t = 0 ; t < amountOfTriangles; ++t)
             {
-                std::vector<unsigned int> triPix;
+                std::vector<int> triPix;
                 for(auto const& x : pixIDdepTri)
                 {
                     if(t == x.first)

@@ -23,3 +23,4 @@ QMAKE_CXXFLAGS += -std=c++14 -fPIC -g -O3
 
 LIBS += -L../../ced_cpu/lib -lced_cpu -L/usr/local/lib -lbenchmark -pthread
 
+

@@ -1,4 +1,5 @@
 #include "Point.hpp"
+#include <limits>
 
 namespace ced
 {
@@ -43,7 +44,7 @@ namespace ced
         //  ----------------------------------------------------------
         bool equalPts(Point p1, Point p2)
         {
-            return (std::fabs(p1.x - p2.x) <= EPSILON) && (std::fabs(p1.y - p2.y) <= EPSILON);
+            return (std::fabs(p1.x - p2.x) <= std::numeric_limits<float>::epsilon()) && (std::fabs(p1.y - p2.y) <= std::numeric_limits<float>::epsilon());
         } 
     }
 }

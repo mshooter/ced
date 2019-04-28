@@ -1,21 +1,40 @@
 #include "benchmark/benchmark.h"
 
 #include "GaussianFilter.cuh"
-#include "Image.hpp"
+#include "Image.cuh"
+#include "Math.cuh"
 #include "ImageApplyFilter.cuh"
 #include "ThrustFunctors.cuh"
-#include "../../Demo/include/ParamsImageIO.hpp"
 
 #include <thrust/device_vector.h>
+const char *filename    = "../../images/rose_ml.jpg";
 
 using namespace ced::gpu;
 static void convertToGrayScale(benchmark::State& state)
 {
     ced::gpu::Image img(filename);
+    std::vector<float> m_red = img.getRedChannel();
+    std::vector<float> m_green = img.getGreenChannel();
+    std::vector<float> m_blue = img.getBlueChannel();
+    // allocate to device
+    thrust::device_vector<float> d_red = m_red;
+    thrust::device_vector<float> d_green = m_green;
+    thrust::device_vector<float> d_blue = m_blue;
+    thrust::device_vector<float> d_result(m_red.size());
     for(auto _ : state)
     {
         auto start = std::chrono::high_resolution_clock::now();
-        img.convertToGrayscale();
+        // sum red and green
+        thrust::transform(  thrust::make_zip_iterator(thrust::make_tuple(d_red.begin(), d_green.begin(), d_blue.begin())),
+                            thrust::make_zip_iterator(thrust::make_tuple(d_red.end(), d_green.end(), d_blue.end())),
+                            d_result.begin(),
+                            add_three_vectors()); 
+        // DIVIDE
+        thrust::transform(  d_result.begin(), 
+                            d_result.end(), 
+                            d_result.begin(), 
+                            divideByConstant<float>(3.0f));
+        // copy back to host
         auto end = std::chrono::high_resolution_clock::now();
         auto elapsed_seconds = std::chrono::duration_cast<std::chrono::duration<double>>(end-start);
         state.SetIterationTime(elapsed_seconds.count());

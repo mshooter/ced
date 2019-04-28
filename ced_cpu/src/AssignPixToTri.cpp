@@ -7,19 +7,19 @@ namespace ced
     namespace cpu
     {
         void assignPixToTri(
-                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
-                const std::vector<unsigned int>& triangleIDs,
+                std::multimap<int, int>& pixIDdepTri, 
+                const std::vector<int>& triangleIDs,
                 const std::vector<Point>& coordinates, 
-                const unsigned int& width
+                const int& width
                 )
         {
-            unsigned int amountOfTri = triangleIDs.size()/3;
-            for(unsigned int t = 0; t < amountOfTri; ++t)
+            int amountOfTri = triangleIDs.size()/3;
+            for(int t = 0; t < amountOfTri; ++t)
             {
 
-                unsigned int idTri0 = triangleIDs[(t*3+0)]; 
-                unsigned int idTri1 = triangleIDs[(t*3+1)]; 
-                unsigned int idTri2 = triangleIDs[(t*3+2)];
+                int idTri0 = triangleIDs[(t*3+0)]; 
+                int idTri1 = triangleIDs[(t*3+1)]; 
+                int idTri2 = triangleIDs[(t*3+2)];
                 Point v0 = coordinates[idTri0];
                 Point v1 = coordinates[idTri1];
                 Point v2 = coordinates[idTri2];

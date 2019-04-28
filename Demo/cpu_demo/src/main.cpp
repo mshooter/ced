@@ -20,13 +20,15 @@
 
 using namespace ced::cpu;
 using namespace OIIO; 
-int main()
+int main(int argc, char **argv)
 {
+    const char *filename    = argv[1];
+    int N = std::atoi(argv[2]);
     // read image and store original data for later
     ced::cpu::Image img(filename);
     std::vector<float> originalPixelData = img.getPixelData();
-    unsigned int o_height = img.getHeight();
-    unsigned int o_width = img.getWidth(); 
+    int o_height = img.getHeight();
+    int o_width = img.getWidth(); 
     std::vector<float> o_red = img.getRedChannel();
     std::vector<float> o_green = img.getGreenChannel();
     std::vector<float> o_blue  = img.getBlueChannel();
@@ -86,7 +88,7 @@ int main()
     std::mt19937 k(rd());
     std::shuffle(white_verts.begin(), white_verts.end(), k);
     std::cout<<white_verts.size()<<std::endl;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+N);
     std::cout<<nwhite_verts.size()<<std::endl;
 
     // generateRandomPoints
@@ -95,10 +97,10 @@ int main()
     std::fill(green.begin(), green.end(), 0);
     std::fill(blue.begin(), blue.end(), 0);
     //std::vector<Point>  rand_verts;
-    //generateRandomPoints(rand_verts, nwhite_verts, 10, o_height, o_width);
+    //generateRandomPoints(rand_verts, 100, o_height, o_width);
     //nwhite_verts.insert(nwhite_verts.end(), rand_verts.begin(), rand_verts.end());
     //std::shuffle(nwhite_verts.begin(), nwhite_verts.end(), k);
-    //quickSort(nwhite_verts, 0, nwhite_verts.size());
+    quickSort(nwhite_verts, 0, nwhite_verts.size());
     //  ----------------------------------------------------------------------------
     // show how many points there is  
     for(auto r : nwhite_verts)
@@ -112,15 +114,15 @@ int main()
     img.setRedChannel(red);
     img.setGreenChannel(green);
     img.setBlueChannel(blue);
-    img.saveImage(finalout, true);
+    img.saveImage(outgradient, true);
 
     //  ----------------------------------------------------------------------------
     // triangulate
-    std::vector<unsigned int> triangles;
+    std::vector<int> triangles;
     triangulate(nwhite_verts, triangles);
     // assign triangle to pixel
-    std::multimap<unsigned int, unsigned int> pixIDdepTri; 
-    unsigned int amountOfTri = triangles.size()/3;
+    std::multimap<int, int> pixIDdepTri; 
+    int amountOfTri = triangles.size()/3;
     assignPixToTri(pixIDdepTri, triangles, nwhite_verts,o_width);
     // -> gpu 
     assignColToPix(o_red, o_green, o_blue, pixIDdepTri, amountOfTri);
@@ -129,7 +131,6 @@ int main()
     img.setBlueChannel(o_blue);
     img.setHeight(o_height);
     img.setWidth(o_width);
-    std::cout<<"savi"<<std::endl;
-    img.saveImage(outgradient, true);
+    img.saveImage(finalout, true);
 
 }

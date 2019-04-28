@@ -14,8 +14,8 @@ namespace ced
                 std::vector<float>& red,
                 std::vector<float>& green,
                 std::vector<float>& blue,
-                std::multimap<unsigned int, unsigned int>& pixIDdepTri, 
-                const unsigned int& amountOfTriangles);
+                std::multimap<int, int>& pixIDdepTri, 
+                const int& amountOfTriangles);
     }
 }
 

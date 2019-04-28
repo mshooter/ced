@@ -38,7 +38,7 @@ void quickSort(std::vector<T>& _pts, int lo, int hi)
 }
 //  ----------------------------------------------------------
 template <typename T>
-int partitionDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
+int partitionDist(std::vector<int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
 {
     // element to pivot 
     T dist1 = distance2P<T>(_points[lo], cc);
@@ -58,7 +58,7 @@ int partitionDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, P
 }
 //  ----------------------------------------------------------
 template <typename T>
-void quickSortDist(std::vector<unsigned int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
+void quickSortDist(std::vector<int>& _ids, std::vector<Point> _points, Point cc, int lo, int hi)
 {
     int r; 
     if(lo < hi)

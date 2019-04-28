@@ -1,5 +1,5 @@
 #include "GetPixelPoints.hpp"
-
+#include <iostream>
 namespace ced
 {
     namespace cpu
@@ -16,7 +16,8 @@ namespace ced
             {
                 for(int j =0; j < width; ++j)
                 {
-                    if((_red[(j + i * width)]+_green[(j + i * width)] + _blue[(j + i * width)])> 0 )
+                    
+                    if((_red[(j + i * width)]+_green[(j + i * width)] + _blue[(j + i * width)]) == 3.0f )
                     {
                         _whitePixelsCoord.push_back(Point(j, i));
                     }

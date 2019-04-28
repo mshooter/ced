@@ -7,7 +7,7 @@ namespace ced
         void assignColourToTri( std::vector<float>& red, 
                                 std::vector<float>& green,
                                 std::vector<float>& blue,
-                                const std::vector<unsigned int>& pixIDs,
+                                const std::vector<int>& pixIDs,
                                 const float& r,
                                 const float& g, 
                                 const float& b)

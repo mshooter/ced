@@ -11,9 +11,9 @@ namespace ced
     {
         void generateRandomPoints(   
                 std::vector<Point>& coordinateList,
-                const unsigned int& _amountOfPoints, 
-                const unsigned int& height, 
-                const unsigned int& width); 
+                const int& _amountOfPoints, 
+                const int& height, 
+                const int& width); 
     }
 }
 

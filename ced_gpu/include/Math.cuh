@@ -27,13 +27,12 @@ namespace ced
         // --------------------------------------------------------
         struct add_three_vectors
         {
-            template <typename T>
-            __device__ 
-            void operator()(T t)
+            __host__ __device__ 
+            float operator()(const thrust::tuple<float, float, float>& t)
             {
-                thrust::get<3>(t) = thrust::get<0>(t) + thrust::get<1>(t) + thrust::get<2>(t);
+                return thrust::get<0>(t) + thrust::get<1>(t) + thrust::get<2>(t);
             }
-        };  
+        };
     }
 }
 

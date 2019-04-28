@@ -1,7 +1,9 @@
-#include "Image.hpp"
+#include "Image.cuh"
 
 #include <thrust/device_vector.h>
 #include <thrust/device_ptr.h>
+#include <thrust/iterator/zip_iterator.h>
+#include <thrust/tuple.h>
 #include <thrust/functional.h>
 
 #include "ImageApplyFilter.cuh"
@@ -131,9 +133,9 @@ namespace ced
             m_green.resize(nheight*nwidth);
             m_blue.resize(nheight*nwidth);
 
-            thrust::copy(d_nred.begin()     , d_nred.end()  , m_red.begin());
-            thrust::copy(d_ngreen.begin()   , d_ngreen.end(), m_green.begin());
-            thrust::copy(d_nblue.begin()    , d_nblue.end() , m_blue.begin());
+            thrust::copy( thrust::make_zip_iterator( thrust::make_tuple( d_nred.begin(), d_ngreen.begin(), d_nblue.begin())),
+                          thrust::make_zip_iterator( thrust::make_tuple( d_nred.end(), d_ngreen.end(), d_nblue.end())),
+                          thrust::make_zip_iterator(thrust::make_tuple(m_red.begin(), m_green.begin(), m_blue.begin())));
 
             m_width = std::move(nwidth);
             m_height = std::move(nheight);
@@ -147,26 +149,19 @@ namespace ced
             thrust::device_vector<float> d_blue = m_blue;
             thrust::device_vector<float> d_result(m_red.size());
             // sum red and green
-            thrust::transform(  d_red.begin(), 
-                                d_red.end(), 
-                                d_green.begin(), 
-                                d_result.begin(), 
-                                thrust::plus<float>());
-
-            thrust::transform(  d_result.begin(), 
-                                d_result.end(), 
-                                d_blue.begin(), 
-                                d_result.begin(), 
-                                thrust::plus<float>());
+            thrust::transform(  thrust::make_zip_iterator(thrust::make_tuple(d_red.begin(), d_green.begin(), d_blue.begin())),
+                                thrust::make_zip_iterator(thrust::make_tuple(d_red.end(), d_green.end(), d_blue.end())),
+                                d_result.begin(),
+                                add_three_vectors()); 
             // DIVIDE
             thrust::transform(  d_result.begin(), 
                                 d_result.end(), 
                                 d_result.begin(), 
                                 divideByConstant<float>(3.0f));
             // copy back to host
-            thrust::copy(d_result.begin()   ,   d_result.end()  , m_red.begin());
-            thrust::copy(d_result.begin()   ,   d_result.end()  , m_green.begin());
-            thrust::copy(d_result.begin()   ,   d_result.end()  , m_blue.begin());
+            thrust::copy( thrust::make_zip_iterator( thrust::make_tuple( d_result.begin(), d_result.begin(), d_result.begin())),
+                          thrust::make_zip_iterator( thrust::make_tuple( d_result.end(), d_result.end(), d_result.end())),
+                          thrust::make_zip_iterator(thrust::make_tuple(m_red.begin(), m_green.begin(), m_blue.begin())));
         }
         //----------------------------------------------------------------------------
         std::vector<float> Image::getPixelData()

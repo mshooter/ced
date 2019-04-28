@@ -1,0 +1,23 @@
+2019-04-28 20:01:32
+Running ./cpu_benchmark
+Run on (12 X 3800 MHz CPU s)
+CPU Caches:
+  L1 Data 32K (x6)
+  L1 Instruction 32K (x6)
+  L2 Unified 256K (x6)
+  L3 Unified 15360K (x1)
+Load Average: 0.90, 0.74, 0.57
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+-------------------------------------------------------------------
+Benchmark                        Time             CPU   Iterations
+-------------------------------------------------------------------
+CPU_gaussianFilter             685 ns          685 ns       994124
+CPU_grayscale              1168286 ns      1168199 ns          590
+CPU_applyFilter           59477550 ns     59473960 ns           11
+CPU_calculateGradients    32021747 ns     32020065 ns           21
+CPU_nonMaxSup              6195711 ns      6195232 ns          108
+CPU_hysterysis             2021862 ns      2021735 ns          352
+CPU_getWhitePixels         1146384 ns      1146312 ns          648
+CPU_triangulateWhitePix       5184 ns         5174 ns       138293
+CPU_assignPixToTri         3908587 ns      3908353 ns          179
+CPU_assignColToPix         1077777 ns      1077006 ns          666

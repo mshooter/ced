@@ -23,7 +23,7 @@ using namespace OIIO;
 int main(int argc, char **argv)
 {
     const char *filename    = argv[1];
-    int N = std::atoi(argv[2]);
+    //int N = std::atoi(argv[2]);
     // read image and store original data for later
     ced::cpu::Image img(filename);
     std::vector<float> originalPixelData = img.getPixelData();
@@ -86,9 +86,9 @@ int main(int argc, char **argv)
     // how many white pixels
     std::random_device rd;
     std::mt19937 k(rd());
-    std::shuffle(white_verts.begin(), white_verts.end(), k);
+    //std::shuffle(white_verts.begin(), white_verts.end(), k);
     std::cout<<white_verts.size()<<std::endl;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+N);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+white_verts.size()/2);
     std::cout<<nwhite_verts.size()<<std::endl;
 
     // generateRandomPoints
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     //generateRandomPoints(rand_verts, 100, o_height, o_width);
     //nwhite_verts.insert(nwhite_verts.end(), rand_verts.begin(), rand_verts.end());
     //std::shuffle(nwhite_verts.begin(), nwhite_verts.end(), k);
-    quickSort(nwhite_verts, 0, nwhite_verts.size());
+    //quickSort(nwhite_verts, 0, nwhite_verts.size());
     //  ----------------------------------------------------------------------------
     // show how many points there is  
     for(auto r : nwhite_verts)

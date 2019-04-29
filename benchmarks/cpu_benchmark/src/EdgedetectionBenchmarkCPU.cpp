@@ -245,7 +245,7 @@ static void CPU_triangulateWhitePix(benchmark::State& state)
     std::shuffle(white_verts.begin(), white_verts.end(), k);
     getWhitePixelsCoords(white_verts, red, green, blue, height, width);
     int half = white_verts.size()/2;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+half);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+10);
     //quickSort(nwhite_verts, 0, nwhite_verts.size());
     for(auto _ : state)
     {
@@ -298,7 +298,7 @@ static void CPU_assignPixToTri(benchmark::State& state)
     std::shuffle(white_verts.begin(), white_verts.end(), k);
     getWhitePixelsCoords(white_verts, red, green, blue, height, width);
     int half = white_verts.size()/2;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+half);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+10);
     //quickSort(nwhite_verts, 0, nwhite_verts.size());
     std::vector<int> triangles;
     triangulate(nwhite_verts, triangles); 
@@ -357,7 +357,7 @@ static void CPU_assignColToPix(benchmark::State& state)
     std::shuffle(white_verts.begin(), white_verts.end(), k);
     getWhitePixelsCoords(white_verts, red, green, blue, height, width);
     int half = white_verts.size()/2;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+half);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+10);
     //quickSort(nwhite_verts, 0, nwhite_verts.size());
     std::vector<int> triangles;
     triangulate(nwhite_verts, triangles); 

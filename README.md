@@ -30,20 +30,20 @@ Benchmarked on:
 * CPU: ... 
 
 ### gaussian filter 
-####[dimension = 3, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
+#### dimension = 3 [sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |        252 ns |        252 ns|    2471912|
 |CPU_gaussianFilter     |        251 ns |        251 ns|    2589179|
 |CPU_gaussianFilter     |        251 ns |        251 ns|    2589734|
 
-####[dimension = 5, sigma= 0.2f, sigma = 1.4f, sigma = 2.5f]
+#### dimension = 5 [sigma= 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |        654 ns |      654  ns |    1021431|
 |CPU_gaussianFilter     |       690 ns  |       689 ns |     988796|
 |CPU_gaussianFilter     |        703ns  |       703 ns |     716667|
-####[dimension = 7, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
+#### dimension = 7 [sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |       1205 ns |       1205 ns|     455001|

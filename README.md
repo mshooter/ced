@@ -29,20 +29,21 @@ Benchmarked on:
 * GPU: NVIDIA QUADRO K2200 
 * CPU: ... 
 
-### gaussian filter [dimension = 3, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
+### gaussian filter 
+####[dimension = 3, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |        252 ns |        252 ns|    2471912|
 |CPU_gaussianFilter     |        251 ns |        251 ns|    2589179|
 |CPU_gaussianFilter     |        251 ns |        251 ns|    2589734|
 
-### gaussian filter [dimension = 5, sigma= 0.2f, sigma = 1.4f, sigma = 2.5f]
+####[dimension = 5, sigma= 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |        654 ns |      654  ns |    1021431|
 |CPU_gaussianFilter     |       690 ns  |       689 ns |     988796|
 |CPU_gaussianFilter     |        703ns  |       703 ns |     716667|
-### gaussian filter [dimension = 7, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
+####[dimension = 7, sigma = 0.2f, sigma = 1.4f, sigma = 2.5f]
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_gaussianFilter     |       1205 ns |       1205 ns|     455001|
@@ -73,7 +74,7 @@ if inbetween - then it will be accepted only if it is connected to a pixel that 
 |CPU_nonMaxSup          |  1467957 ns   |  1467873 ns  |       478 |
 |CPU_hysterysis         |   606336 ns   |   606301 ns  |      1126 |
 |CPU_getWhitePixels     |   374204 ns   |   374181 ns  |      1738 |
-### 768x768 image [minvalue = 0.4f, maxvalue - 0.7f] 
+#### 768x768 image [minvalue = 0.4f, maxvalue - 0.7f] 
 |Benchmark               |        Time    |        CPU  |Iterations|
 |------------------------|----------------|-------------|----------|
 |CPU_grayscale           |  1168286 ns    | 1168199 ns  |       590|
@@ -82,7 +83,7 @@ if inbetween - then it will be accepted only if it is connected to a pixel that 
 |CPU_nonMaxSup           |  6195711 ns    | 6195232 ns  |       108|
 |CPU_hysterysis          |  2021862 ns    | 2021735 ns  |       352|
 |CPU_getWhitePixels      |  1146384 ns    | 1146312 ns  |       648|
-### 1280x720 image [minvalue = 0.4f, maxvalue - 0.7f]
+#### 1280x720 image [minvalue = 0.4f, maxvalue - 0.7f]
 |Benchmark              |         Time    |        CPU  |Iterations|
 |-----------------------|-----------------|-------------|----------|
 |CPU_grayscale          |   1798445 ns    | 1798350 ns  |       378|
@@ -123,25 +124,25 @@ if inbetween - then it will be accepted only if it is connected to a pixel that 
 |CPU_triangulateWhitePix| 577721598 ns    |   577586568 ns  |         1|
 |CPU_assignPixToTri     |  56862544 ns    |    56350253 ns  |        13|
 |CPU_assignColToPix     |5791823019 ns    |  5754552533 ns  |         1|
-### triangulation of half the white pixels -768x768: amount of pixels = 9576
+#### triangulation of half the white pixels -768x768: amount of pixels = 9576
 |Benchmark              |         Time    |        CPU      |Iterations|
 |-----------------------|-----------------|-----------------|----------|
 |CPU_triangulateWhitePix|    405892122 ns |    405870785 ns |        2 |
 |CPU_assignPixToTri     |     78483771 ns |     78479652 ns |        9 |
 |CPU_assignColToPix     |   5231109502 ns |   5230820930 ns |        1 |
-### triangulation of all the white pixels -768x768: amount of pixels = 19152 
+#### triangulation of all the white pixels -768x768: amount of pixels = 19152 
 |Benchmark              |         Time    |        CPU      |Iterations|
 |-----------------------|-----------------|-----------------|----------|
 |CPU_triangulateWhitePix|    447707853 ns |   447665192 ns  |         2|
 |CPU_assignPixToTri     |     79499049 ns |    79491342 ns  |         9|
 |CPU_assignColToPix     |   1933013743 ns |  1932900934 ns  |         1|
-### triangulation of half the white pixels - 1280x720: amount of pixels = 11589
+#### triangulation of half the white pixels - 1280x720: amount of pixels = 11589
 |Benchmark              |         Time    |        CPU     |Iterations|
 |-----------------------|-----------------|----------------|----------|
 |CPU_triangulateWhitePix|  497367690 ns   |   497326031 ns |      2   |
 |CPU_assignPixToTri     |  179481345 ns   |   179470635 ns |      4   | 
 |CPU_assignColToPix     |17730416212 ns   | 17729212685 ns |      1   |
-### triangulation of all the white pixels - 1280x720: amount of pixels = 231789
+#### triangulation of all the white pixels - 1280x720: amount of pixels = 231789
 |Benchmark              |         Time  |          CPU | Iterations|
 |-----------------------|---------------|--------------|-----------|
 |CPU_triangulateWhitePix| 686308297 ns  | 686254359 ns |          1|

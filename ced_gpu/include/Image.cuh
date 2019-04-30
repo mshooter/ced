@@ -49,7 +49,6 @@ namespace ced
                 std::vector<float> m_blue;
                 std::vector<float> m_pixelData;
         };
-        inline int iDivUp(const unsigned int &a, const unsigned int &b){return (a%b != 0 ? (a/b+1) : (a/b));}
     }
 
 }

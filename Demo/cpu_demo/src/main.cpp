@@ -57,6 +57,12 @@ int main(int argc, char **argv)
                           blue,
                           orientation
                           );
+    img.setHeight(height);
+    img.setWidth(width);
+    img.setRedChannel(red);
+    img.setGreenChannel(green);
+    img.setBlueChannel(blue);
+    img.saveImage(outgradient, true);
 
     // nonmaximum supression    
     ced::cpu::nonMaximumSupression( height, 
@@ -71,8 +77,8 @@ int main(int argc, char **argv)
                             blue, 
                             height, 
                             width, 
-                            0.4f, 
-                            0.7f);
+                            0.1f, 
+                            0.2f);
 
 
     // get white pixels
@@ -86,9 +92,9 @@ int main(int argc, char **argv)
     // how many white pixels
     std::random_device rd;
     std::mt19937 k(rd());
-    //std::shuffle(white_verts.begin(), white_verts.end(), k);
+    std::shuffle(white_verts.begin(), white_verts.end(), k);
     std::cout<<white_verts.size()<<std::endl;
-    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.begin()+white_verts.size()/2);
+    std::vector<Point> nwhite_verts(white_verts.begin(), white_verts.end());
     std::cout<<nwhite_verts.size()<<std::endl;
 
     // generateRandomPoints
@@ -114,7 +120,7 @@ int main(int argc, char **argv)
     img.setRedChannel(red);
     img.setGreenChannel(green);
     img.setBlueChannel(blue);
-    img.saveImage(outgradient, true);
+//    img.saveImage(outgradient, true);
 
     //  ----------------------------------------------------------------------------
     // triangulate

@@ -6,6 +6,7 @@ namespace ced
 {
     namespace gpu
     {
+        inline int iDivUp(const unsigned int &a, const unsigned int &b){return (a%b != 0 ? (a/b+1) : (a/b));}
         // --------------------------------------------------------
         // @build : divide by constant gpu
         // @param[_in] : a constant a 

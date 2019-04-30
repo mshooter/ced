@@ -7,6 +7,34 @@ namespace ced
 {
     namespace gpu
     {
+        struct is_identity
+        {
+            __host__ __device__
+            bool operator()(const int& t)
+            {
+                return t == 1;
+            }
+        };
+        //  ------------------------------------------------------------------------------------------------------
+        struct find_neighbours 
+        {
+            const int width;
+            find_neighbours(int _w) : width(_w) {}
+            __host__ __device__ 
+            thrust::tuple<int, int, int, int, int, int, int, int> operator()(const int& i)
+            {
+                thrust::tuple<int, int, int, int, int, int, int, int> result;
+                thrust::get<0>(result) = i - width;
+                thrust::get<1>(result) = i +1 - width;
+                thrust::get<2>(result) = i - 1 - width;
+                thrust::get<3>(result) = i + width;
+                thrust::get<4>(result) = i + (width+1);
+                thrust::get<5>(result) = i + (width-1);
+                thrust::get<6>(result) = i + 1;
+                thrust::get<7>(result) = i - 1;
+                return result;
+            }
+        };
         // TODO: might move this function to the create triangle file
         //  ------------------------------------------------------------------------------------------ 
         // @build : get the minimum if
@@ -102,6 +130,8 @@ namespace ced
                 return value;
             }
         };
+        //  ----------------------------------------------------------------------------------------
+
     }
 }
 

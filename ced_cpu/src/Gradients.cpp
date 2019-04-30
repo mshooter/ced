@@ -1,7 +1,6 @@
 #include "Gradients.hpp"
 #include <cmath>
 #include <math.h>
-#include <iostream>
 namespace ced
 {
     namespace cpu
@@ -40,8 +39,8 @@ namespace ced
                     int w = y % 3;
                     int ibase = ((w+j)+(h+i)*_width);
                     int fbase = y;
-                    Gx +=  (_red[ibase] + _green[ibase] + _blue[ibase]) * kernelX[fbase];
-                    Gy +=  (_red[ibase] + _green[ibase] + _blue[ibase]) * kernelY[fbase];
+                    Gx +=  ((_red[ibase] + _green[ibase] + _blue[ibase])/3.0f) * kernelX[fbase];
+                    Gy +=  ((_red[ibase] + _green[ibase] + _blue[ibase])/3.0f) * kernelY[fbase];
                 }
                 // 3 is the channels
                 int base = x;
